@@ -18,6 +18,6 @@ format:
 # Set math mode to WebTex to make compatible with other platforms (Medium, GitHub, ...)
 html-math-method: 
   method: webtex
-  url: https://latex.codecogs.com/svg.latex?
+  url: https://latex.codecogs.com/png.latex?
 
 
