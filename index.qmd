@@ -1,10 +1,11 @@
 ---
-title: "blog"
+title: "Posts"
 listing:
   contents: posts
   sort: "date desc"
   type: default
   categories: true
+  fields: [image, date, title, description, author, reading-time, file-modified]
 ---
 
 

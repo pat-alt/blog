@@ -15,4 +15,8 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    
+crossref:
+  fig-prefix: Figure
+  tbl-prefix: Table
 

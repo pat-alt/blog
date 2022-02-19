@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.21">
+  <meta name="generator" content="quarto-0.3.60">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>blog</title>
+  <title>blog - Posts</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -53,14 +53,8 @@
   <script>
 
     window.document.addEventListener("DOMContentLoaded", function (_event) {
-      const listingTargetEl = window.document.querySelector('#listing .list');
-      if (!listingTargetEl) {
-        // No listing discovered, do not attach.
-        return; 
-      }
-
       const options = {
-        valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+        valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-author','listing-reading-time','listing-file-modified',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
         
         searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
       };
@@ -116,21 +110,15 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bayes">bayes <span class="quarto-category-count">(1)</span></div><div class="category" data-category="deeplearning">deeplearning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="julialang">julialang <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bayes">bayes <span class="quarto-category-count">(2)</span></div><div class="category" data-category="deeplearning">deeplearning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="julialang">julialang <span class="quarto-category-count">(2)</span></div><div class="category" data-category="logit">logit <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content">
 <header id="title-block-header">
-<h1 class="title display-7">blog</h1>
+<h1 class="title display-7">Posts</h1>
 </header>
 
 
 
-<section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2>Footnotes</h2>
-
-<ol>
-<li id="fn1" role="doc-endnote"><p>See for example <span>this article</span> in the MIT Technology Review<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
 <div id="listing" class="quarto-listing">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
@@ -145,10 +133,16 @@
           Date - Newest
         </option>
          <option value="listing-date-sort" data-direction="desc">
-          Date - Oldest
+          Date - Oldset
         </option>
          <option value="listing-author" data-direction="asc">
           Author
+        </option>
+         <option value="listing-file-modified-sort" data-direction="asc">
+          Modified - Newest
+        </option>
+         <option value="listing-file-modified-sort" data-direction="desc">
+          Modified - Oldset
         </option>
      </select>
   </div>
@@ -158,42 +152,66 @@
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bayes,deeplearning,julialang" data-listing-date-sort="1644969600000" data-listing-file-modified-sort="1645170595650" data-listing-reading-time-sort="8.35">
+<div class="quarto-post image-right" data-index="0" data-categories="bayes,deeplearning,julialang" data-listing-date-sort="1645142400000" data-listing-file-modified-sort="1645258150962" data-listing-reading-time-sort="9.975">
 <div class="thumbnail">
-<p><a href="./posts/effortsless-bayesian-dl/index.html"> <img src="posts/effortsless-bayesian-dl/www/posterior_predictive_logit.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/effortsless-bayesian-dl/index.html"> <img src="posts/effortsless-bayesian-dl/www/intro.gif" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/effortsless-bayesian-dl/index.html">
 <h3 class="no-anchor listing-title">
-Effortless Bayesian Deep Learning in Julia
+Go deep, but also … go Bayesian!
 </h3>
+<div class="listing-description">
+<p>An introduction to effortless Bayesian deep learning through Laplace approximation coded from scratch in Julia. See also the pure-play companion package <span>BayesLaplace.jl</span></p>
+</div>
 </a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bayes'); return false;">
-bayes
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('deeplearning'); return false;">
-deeplearning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('julialang'); return false;">
-julialang
-</div>
-</div>
-<a href="./posts/effortsless-bayesian-dl/index.html">
-</a><div class="listing-description"><a href="./posts/effortsless-bayesian-dl/index.html">
-</a><p><a href="./posts/effortsless-bayesian-dl/index.html">Deep learning has dominated AI research in recent years</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> - but how much promise does it really hold? That is very much an ongoing and increasingly polarising debate that you can follow live on <span>Twitter</span>. On one side you have optimists like Ilya Sutskever, chief scientist of OpenAI, who believes that large deep neural networks may already be slighty conscious - that’s “may” and “slightly” and only if you just go deep enough? On the other side you have prominent sceptics like Judea Pearl who has long since argued that deep learning still boils down to curve fitting - purely associational and not even remotely intelligent <span class="citation" data-cites="pearl2018book">[@pearl2018book]</span>.</p>
-</div>
-
 </div>
 <div class="metadata">
 <a href="./posts/effortsless-bayesian-dl/index.html">
 <div class="listing-date">
-16/02/2022
+18/02/2022
 </div>
 <div class="listing-author">
 Patrick Altmeyer
 </div>
+<div class="listing-reading-time">
+9 min
+</div>
+<div class="metadata-value listing-file-modified">
+19/02/2022, 09:09:10
+</div>
 </a><p><a href="./posts/effortsless-bayesian-dl/index.html"></a></p>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="bayes,logit,julialang" data-listing-date-sort="1636934400000" data-listing-file-modified-sort="1645258119076" data-listing-reading-time-sort="13.425">
+<div class="thumbnail">
+<p><a href="./posts/bayesian-logit/index.html"> <img src="posts/bayesian-logit/www/intro.gif" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/bayesian-logit/index.html">
+<h3 class="no-anchor listing-title">
+Bayesian Logistic Regression
+</h3>
+<div class="listing-description">
+<p>An introduction to Bayesian Logistic Regression from the bottom up with examples in Julia language.</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/bayesian-logit/index.html">
+<div class="listing-date">
+15/11/2021
+</div>
+<div class="listing-author">
+Patrick Altmeyer
+</div>
+<div class="listing-reading-time">
+13 min
+</div>
+<div class="metadata-value listing-file-modified">
+19/02/2022, 09:08:39
+</div>
+</a><p><a href="./posts/bayesian-logit/index.html"></a></p>
 </div>
 </div>
 </div>
@@ -277,6 +295,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
