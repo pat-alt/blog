@@ -10,6 +10,9 @@ description: >-
   Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.
 bibliography: ../../bib.bib
 image: intro.jpeg
+comments:
+  utterances:
+    repo: pat-alt/blog
 ---
 
 ```{r setup, include=FALSE}

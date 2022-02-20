@@ -11,6 +11,9 @@ description: >-
   An introduction to algorithmic recourse and an implementation of a simplified version of REVISE (Joshi et al., 2019). This post was prepared as part of my PhD application.
 bibliography: ../../bib.bib
 image: www/intro.gif
+comments:
+  utterances:
+    repo: pat-alt/blog
 ---
 
 ```{r setup, include=FALSE}

@@ -11,6 +11,9 @@ description: >-
   An introduction to Bayesian Logistic Regression from the bottom up with examples in Julia language.
 bibliography: ../../bib.bib
 image: www/intro.gif
+comments:
+  utterances:
+    repo: pat-alt/blog
 ---
 
 ```{r setup, include=FALSE}
