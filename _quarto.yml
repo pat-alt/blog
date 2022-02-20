@@ -4,17 +4,33 @@ project:
 
 website:
   title: "blog"
+  image: https://raw.githubusercontent.com/pat-alt/pat-alt.github.io/main/assets/media/icon.png
+  favicon: https://raw.githubusercontent.com/pat-alt/pat-alt.github.io/main/static/icons/favicon.ico
   navbar:
     right:
-      - about.qmd
+      - text: About
+        href: https://www.paltmeyer.com/
       - icon: github
-        href: https://github.com/
+        href: https://github.com/pat-alt
       - icon: twitter
-        href: https://twitter.com
+        href: https://twitter.com/paltmey
+  search: 
+    location: navbar
+    type: overlay
+  twitter-card: true
+  opengraph: true
+  google-analytics: G-BEEZ30787D
+  cookie-consent: true
+  repo-url: https://github.com/pat-alt/blog
+  repo-actions: [issue]
+
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: flatly
+      dark: darkly
     css: styles.css
+    toc: true
     
 crossref:
   fig-prefix: Figure

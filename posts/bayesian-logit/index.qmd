@@ -5,8 +5,8 @@ author: Patrick Altmeyer
 date: '2021-11-15'
 categories:
   - bayes
-  - logit
-  - julialang
+  - logistic regression
+  - Julia
 description: >-
   An introduction to Bayesian Logistic Regression from the bottom up with examples in Julia language.
 bibliography: ../../bib.bib
@@ -102,7 +102,6 @@ animate(p, width = 800, height = 400)
 anim_save("www/toy_medium.gif")
 ```
 
-
 ## Uncertainty
 
 <div class="intro-gif">
@@ -112,7 +111,7 @@ anim_save("www/toy_medium.gif")
   </figure>
 </div>
 
-If you've ever searched for evaluation metrics to assess model accuracy, chances are that you found many different options to choose from (too many?). Accuracy is in some sense the holy grail of prediction so it's not at all surprising that the machine learning community spends a lot time thinking about it. In a world where more and more high-stake decisions are being automated, model accuracy is in fact a very valid concern. 
+If you've ever searched for evaluation metrics to assess model accuracy, chances are that you found many different options to choose from (too many?). Accuracy is in some sense the holy grail of prediction so it's not at all surprising that the machine learning community spends a lot time thinking about it. In a world where more and more high-stake decisions are being automated, model accuracy is in fact a very valid concern.
 
 But does this recipe for model evaluation seem like a sound and complete approach to automated decision-making? Haven't we forgot anything? Some would argue that we need to pay more attention to **model uncertainty**. No matter how many times you have cross-validated your model, the loss metric that it is being optimized against as well as its parameters and predictions remain inherently random variables. Focusing merely on prediction accuracy and ignoring uncertainty altogether can install a false level of confidence in automated decision-making systems. Any **trustworthy** approach to learning from data should therefore at the very least be transparent about its own uncertainty. 
 
@@ -133,13 +132,12 @@ $$
 \begin{aligned}
 && p(y_n|\mathbf{x}_n;\mathbf{w})&\sim\text{Ber}(y_n|\sigma(\mathbf{w}^T\mathbf{x}_n)) \\
 \end{aligned}
-(\#eq:logreg)
 \end{equation}
-$$
+$$ {#eq-logreg}
 
 where $\sigma(a)=1/(1+e^{-a})$ is the **sigmoid** or **logit** function [@murphy2022probabilistic].^[We let $\mathbf{w}=(`r w[1]`, `r w[2]`, `r w[3]`)^T$ define the true coefficients.] Features are generated from a mixed Gaussian model. 
 
-To add a little bit of life to our example we will assume that the binary labels classify samples into cats and dogs, based on their height and tail length. Figure \@ref(fig:ground) shows the synthetic data in the two-dimensional feature domain. Following an introduction to Bayesian Logistic Regression in the next section we will use the synthetic data $\mathcal{D}$ to estimate our model.
+To add a little bit of life to our example we will assume that the binary labels classify samples into cats and dogs, based on their height and tail length. @fig-ground shows the synthetic data in the two-dimensional feature domain. Following an introduction to Bayesian Logistic Regression in the next section we will use the synthetic data $\mathcal{D}$ to estimate our model.
 
 ```{r}
 logit <- function(w,X) {
@@ -196,7 +194,7 @@ dt <- data.table(y,X)
 # fwrite(dt, "data/cats_dogs.csv")
 ```
 
-```{r ground, fig.width=5, fig.height=5, fig.cap="Ground truth labels."}
+```{r fig-ground, fig.width=5, fig.height=5, fig.cap="Ground truth labels."}
 dt_plot <- copy(dt) 
 dt_plot[,emoji:=ifelse(y==1, "www/cat.png", "www/dog.png")]
 ggplot(data=dt_plot, aes(x=V1,y=V2,image=emoji)) +
@@ -221,10 +219,10 @@ $$
 \begin{aligned}
 && p(\mathbf{w}|\mathcal{D})&\propto p(\mathcal{D}|\mathbf{w})p(\mathbf{w}) \\
 \end{aligned}
-(\#eq:posterior)
 \end{equation}
-$$
-Formally, this says that the posterior distribution of parameters $\mathbf{w}$ is proportional to the product of the likelihood of observing $\mathcal{D}$ given $\mathbf{w}$ and the prior density of $\mathbf{w}$. Applied to our context this can intuitively be understood as follows: our posterior beliefs around $\mathbf{w}$ are formed by both our prior beliefs and the evidence we observe. Yet another way to look at this is that maximising \@ref(eq:posterior) with respect to $\mathbf{w}$ corresponds to maximum likelihood estimation regularized by prior beliefs (we will come back to this). 
+$$ {#eq-posterior}
+
+Formally, this says that the posterior distribution of parameters $\mathbf{w}$ is proportional to the product of the likelihood of observing $\mathcal{D}$ given $\mathbf{w}$ and the prior density of $\mathbf{w}$. Applied to our context this can intuitively be understood as follows: our posterior beliefs around $\mathbf{w}$ are formed by both our prior beliefs and the evidence we observe. Yet another way to look at this is that maximising @eq-posterior with respect to $\mathbf{w}$ corresponds to maximum likelihood estimation regularized by prior beliefs (we will come back to this). 
 
 Under the assumption that individual label-feature pairs are **independently** and **identically** distributed, their joint likelihood is simply the product over their individual densities. The prior beliefs around $\mathbf{w}$ are at our discretion. In practice they may be derived from previous experiments. Here we will use a zero-mean spherical Gaussian prior for reasons explained further below. To sum this up we have
 
@@ -234,9 +232,8 @@ $$
 && p(\mathcal{D}|\mathbf{w})& \sim \prod_{n=1}^N p(y_n|\mathbf{x}_n;\mathbf{w})\\
 && p(\mathbf{w})& \sim \mathcal{N} \left( \mathbf{w} | \mathbf{w}_0, \Sigma_0 \right) \\
 \end{aligned}
-(\#eq:prior)
 \end{equation}
-$$
+$$ {#eq-prior}
 
 with $\mathbf{w}_0=\mathbf{0}$ and $\Sigma_0=\sigma^2\mathbf{I}$. Plugging this into Bayes' rule we finally have
 
@@ -246,13 +243,11 @@ $$
 \end{aligned}
 $$
 
-
-
 Unlike with linear regression there are no closed-form analytical solutions to estimating or maximising this posterior, but fortunately accurate approximations do exist [@murphy2022probabilistic]. One of the simplest approaches called **Laplace Approximation** is straight-forward to implement and computationally very efficient. It relies on the observation that under the assumption of a Gaussian prior, the posterior of logistic regression is also approximately Gaussian: in particular, this Gaussian distribution is centered around the **maximum a posteriori** (MAP) estimate $\hat{\mathbf{w}}=\arg\max_{\mathbf{w}} p(\mathbf{w}|\mathcal{D})$ with a covariance matrix equal to the inverse Hessian evaluated at the mode $\hat{\Sigma}=(\mathbf{H}(\hat{\mathbf{w}}))^{-1}$. With that in mind, finding $\hat{\mathbf{w}}$ seems like a natural next step.
 
 ### Solving the problem
 
-In practice we do not maximize the posterior $p(\mathbf{w}|\mathcal{D})$ directly. Instead we minimize the negative log likelihood, which is an equivalent optimization problem and easier to implement. In \@ref(eq:likeli) below I have denoted the negative log likelihood as $\ell(\mathbf{w})$ indicating that this is the **loss function** we aim to minimize. The following two lines in \@ref(eq:likeli) show the gradient and Hessian - so the first- and second-order derivatives of $\ell$ with respect to $\mathbf{w}$ - where $\mathbf{H}_0=\Sigma_0^{-1}$ and $\mu_n=\sigma(\mathbf{w}^T\mathbf{x}_n)$. To understand how exactly the gradient and Hessian are derived see for example chapter 10 in @murphy2022probabilistic.^[Note that the author works with the negative log likelihood scaled by the sample size]. 
+In practice we do not maximize the posterior $p(\mathbf{w}|\mathcal{D})$ directly. Instead we minimize the negative log likelihood, which is an equivalent optimization problem and easier to implement. In @eq-likeli below I have denoted the negative log likelihood as $\ell(\mathbf{w})$ indicating that this is the **loss function** we aim to minimize. The following two lines in @eq-likeli show the gradient and Hessian - so the first- and second-order derivatives of $\ell$ with respect to $\mathbf{w}$ - where $\mathbf{H}_0=\Sigma_0^{-1}$ and $\mu_n=\sigma(\mathbf{w}^T\mathbf{x}_n)$. To understand how exactly the gradient and Hessian are derived see for example chapter 10 in @murphy2022probabilistic.^[Note that the author works with the negative log likelihood scaled by the sample size]. 
 
 $$
 \begin{equation} 
@@ -261,19 +256,18 @@ $$
 && \nabla_{\mathbf{w}}\ell(\mathbf{w})&= \sum_{n=1}^{N} (\mu_n-y_n) \mathbf{x}_n + \mathbf{H}_0(\mathbf{w}-\mathbf{w}_0) \\
 && \nabla^2_{\mathbf{w}}\ell(\mathbf{w})&= \sum_{n=1}^{N} (\mu_n-y_n) \left( \mu_n(1-\mu_n) \mathbf{x}_n \mathbf{x}_n^T \right) + \mathbf{H}_0\\
 \end{aligned}
-(\#eq:likeli)
 \end{equation}
-$$
+$$ {#eq-likeli}
 
 ::: {.sidenote}
 **SIDENOTE** `r emojifont::emoji("bulb")`
 
-Note how earlier I mentioned that maximising the posterior likelihood can be seen as regularized maximum likelihood estimation. We can now make that connection explicit: in \@ref(eq:likeli) let us assume that $\mathbf{w}_0=\mathbf{0}$. Then since $\mathbf{H}_0=\lambda\mathbf{I}$ with $1/\sigma^2$ the second term in the first line is simply $\lambda \frac{1}{2} \mathbf{w}^T\mathbf{w}=\lambda \frac{1}{2} ||\mathbf{w}||_2^2$. This is equivalent to running logistic regression with an $\ell_2$-penalty [@bishop2006pattern]. 
+Note how earlier I mentioned that maximising the posterior likelihood can be seen as regularized maximum likelihood estimation. We can now make that connection explicit: in @eq-likeli let us assume that $\mathbf{w}_0=\mathbf{0}$. Then since $\mathbf{H}_0=\lambda\mathbf{I}$ with $1/\sigma^2$ the second term in the first line is simply $\lambda \frac{1}{2} \mathbf{w}^T\mathbf{w}=\lambda \frac{1}{2} ||\mathbf{w}||_2^2$. This is equivalent to running logistic regression with an $\ell_2$-penalty [@bishop2006pattern]. 
 :::
 
 <br>
 
-Since minimizing the loss function in \@ref(eq:likeli) is a convex optimization problem we have many efficient algorithms to choose from in order to solve this problem. With the Hessian at hand it seems natural to use a second-order method, because incorporating information about the curvature of the loss function generally leads to faster convergence. Here we will implement **Newton's method** in line with the presentation in chapter 8 of @murphy2022probabilistic. 
+Since minimizing the loss function in @eq-likeli is a convex optimization problem we have many efficient algorithms to choose from in order to solve this problem. With the Hessian at hand it seems natural to use a second-order method, because incorporating information about the curvature of the loss function generally leads to faster convergence. Here we will implement **Newton's method** in line with the presentation in chapter 8 of @murphy2022probabilistic. 
 
 ### Posterior predictive
 
@@ -286,9 +280,8 @@ $$
 \begin{aligned}
 && p(y=1|\mathbf{x}, \mathcal{D})&= \int \sigma(\mathbf{w}^T \mathbf{x})p(\mathbf{w}|\mathcal{D})d\mathbf{w} \\
 \end{aligned}
-(\#eq:posterior-pred)
 \end{equation}
-$$
+$$ {#eq-posterior-pred}
 
 
 ::: {.sidenote}
@@ -303,9 +296,9 @@ With the posterior distribution over model parameters $p(\mathbf{w}|\mathcal{D})
 
 An obvious, but computationally expensive way to estimate it is through Monte Carlo: draw $\mathbf{w}_s$ from $p(\mathbf{w}|\mathcal{D})$ for $s=1:S$ and compute fitted values $\sigma(\mathbf{w_s}^T\mathbf{x})$ each. Then the posterior predictive distribution corresponds to the average over all fitted values, $p(y=1|\mathbf{x}, \mathcal{D})=1/S \sum_{s=1}^{S}\sigma(\mathbf{w_s}^T\mathbf{x})$. By the law of large numbers the Monte Carlo estimate is an accurate estimate of the true posterior predictive for large enough $S$. Of course, "large enough" is somewhat loosely defined here and depending on the problem can mean "very large". Consequently, the computational costs involved essentially know no upper bound.
 
-Fortunately, it turns out that we can trade off a little bit of accuracy in return for a convenient analytical solution. In particular, we have that $\sigma(a) \approx \Phi(\lambda a)$ where $\Phi(.)$ is the standard Gaussian cdf and $\lambda=\pi/8$ ensures that the two functions have the same slope at the origin (Figure \@ref(fig:probit)). Without dwelling further on the details we can use this finding to approximate the integral in \@ref(eq:posterior-pred) as a sigmoid function. This is called **probit approximation** and implemented below.
+Fortunately, it turns out that we can trade off a little bit of accuracy in return for a convenient analytical solution. In particular, we have that $\sigma(a) \approx \Phi(\lambda a)$ where $\Phi(.)$ is the standard Gaussian cdf and $\lambda=\pi/8$ ensures that the two functions have the same slope at the origin (@fig-probit). Without dwelling further on the details we can use this finding to approximate the integral in @eq-posterior-pred as a sigmoid function. This is called **probit approximation** and implemented below.
 
-```{r probit, fig.cap="Demonstration of the probit approximation."}
+```{r fig-probit, fig.cap="Demonstration of the probit approximation."}
 a <- seq(-2,2,0.01)
 p_true <- 1/(1+exp(-a))
 p_norm <- pnorm(a)
@@ -326,7 +319,7 @@ legend(
 
 ## The code
 
-We now have all the necessary ingredients to code Bayesian Logistic Regression up from scratch. While in practice we would usually want to rely on existing packages that have been properly tested, I often find it very educative and rewarding to program algorithms from the bottom up. You will see that Julia's syntax so closely resembles the mathematical formulas we have seen above, that going from maths to code is incredibly easy. Seeing those formulas and algorithms then actually doing their magic is quite fun! The code chunk below, for example, shows the implementation of the loss function and its derivatives from \@ref(eq:likeli) above. Take a moment to go through the code line-by-line and try to understand how it relates back to the equations in \@ref(eq:likeli). Isn't it amazing how closely the code resembles the actual equations? 
+We now have all the necessary ingredients to code Bayesian Logistic Regression up from scratch. While in practice we would usually want to rely on existing packages that have been properly tested, I often find it very educative and rewarding to program algorithms from the bottom up. You will see that Julia's syntax so closely resembles the mathematical formulas we have seen above, that going from maths to code is incredibly easy. Seeing those formulas and algorithms then actually doing their magic is quite fun! The code chunk below, for example, shows the implementation of the loss function and its derivatives from @eq-likeli above. Take a moment to go through the code line-by-line and try to understand how it relates back to the equations in @eq-likeli. Isn't it amazing how closely the code resembles the actual equations? 
 
 <script src="https://gist.github.com/pat-alt/cc53a11470e4fb736f24bb6de2393f54.js"></script>
 
@@ -342,15 +335,15 @@ I should mention that this is the first time I program in Julia, so for any Juli
 
 ## The estimates
 
-Figure \@ref(fig:posterior) below shows the resulting posterior distribution for $w_2$ and $w_3$ at varying degrees of prior uncertainty $\sigma$. The constant $w_1$ is held constant at the mode ($\hat{w}_1$). The red dot indicates the MLE. Note how for the choice of $\sigma\rightarrow 0$ the posterior is equal to the prior. This is intuitive since we have imposed that we have no uncertainty around our prior beliefs and hence no amount of new evidence can move us in any direction. Conversely, for $\sigma \rightarrow \infty$ the posterior distribution is centered around the unconstrained MLE: prior knowledge is very uncertain and hence the posterior is dominated by the likelihood of the data.
+@fig-posterior below shows the resulting posterior distribution for $w_2$ and $w_3$ at varying degrees of prior uncertainty $\sigma$. The constant $w_1$ is held constant at the mode ($\hat{w}_1$). The red dot indicates the MLE. Note how for the choice of $\sigma\rightarrow 0$ the posterior is equal to the prior. This is intuitive since we have imposed that we have no uncertainty around our prior beliefs and hence no amount of new evidence can move us in any direction. Conversely, for $\sigma \rightarrow \infty$ the posterior distribution is centered around the unconstrained MLE: prior knowledge is very uncertain and hence the posterior is dominated by the likelihood of the data.
 
-```{r posterior, fig.cap="Posterior distribution for $w_2$ and $w_3$ at varying degrees of prior uncertainty $\\sigma$."}
+```{r fig-posterior, fig.cap="Posterior distribution for $w_2$ and $w_3$ at varying degrees of prior uncertainty $\\sigma$."}
 knitr::include_graphics("www/posterior.png")
 ```
 
-What about the posterior predictive? The story is similar: since for $\sigma\rightarrow 0$ the posterior is completely dominated by the zero-mean prior we have $p(y=1|\mathbf{x},\hat{\mathbf{w}})=0.5$ everywhere (top left panel in Figure \@ref(fig:predictive)). As we gradually increase uncertainty around our prior the predictive posterior depends more and more on the data $\mathcal{D}$: uncertainty around predicted labels is high only in regions that are not populated by samples $(y_n, \mathbf{x}_n)$. Not surprisingly, this effect is strongest for the MLE ($\sigma\rightarrow \infty$) where we see some evidence of overfitting.
+What about the posterior predictive? The story is similar: since for $\sigma\rightarrow 0$ the posterior is completely dominated by the zero-mean prior we have $p(y=1|\mathbf{x},\hat{\mathbf{w}})=0.5$ everywhere (top left panel in @fig-predictive. As we gradually increase uncertainty around our prior the predictive posterior depends more and more on the data $\mathcal{D}$: uncertainty around predicted labels is high only in regions that are not populated by samples $(y_n, \mathbf{x}_n)$. Not surprisingly, this effect is strongest for the MLE ($\sigma\rightarrow \infty$) where we see some evidence of overfitting.
 
-```{r predictive, fig.cap="Predictive posterior distribution at varying degrees of prior uncertainty $\\sigma$."}
+```{r fig-predictive, fig.cap="Predictive posterior distribution at varying degrees of prior uncertainty $\\sigma$."}
 knitr::include_graphics("www/predictive.png")
 ```
 
