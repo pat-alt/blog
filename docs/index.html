@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-0.3.60">
+  <meta name="generator" content="quarto-99.9.9">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>blog - Posts</title>
   <style>
@@ -58,6 +58,12 @@
   <script>
 
     window.document.addEventListener("DOMContentLoaded", function (_event) {
+      const listingTargetEl = window.document.querySelector('#listing .list');
+      if (!listingTargetEl) {
+        // No listing discovered, do not attach.
+        return; 
+      }
+
       const options = {
         valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-author','listing-reading-time','listing-file-modified',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
         
@@ -122,12 +128,12 @@
     <a class="nav-link" href="https://www.paltmeyer.com/">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/pat-alt"><i class="bi-github" role="img">
+    <a class="nav-link" href="https://github.com/pat-alt"><i class="bi bi-github" role="img">
 </i> 
  </a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/paltmey"><i class="bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/paltmey"><i class="bi bi-twitter" role="img">
 </i> 
  </a>
   </li>  
@@ -146,9 +152,9 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="C++">C++ <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Julia">Julia <span class="quarto-category-count">(2)</span></div><div class="category" data-category="algorithmic recourse">algorithmic recourse <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bayes">bayes <span class="quarto-category-count">(3)</span></div><div class="category" data-category="blogdown">blogdown <span class="quarto-category-count">(1)</span></div><div class="category" data-category="counterfactuals">counterfactuals <span class="quarto-category-count">(1)</span></div><div class="category" data-category="deep learning">deep learning <span class="quarto-category-count">(3)</span></div><div class="category" data-category="explainable AI">explainable AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="logistic regression">logistic regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="C++">C++ <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Julia">Julia <span class="quarto-category-count">(2)</span></div><div class="category" data-category="algorithmic recourse">algorithmic recourse <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bayes">bayes <span class="quarto-category-count">(3)</span></div><div class="category" data-category="blogdown">blogdown <span class="quarto-category-count">(1)</span></div><div class="category" data-category="counterfactuals">counterfactuals <span class="quarto-category-count">(1)</span></div><div class="category" data-category="deep learning">deep learning <span class="quarto-category-count">(3)</span></div><div class="category" data-category="explainable AI">explainable AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="logistic regression">logistic regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(1)</span></div><div class="category" data-category="undefined">undefined <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content">
+<main class="content" id="quarto-document-content">
 <header id="title-block-header">
 <h1 class="title display-7">Posts</h1>
 </header>
@@ -166,19 +172,19 @@
           Title
         </option>
          <option value="listing-date-sort" data-direction="asc">
-          Date - Newest
+          Date - Oldest
         </option>
          <option value="listing-date-sort" data-direction="desc">
-          Date - Oldset
+          Date - Newest
         </option>
          <option value="listing-author" data-direction="asc">
           Author
         </option>
          <option value="listing-file-modified-sort" data-direction="asc">
-          Modified - Newest
+          Modified - Oldest
         </option>
          <option value="listing-file-modified-sort" data-direction="desc">
-          Modified - Oldset
+          Modified - Newest
         </option>
      </select>
   </div>
@@ -188,7 +194,7 @@
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bayes,deep learning,Julia" data-listing-date-sort="1645142400000" data-listing-file-modified-sort="1645352377444" data-listing-reading-time-sort="9.975">
+<div class="quarto-post image-right" data-index="0" data-categories="bayes,deep learning,Julia" data-listing-date-sort="1645142400000" data-listing-file-modified-sort="1645432124648" data-listing-reading-time-sort="9.975">
 <div class="thumbnail">
 <p><a href="./posts/effortsless-bayesian-dl/index.html"> <img src="posts/effortsless-bayesian-dl/www/intro.gif" class="thumnail-image"> </a></p>
 </div>
@@ -214,12 +220,12 @@ Patrick Altmeyer
 9 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 11:19:37
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/effortsless-bayesian-dl/index.html"></a></p>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="bayes,logistic regression,Julia" data-listing-date-sort="1636934400000" data-listing-file-modified-sort="1645346494018" data-listing-reading-time-sort="13.425">
+<div class="quarto-post image-right" data-index="1" data-categories="bayes,logistic regression,Julia" data-listing-date-sort="1636934400000" data-listing-file-modified-sort="1645432124561" data-listing-reading-time-sort="13.425">
 <div class="thumbnail">
 <p><a href="./posts/bayesian-logit/index.html"> <img src="posts/bayesian-logit/www/intro.gif" class="thumnail-image"> </a></p>
 </div>
@@ -245,12 +251,12 @@ Patrick Altmeyer
 13 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 09:41:34
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/bayesian-logit/index.html"></a></p>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="counterfactuals,algorithmic recourse,deep learning" data-listing-date-sort="1619481600000" data-listing-file-modified-sort="1645346445474" data-listing-reading-time-sort="10.665">
+<div class="quarto-post image-right" data-index="2" data-categories="counterfactuals,algorithmic recourse,deep learning" data-listing-date-sort="1619481600000" data-listing-file-modified-sort="1645432124671" data-listing-reading-time-sort="10.665">
 <div class="thumbnail">
 <p><a href="./posts/individual-recourse-for-black-box-models/index.html"> <img src="posts/individual-recourse-for-black-box-models/www/intro.gif" class="thumnail-image"> </a></p>
 </div>
@@ -276,12 +282,12 @@ Patrick Altmeyer
 10 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 09:40:45
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/individual-recourse-for-black-box-models/index.html"></a></p>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="deep learning,explainable AI,bayes" data-listing-date-sort="1612656000000" data-listing-file-modified-sort="1645347771768" data-listing-reading-time-sort="10.925">
+<div class="quarto-post image-right" data-index="3" data-categories="deep learning,explainable AI,bayes" data-listing-date-sort="1612656000000" data-listing-file-modified-sort="1645432124560" data-listing-reading-time-sort="10.925">
 <div class="thumbnail">
 <p><a href="./posts/a-peek-inside-the-black-box-interpreting-neural-networks/index.html"> <img src="posts/a-peek-inside-the-black-box-interpreting-neural-networks/intro.jpeg" class="thumnail-image"> </a></p>
 </div>
@@ -307,12 +313,12 @@ Patrick Altmeyer
 10 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 10:02:51
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/a-peek-inside-the-black-box-interpreting-neural-networks/index.html"></a></p>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="blogdown,rmarkdown,C++" data-listing-date-sort="1612224000000" data-listing-file-modified-sort="1645346296359" data-listing-reading-time-sort="5.095">
+<div class="quarto-post image-right" data-index="4" data-categories="blogdown,rmarkdown,C++" data-listing-date-sort="1612224000000" data-listing-file-modified-sort="1645432124669" data-listing-reading-time-sort="5.095">
 <div class="thumbnail">
 <a href="./posts/how-i-m-building-this-website-in-r/index.html">
 <div class="thumbnail-image">
@@ -342,12 +348,12 @@ Patrick Altmeyer
 5 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 09:38:16
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/how-i-m-building-this-website-in-r/index.html"></a></p>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1612137600000" data-listing-file-modified-sort="1645345900490" data-listing-reading-time-sort="0.815">
+<div class="quarto-post image-right" data-index="5" data-categories="" data-listing-date-sort="1612137600000" data-listing-file-modified-sort="1645432124694" data-listing-reading-time-sort="0.815">
 <div class="thumbnail">
 <a href="./posts/welcome/index.html">
 <div class="thumbnail-image">
@@ -377,7 +383,7 @@ Patrick Altmeyer
 0 min
 </div>
 <div class="metadata-value listing-file-modified">
-20/02/2022, 09:31:40
+21/02/2022, 09:28:44
 </div>
 </a><p><a href="./posts/welcome/index.html"></a></p>
 </div>
@@ -456,12 +462,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
   const getColorSchemeSentinel = () => {
     if (!isFileUrl()) {
-      return window.localStorage.getItem("quarto-color-scheme");
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
     } else {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = null;
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
@@ -472,8 +479,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
     const a = window.document.createElement('a');
-    a.id = "quarto-color-scheme-toggle";
     a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
     a.href = "";
     a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
     const i = window.document.createElement("i");
@@ -559,12 +566,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
