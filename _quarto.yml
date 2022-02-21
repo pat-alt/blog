@@ -8,12 +8,14 @@ website:
   favicon: https://raw.githubusercontent.com/pat-alt/pat-alt.github.io/main/static/icons/favicon.ico
   navbar:
     right:
-      - text: About
+      - icon: house
         href: https://www.paltmeyer.com/
       - icon: github
         href: https://github.com/pat-alt
       - icon: twitter
         href: https://twitter.com/paltmey
+      - icon: medium
+        href: https://medium.com/@patrick.altmeyer
   search: 
     location: navbar
     type: overlay
@@ -23,6 +25,7 @@ website:
   cookie-consent: true
   repo-url: https://github.com/pat-alt/blog
   repo-actions: [issue]
+  page-footer: '© 2022, Patrick Altmeyer'
 
 format:
   html:

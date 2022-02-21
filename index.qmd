@@ -6,6 +6,7 @@ listing:
   type: default
   categories: true
   fields: [image, date, title, description, author, reading-time, file-modified]
+  image-align: left
 ---
 
 
