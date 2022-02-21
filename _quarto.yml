@@ -4,9 +4,9 @@ project:
 
 website:
   title: "blog"
-  image: https://raw.githubusercontent.com/pat-alt/pat-alt.github.io/main/assets/media/icon.png
-  favicon: https://raw.githubusercontent.com/pat-alt/pat-alt.github.io/main/static/icons/favicon.ico
+  favicon: favicon.ico
   navbar:
+    logo: icon.png
     right:
       - icon: house
         href: https://www.paltmeyer.com/
