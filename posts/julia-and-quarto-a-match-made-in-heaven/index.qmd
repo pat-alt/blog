@@ -9,16 +9,51 @@ categories:
   - Julia
 description: >-
   ...
-bibliography: ../../bib.bib
+bibliography: https://raw.githubusercontent.com/pat-alt/bib/main/bib.bib
 image: www/intro.gif
 comments:
   utterances:
     repo: pat-alt/blog
 jupyter: julia-1.6
-jupyter-language: "Julia"
+execute:
+    echo: false
+    eval: false
 ---
 
-## A comfortable bubble 🎈
+```{julia}
+www_path = "posts/julia-and-quarto-a-match-made-in-heaven/www"
+```
+
+<div class="intro-gif">
+  <figure>
+    <img src="www/intro.gif">
+    <figcaption>Julia and Quarto: a perfect match.</figcaption>
+  </figure>
+</div>
+
+Does your work involve research, coding, writing and publishing? If so, then chances are that you often find yourself bouncing back and forth between different open-source text editors, IDEs, programming languages and platforms depending on your current needs. Using a diverse set of tools is reasonable, because there typically is no single perfect approach to solves all problems. For example, interactive notebooks like Jupyter are useful for with code and communicating it to others, but they are probably not your first choice for producing a scientific article. Similarly, Beamer presentations can be useful for presenting science in a standardized fashion, but they are the very opposite of interactive and look incredibly boring. 
+
+As much as this great variety of free tools deserves being celebrated, all this bouncing back and forth can be really tiring. What if there was a single tool, an engine that can turn your work into all kinds of different outputs? I mean literally any output you can think of: Markdown, HTML, PDF, LateX, ePub, entire websites, presentations (yes, also Beamer if you have to), MS Word, OpenOffice, ... the list goes on. All of that starting from the same place: a plain Markdown document blended with essentially any programming language of your choice and a YAML header defining your output. This tool now exists and it goes by the name [Quarto](https://quarto.org/).
+
+In this short blog post I hope to convince you that Quarto is the only publishing engine you will ever need. What I am definitely not going to tell you is which IDE, text editor or programming language you should be using to actually produce your work. Quarto does not care about that. Quarto is here to make your life a bit easier (and by 'a bit' I mean a whole lot). Quarto is nothing less but revolutionary for science. 
+
+To put this all in some context (well, my context), I will now tell you a bit about what has led me to making such bold claims about yet another open-source tool. If you are a Julia user that really couldn't care less about my previous experiences with R Markdown, this is a good time to skip straight ahead to @sec-match. 
+
+:::{.callout-note}
+Oh by the way, if you haven't clicked on that link, this cross-reference was generated as follows:
+
+```` markdown
+If you are a Julia user that really couldn't care less about my previous experiences with R Markdown, this is a good time to skip straight ahead to @sec-match.
+
+...
+
+## Quarto and Julia - a perfect match {#sec-match}
+````
+
+There is actually a comprehensive 8-step guide explaining how to achieve something similar in MS Word, but personally I wouldn't go there. Anyway, take your pick: [go there](https://support.microsoft.com/en-us/office/create-a-cross-reference-300b208c-e45a-487a-880b-a02767d9774b) or [stay here #safespace](@sec-bubble). 
+:::
+
+## A comfortable bubble 🎈 {#sec-bubble}
 
 For many years I have used R Markdown for essentially anything work-related. As a young econ student facing the unfortunate reality that people still teach Stata, I was drawn to R, because of its great open-source community and also because it's not Stata. Once I realised that I would be able to use R Markdown to write up all of my future homework assignments and even my thesis, I never even looked back. Not much later I would also begin developing apps in Shiny, produce outputs in HTML and build entire websites through `blogdown` - and all of that from within R Studio. During my first professional job at the Bank of England I was reluctant to use anything other than R Markdown to produce all of my output. Luckily for me, the Bank was very much heading in that same direction at the time and my reluctance was not perceived as stubbornness but innovativeness. 
 
@@ -44,13 +79,13 @@ This was a first very pleasant experience, even smoother than `blogdown`. As for
 
 #### Quarto and Jupyter
 
-I kept coming back to quarto though. Since I was now working with VSCode + Jupyter and since Quarto supported Jupyter as well as all of my old R Markdown work, my next little Quarto project involved turning my old `blogdown`-powered blog into a Quarto-powered [blog](https://www.paltmeyer.com/blog/). This was not strictly necessary, as I could always export my new Jupyter notebooks to HTML and let `blogdown` do the rest. But it did streamline things a little bit and the default Quarto blog looks fresh. I also did not have to feel guilty towards [@xieyihui](https://twitter.com/xieyihui) about leaving `blogdown`, because unsurprisingly he is on the Quarto team. As I was working on this little project I started noticing that the Quarto website was updated regularly and responses to issues I opened like this [one](https://github.com/quarto-dev/quarto-cli/issues/293) were answered very swiftly. Clearly, things were moving and they were moving fast. More recently, the news about Quarto have been spreading and let some folks as confused and amazed as I was when I first heard about it:
+I kept coming back to quarto though. Since I was now working with VSCode + Jupyter and since Quarto supported Jupyter as well as all of my old R Markdown work, my next little Quarto project involved turning my old `blogdown`-powered blog into a Quarto-powered [blog](https://www.paltmeyer.com/blog/). This was not strictly necessary, as I could always export my new Jupyter notebooks to HTML and let `blogdown` do the rest. But it did streamline things a little bit and the default Quarto blog looks fresh. I also did not have to feel guilty towards [\@xieyihui](https://twitter.com/xieyihui) about leaving `blogdown`, because unsurprisingly he is on the Quarto team. As I was working on this little project I started noticing that the Quarto website was updated regularly and responses to issues I opened like this [one](https://github.com/quarto-dev/quarto-cli/issues/293) were answered very swiftly. Clearly, things were moving and they were moving fast. More recently, the news about Quarto have been spreading and let some folks as confused and amazed as I was when I first heard about it:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/RStats?src=hash&amp;ref_src=twsrc%5Etfw">#RStats</a> can someone explain to me what&#39;s the difference between {Quarto} and {RMarkdown}? I saw a tweet about Quarto and now I&#39;m all confused ... What gap is it supposed to fill?</p>&mdash; Erwin Lares (@lasrubieras) <a href="https://twitter.com/lasrubieras/status/1509014670262390784?ref_src=twsrc%5Etfw">March 30, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 This is why finally I've decided I should write a brief post about how and why I use Quarto. Since I have been working mostly with Julia for the past couple of months, I've chosen to focus on the interaction between Quarto and Julia. Coincidentally, today was also the first time I saw a [guide](https://quarto.org/docs/computations/julia.html) dedicated to Julia on the Quarto website, so evidently I am not the only one interested in that marriage. 
 
-## Quarto and Julia - a perfect match
+## Quarto and Julia - a perfect match {#sec-match}
 
 While what follows may be relevant to other programming languages, my main goal here is to showcase the beauty of Quarto to the Julia community. In any case, #rstats folks have been using R and Python in R Markdown documents for a while now and won't need much of an introduction to Quarto. As for Python aficionados, I can only recommend to give Quarto a shot (you will still be able to use Jupyter notebooks). 
 
@@ -77,45 +112,90 @@ using Plots
 ```{julia}
 using Javis, Animations, Colors
 
+size = 600
+radius_factor = 0.33
+
 function ground(args...)
-    background("black")
+    background("transparent")
     sethue("white")
 end
 
-rotate_anim = Animation(
-    [0, 1], # must go from 0 to 1
-    [0, 2π],
-    [sineio()],
-)
+function rotate_anim(idx::Number, total::Number) 
+    distance_circle = 0.875
+    steps = collect(range(distance_circle,1-distance_circle,length=total))
+    Animation(
+        [0, 1], # must go from 0 to 1
+        [0, steps[idx]*2π],
+        [sineio()],
+    )
+end
 
 translate_anim = Animation(
     [0, 1], # must go from 0 to 1
-    [O, Point(150, 0)],
+    [O, Point(size*radius_factor, 0)],
     [sineio()],
 )
 
 translate_back_anim = Animation(
     [0, 1], # must go from 0 to 1
-    [O, Point(-150, 0)],
+    [O, Point(-(size*radius_factor), 0)],
     [sineio()],
 )
 
-color_anim = Animation(
-    [0, 0.5, 1], # must go from 0 to 1
-    [Lab(colorant"red"), Lab(colorant"cyan"), Lab(colorant"black")],
-    [sineio(), sineio()],
+julia_colours = Dict(
+    :blue => "#4063D8",
+    :green => "#389826",
+    :purple => "#9558b2",
+    :red => "#CB3C33"
 )
+colour_order = [:red, :purple, :green, :blue]
+n_colours = length(julia_colours)
+function color_anim(start_colour::String, quarto_col::String="#4b95d0")
+    Animation(
+        [0, 1], # must go from 0 to 1
+        [Lab(color(start_colour)), Lab(color(quarto_col))],
+        [sineio()],
+    )
+end
 
-video = Video(600, 400)
-Background(1:200, ground)
+video = Video(size, size)
 
-for frame_start in 1:10:50
-    blob = Object(frame_start:frame_start+149, (args...) -> circle(O, 20, :fill))
-    act!(blob, Action(1:10, sineio(), appear(:scale))) # new line
+frame_starts = 1:10:40
+n_total = 250
+n_frames = 150
+Background(1:n_total, ground)
+
+# Blob:
+function element(; radius = 1)
+    circle(O, radius, :fill) # The 4 is to make the circle not so small
+end
+
+# Cross:
+function cross(color="black";orientation=:horizontal)
+    sethue(color)
+    setline(10)
+    if orientation==:horizontal
+        out = line(Point(-size,0),Point(size,0), :stroke)
+    else
+        out = line(Point(0,-size),Point(0,size), :stroke)
+    end
+    return out
+end
+
+for (i, frame_start) in enumerate(1:10:40)
+
+    # Julia circles:
+    blob = Object(frame_start:n_total, (args...;radius=1) -> element(;radius=radius))
+    act!(blob, Action(1:Int(round(n_frames*0.25)), change(:radius, 1 => 75))) # scale up
+    act!(blob, Action(n_frames:(n_frames+50), change(:radius, 75 => 250))) # scale up further
     act!(blob, Action(1:30, translate_anim, translate()))
-    act!(blob, Action(31:120, rotate_anim, rotate_around(Point(-150, 0))))
+    act!(blob, Action(31:120, rotate_anim(i, n_colours), rotate_around(Point(-(size*radius_factor), 0))))
     act!(blob, Action(121:150, translate_back_anim, translate()))
-    act!(blob, Action(1:150, color_anim, sethue()))
+    act!(blob, Action(1:150, color_anim(julia_colours[colour_order[i]]), sethue()))
+
+    # Quarto cross:
+    cross_h = Object((n_frames+50):n_total, (args...) -> cross(;orientation=:horizontal))
+    cross_v = Object((n_frames+50):n_total, (args...) -> cross(;orientation=:vertical))
 end
 
 render(

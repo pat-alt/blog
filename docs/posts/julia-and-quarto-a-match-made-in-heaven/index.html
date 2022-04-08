@@ -204,8 +204,8 @@
         <nav id="TOC" role="doc-toc">
 <h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#a-comfortable-bubble" class="nav-link active" data-scroll-target="#a-comfortable-bubble">A comfortable bubble 🎈</a></li>
-<li><a href="#quarto-and-julia---a-perfect-match" class="nav-link" data-scroll-target="#quarto-and-julia---a-perfect-match">Quarto and Julia - a perfect match</a></li>
+<li><a href="#sec-bubble" class="nav-link active" data-scroll-target="#sec-bubble">A comfortable bubble 🎈</a></li>
+<li><a href="#sec-match" class="nav-link" data-scroll-target="#sec-match">Quarto and Julia - a perfect match</a></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -218,8 +218,39 @@
 <p class="date">2022-04-07</p>
 </header>
 
-<section id="a-comfortable-bubble" class="level2">
-<h2 class="anchored" data-anchor-id="a-comfortable-bubble">A comfortable bubble 🎈</h2>
+<div class="intro-gif">
+<figure class="figure">
+<img src="www/intro.gif" class="figure-img">
+<figcaption class="figure-caption">
+Julia and Quarto: a perfect match.
+</figcaption>
+</figure>
+</div>
+<p>Does your work involve research, coding, writing and publishing? If so, then chances are that you often find yourself bouncing back and forth between different open-source text editors, IDEs, programming languages and platforms depending on your current needs. Using a diverse set of tools is reasonable, because there typically is no single perfect approach to solves all problems. For example, interactive notebooks like Jupyter are useful for with code and communicating it to others, but they are probably not your first choice for producing a scientific article. Similarly, Beamer presentations can be useful for presenting science in a standardized fashion, but they are the very opposite of interactive and look incredibly boring.</p>
+<p>As much as this great variety of free tools deserves being celebrated, all this bouncing back and forth can be really tiring. What if there was a single tool, an engine that can turn your work into all kinds of different outputs? I mean literally any output you can think of: Markdown, HTML, PDF, LateX, ePub, entire websites, presentations (yes, also Beamer if you have to), MS Word, OpenOffice, … the list goes on. All of that starting from the same place: a plain Markdown document blended with essentially any programming language of your choice and a YAML header defining your output. This tool now exists and it goes by the name <a href="https://quarto.org/">Quarto</a>.</p>
+<p>In this short blog post I hope to convince you that Quarto is the only publishing engine you will ever need. What I am definitely not going to tell you is which IDE, text editor or programming language you should be using to actually produce your work. Quarto does not care about that. Quarto is here to make your life a bit easier (and by ‘a bit’ I mean a whole lot). Quarto is nothing less but revolutionary for science.</p>
+<p>To put this all in some context (well, my context), I will now tell you a bit about what has led me to making such bold claims about yet another open-source tool. If you are a Julia user that really couldn’t care less about my previous experiences with R Markdown, this is a good time to skip straight ahead to <a href="#sec-match">Section&nbsp;2</a>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Oh by the way, if you haven’t clicked on that link, this cross-reference was generated as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>If you are a Julia user that really couldn't care less about my previous experiences with R Markdown, this is a good time to skip straight ahead to @sec-match.</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto and Julia - a perfect match {#sec-match}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There is comprehensive 8-step guide explaining how to achieve something similar in MS Word, but personally I wouldn’t go there. Anyway, take your pick: <a href="https://support.microsoft.com/en-us/office/create-a-cross-reference-300b208c-e45a-487a-880b-a02767d9774b">go there</a> or <a href="@sec-bubble">stay here #safespace</a>.</p>
+</div>
+</div>
+<section id="sec-bubble" class="level2">
+<h2 class="anchored" data-anchor-id="sec-bubble">A comfortable bubble 🎈</h2>
 <p>For many years I have used R Markdown for essentially anything work-related. As a young econ student facing the unfortunate reality that people still teach Stata, I was drawn to R, because of its great open-source community and also because it’s not Stata. Once I realised that I would be able to use R Markdown to write up all of my future homework assignments and even my thesis, I never even looked back. Not much later I would also begin developing apps in Shiny, produce outputs in HTML and build entire websites through <code>blogdown</code> - and all of that from within R Studio. During my first professional job at the Bank of England I was reluctant to use anything other than R Markdown to produce all of my output. Luckily for me, the Bank was very much heading in that same direction at the time and my reluctance was not perceived as stubbornness but innovativeness.</p>
 <section id="cracks-in-the-bubble" class="level4">
 <h4 class="anchored" data-anchor-id="cracks-in-the-bubble">Cracks in the bubble</h4>
@@ -247,7 +278,7 @@ Just had my first go <a href="https://twitter.com/hashtag/quarto?src=hash&amp;re
 </section>
 <section id="quarto-and-jupyter" class="level4">
 <h4 class="anchored" data-anchor-id="quarto-and-jupyter">Quarto and Jupyter</h4>
-<p>I kept coming back to quarto though. Since I was now working with VSCode + Jupyter and since Quarto supported Jupyter as well as all of my old R Markdown work, my next little Quarto project involved turning my old <code>blogdown</code>-powered blog into a Quarto-powered <a href="https://www.paltmeyer.com/blog/">blog</a>. This was not strictly necessary, as I could always export my new Jupyter notebooks to HTML and let <code>blogdown</code> do the rest. But it did streamline things a little bit and the default Quarto blog looks fresh. I also did not have to feel guilty towards <a href="https://twitter.com/xieyihui"><span class="citation" data-cites="xieyihui">(</span></a><a href="#ref-xieyihui" role="doc-biblioref"><strong>xieyihui?</strong></a>) about leaving <code>blogdown</code>, because unsurprisingly he is on the Quarto team. As I was working on this little project I started noticing that the Quarto website was updated regularly and responses to issues I opened like this <a href="https://github.com/quarto-dev/quarto-cli/issues/293">one</a> were answered very swiftly. Clearly, things were moving and they were moving fast. More recently, the news about Quarto have been spreading and let some folks as confused and amazed as I was when I first heard about it:</p>
+<p>I kept coming back to quarto though. Since I was now working with VSCode + Jupyter and since Quarto supported Jupyter as well as all of my old R Markdown work, my next little Quarto project involved turning my old <code>blogdown</code>-powered blog into a Quarto-powered <a href="https://www.paltmeyer.com/blog/">blog</a>. This was not strictly necessary, as I could always export my new Jupyter notebooks to HTML and let <code>blogdown</code> do the rest. But it did streamline things a little bit and the default Quarto blog looks fresh. I also did not have to feel guilty towards <a href="https://twitter.com/xieyihui">@xieyihui</a> about leaving <code>blogdown</code>, because unsurprisingly he is on the Quarto team. As I was working on this little project I started noticing that the Quarto website was updated regularly and responses to issues I opened like this <a href="https://github.com/quarto-dev/quarto-cli/issues/293">one</a> were answered very swiftly. Clearly, things were moving and they were moving fast. More recently, the news about Quarto have been spreading and let some folks as confused and amazed as I was when I first heard about it:</p>
 <blockquote class="twitter-tweet blockquote">
 <p lang="en" dir="ltr">
 <a href="https://twitter.com/hashtag/RStats?src=hash&amp;ref_src=twsrc%5Etfw">#RStats</a> can someone explain to me what's the difference between {Quarto} and {RMarkdown}? I saw a tweet about Quarto and now I'm all confused … What gap is it supposed to fill?
@@ -258,8 +289,8 @@ Just had my first go <a href="https://twitter.com/hashtag/quarto?src=hash&amp;re
 <p>This is why finally I’ve decided I should write a brief post about how and why I use Quarto. Since I have been working mostly with Julia for the past couple of months, I’ve chosen to focus on the interaction between Quarto and Julia. Coincidentally, today was also the first time I saw a <a href="https://quarto.org/docs/computations/julia.html">guide</a> dedicated to Julia on the Quarto website, so evidently I am not the only one interested in that marriage.</p>
 </section>
 </section>
-<section id="quarto-and-julia---a-perfect-match" class="level2">
-<h2 class="anchored" data-anchor-id="quarto-and-julia---a-perfect-match">Quarto and Julia - a perfect match</h2>
+<section id="sec-match" class="level2">
+<h2 class="anchored" data-anchor-id="sec-match">Quarto and Julia - a perfect match</h2>
 <p>While what follows may be relevant to other programming languages, my main goal here is to showcase the beauty of Quarto to the Julia community. In any case, #rstats folks have been using R and Python in R Markdown documents for a while now and won’t need much of an introduction to Quarto. As for Python aficionados, I can only recommend to give Quarto a shot (you will still be able to use Jupyter notebooks).</p>
 <section id="working-with-vscode-quarto-and-julia" class="level4">
 <h4 class="anchored" data-anchor-id="working-with-vscode-quarto-and-julia">Working with VSCode, Quarto and Julia</h4>
@@ -269,13 +300,13 @@ Just had my first go <a href="https://twitter.com/hashtag/quarto?src=hash&amp;re
 <li>Make sure that the <code>.qmd</code> document has access to a <code>Pkg.jl</code> environment that has <code>IJulia</code> added.</li>
 </ol>
 <p>Julia code cells look like this</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-intro</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: "A little animation"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="in">using Plots</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-intro</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: "A little animation"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="in">using Plots</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="working-with-documenter.jl-and-quarto" class="level4">
 <h4 class="anchored" data-anchor-id="working-with-documenter.jl-and-quarto">Working with <code>Documenter.jl</code> and Quarto</h4>

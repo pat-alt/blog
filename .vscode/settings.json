@@ -12,5 +12,6 @@
         "quarto": {
             "parser": "markdown"
         }
-    }
+    },
+    "julia.environmentPath": "/Users/FA31DU/Documents/code/blog"
 }
