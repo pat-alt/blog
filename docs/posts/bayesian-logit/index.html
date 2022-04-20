@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+  <meta name="generator" content="quarto-0.9.238">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="author" content="Patrick Altmeyer">
   <meta name="dcterms.date" content="2021-11-15">
@@ -50,8 +50,8 @@
   <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
   <script src="../../site_libs/quarto-html/anchor.min.js"></script>
   <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
   <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -59,7 +59,7 @@
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
-    "collapse-after": 2,
+    "collapse-after": 3,
     "panel-placement": "end",
     "type": "overlay",
     "limit": 20,
@@ -110,7 +110,7 @@
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="nav-fixed">
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -159,31 +159,34 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#uncertainty" class="nav-link active" data-scroll-target="#uncertainty">Uncertainty</a></li>
-<li><a href="#the-ground-truth" class="nav-link" data-scroll-target="#the-ground-truth">The ground truth</a></li>
-<li><a href="#the-maths" class="nav-link" data-scroll-target="#the-maths">The maths</a>
+<li><a href="#uncertainty" id="toc-uncertainty" class="nav-link active" data-scroll-target="#uncertainty">Uncertainty</a></li>
+<li><a href="#the-ground-truth" id="toc-the-ground-truth" class="nav-link" data-scroll-target="#the-ground-truth">The ground truth</a></li>
+<li><a href="#the-maths" id="toc-the-maths" class="nav-link" data-scroll-target="#the-maths">The maths</a>
 <ul class="collapse">
-<li><a href="#problem-setup" class="nav-link" data-scroll-target="#problem-setup">Problem setup</a></li>
-<li><a href="#solving-the-problem" class="nav-link" data-scroll-target="#solving-the-problem">Solving the problem</a></li>
-<li><a href="#posterior-predictive" class="nav-link" data-scroll-target="#posterior-predictive">Posterior predictive</a></li>
+<li><a href="#problem-setup" id="toc-problem-setup" class="nav-link" data-scroll-target="#problem-setup">Problem setup</a></li>
+<li><a href="#solving-the-problem" id="toc-solving-the-problem" class="nav-link" data-scroll-target="#solving-the-problem">Solving the problem</a></li>
+<li><a href="#posterior-predictive" id="toc-posterior-predictive" class="nav-link" data-scroll-target="#posterior-predictive">Posterior predictive</a></li>
 </ul></li>
-<li><a href="#the-code" class="nav-link" data-scroll-target="#the-code">The code</a></li>
-<li><a href="#the-estimates" class="nav-link" data-scroll-target="#the-estimates">The estimates</a></li>
-<li><a href="#wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
-<li><a href="#references" class="nav-link" data-scroll-target="#references">References</a></li>
+<li><a href="#the-code" id="toc-the-code" class="nav-link" data-scroll-target="#the-code">The code</a></li>
+<li><a href="#the-estimates" id="toc-the-estimates" class="nav-link" data-scroll-target="#the-estimates">The estimates</a></li>
+<li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
+<li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title display-7">Bayesian Logistic Regression</h1>
-<p class="subtitle lead">From scratch in Julia Language</p>
-<p class="author">Patrick Altmeyer</p>
-<p class="date">2021-11-15</p>
-</header>
+<header id="title-block-header" class="quarto-title-block default">
+
+
+
+
+<div class="quarto-title"><h1 class="title display-7">Bayesian Logistic Regression</h1><p class="subtitle lead">From scratch in Julia Language</p><div class="quarto-description"><p>An introduction to Bayesian Logistic Regression from the bottom up with examples in Julia language.</p></div></div><div class="quarto-categories"><div class="quarto-category">bayes</div><div class="quarto-category">logistic regression</div><div class="quarto-category">Julia</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Author</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
+<p>Patrick Altmeyer</p>
+</a></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliation</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
+<p>Delft University of Technology</p>
+</a></p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">November 15, 2021</p></div></div></div></header>
 
 <div class="cell" data-layout-align="center">
 
@@ -367,8 +370,14 @@ Simulation of changing parameter distribution.
 <p>As a great reference for further reading about probabilistic machine learning I can highly recommend <span class="citation" data-cites="murphy2022probabilistic">Murphy (<a href="#ref-murphy2022probabilistic" role="doc-biblioref">2022</a>)</span>. An electronic version of the book is currently freely available as a draft. Finally, remember that if you want to try yourself at the code, you can check out this <a href="https://colab.research.google.com/github/pat-alt/pat-alt.github.io/blob/main/content/post/2021-11-15-bayesian-logistic-regression/julia_implementation.ipynb">interactive notebook</a>.</p>
 </section>
 <section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bishop2006pattern" class="csl-entry" role="doc-biblioentry">
 Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. springer.
 </div>
@@ -384,18 +393,22 @@ Murphy, Kevin P. 2012. <em>Machine Learning: A Probabilistic Perspective</em>. M
 <div id="ref-schut2021generating" class="csl-entry" role="doc-biblioentry">
 Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating Interpretable Counterfactual Explanations by Implicit Minimisation of Epistemic and Aleatoric Uncertainties.”</span> In <em>International Conference on Artificial Intelligence and Statistics</em>, 1756–64. PMLR.
 </div>
-</div>
-
-
-</section>
-<section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2>Footnotes</h2>
+</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1" role="doc-endnote"><p>We let <span class="math inline">\(\mathbf{w}=(10, 0.75, -2.5)^T\)</span> define the true coefficients.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p>Note that the author works with the negative log likelihood scaled by the sample size<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-</main> <!-- /main -->
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2021,
+  author = {Patrick Altmeyer},
+  title = {Bayesian {Logistic} {Regression}},
+  date = {2021-11-15},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Patrick Altmeyer. 2021. <span>“Bayesian Logistic Regression.”</span>
+November 15, 2021.
+</div></div></section></div></main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+  <meta name="generator" content="quarto-0.9.238">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="author" content="Patrick Altmeyer">
   <meta name="dcterms.date" content="2021-04-27">
@@ -113,8 +113,8 @@
   <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
   <script src="../../site_libs/quarto-html/anchor.min.js"></script>
   <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
   <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -122,7 +122,7 @@
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
-    "collapse-after": 2,
+    "collapse-after": 3,
     "panel-placement": "end",
     "type": "overlay",
     "limit": 20,
@@ -173,7 +173,7 @@
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="nav-fixed">
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -222,28 +222,31 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#from-to" class="nav-link active" data-scroll-target="#from-to">From 🐱 to 🐶</a></li>
-<li><a href="#discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
-<li><a href="#references" class="nav-link" data-scroll-target="#references">References</a></li>
-<li><a href="#annex" class="nav-link" data-scroll-target="#annex">Annex</a>
+<li><a href="#from-to" id="toc-from-to" class="nav-link active" data-scroll-target="#from-to">From 🐱 to 🐶</a></li>
+<li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+<li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+<li><a href="#annex" id="toc-annex" class="nav-link" data-scroll-target="#annex">Annex</a>
 <ul class="collapse">
-<li><a href="#linear-classifier" class="nav-link" data-scroll-target="#linear-classifier">Linear classifier</a></li>
-<li><a href="#revise-simplified" class="nav-link" data-scroll-target="#revise-simplified"><code>REVISE</code> (simplified)</a></li>
-<li><a href="#simulated-data" class="nav-link" data-scroll-target="#simulated-data">Simulated data</a></li>
+<li><a href="#linear-classifier" id="toc-linear-classifier" class="nav-link" data-scroll-target="#linear-classifier">Linear classifier</a></li>
+<li><a href="#revise-simplified" id="toc-revise-simplified" class="nav-link" data-scroll-target="#revise-simplified"><code>REVISE</code> (simplified)</a></li>
+<li><a href="#simulated-data" id="toc-simulated-data" class="nav-link" data-scroll-target="#simulated-data">Simulated data</a></li>
 </ul></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title display-7">Individual recourse for Black Box Models</h1>
-<p class="subtitle lead">Explained through a tale of 🐱s and 🐶s</p>
-<p class="author">Patrick Altmeyer</p>
-<p class="date">2021-04-27</p>
-</header>
+<header id="title-block-header" class="quarto-title-block default">
+
+
+
+
+<div class="quarto-title"><h1 class="title display-7">Individual recourse for Black Box Models</h1><p class="subtitle lead">Explained through a tale of 🐱s and 🐶s</p><div class="quarto-description"><p>An introduction to algorithmic recourse and an implementation of a simplified version of REVISE (Joshi et al., 2019). This post was prepared as part of my PhD application.</p></div></div><div class="quarto-categories"><div class="quarto-category">counterfactuals</div><div class="quarto-category">algorithmic recourse</div><div class="quarto-category">deep learning</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Authors</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
+<p>Patrick Altmeyer</p>
+</a></div><div><div></div></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliations</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
+<p>Delft University of Technology</p>
+</a></p><p>&nbsp;</p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">April 27, 2021</p></div></div></div></header>
 
 <div class="cell" data-layout-align="center">
 
@@ -337,18 +340,8 @@
 <p>Nonetheless, the example above also demonstrates that approaches like <code>REVISE</code>, useful as they may be, tend to provide solutions for very particular problems. In reality data-driven decision making systems are often subject to many different problems and hence research on trustworthy AI will need to tackle the issue from various angles. A few places to start include the question of dealing with data that is inherently biased, improving ad-hoc and post-hoc model interpretability and continuing efforts around causality-inspired AI.</p>
 </section>
 <section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-joshi2019towards" class="csl-entry" role="doc-biblioentry">
-Joshi, Shalmali, Oluwasanmi Koyejo, Warut Vijitbenjaronk, Been Kim, and Joydeep Ghosh. 2019. <span>“Towards Realistic Individual Recourse and Actionable Explanations in Black-Box Decision Making Systems.”</span> <em>arXiv Preprint arXiv:1907.09615</em>.
-</div>
-<div id="ref-o2016weapons" class="csl-entry" role="doc-biblioentry">
-O’neil, Cathy. 2016. <em>Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy</em>. Crown.
-</div>
-<div id="ref-ustun2019actionable" class="csl-entry" role="doc-biblioentry">
-Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recourse in Linear Classification.”</span> In <em>Proceedings of the Conference on Fairness, Accountability, and Transparency</em>, 10–19.
-</div>
-</div>
+
+
 </section>
 <section id="annex" class="level2">
 <h2 class="anchored" data-anchor-id="annex">Annex</h2>
@@ -371,7 +364,7 @@ Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recours
 \qquad(1)\]</span></span></p>
 <p>The code below uses this analytical solution to perform SGD over <span class="math inline">\(T\)</span> iterations or as long as updates yield feasible parameter values. As the final vector of coefficients the function returns <span class="math inline">\(\mathbf{\bar{w}}= \frac{1}{T} \sum_{t=1}^{T} \mathbf{w}_t\)</span>. Denoting the optimal coefficient vector as <span class="math inline">\(\mathbf{w}^*\)</span>, it can be shown that under certain conditions <span class="math inline">\(\ell(\mathbf{\bar{w}})\rightarrow\ell(\mathbf{w}^*)\)</span> as <span class="math inline">\(T\rightarrow\infty\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Stochastic gradient descent</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Stochastic gradient descent</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param X Feature matrix.</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param y Vector containing training labels.</span></span>
@@ -487,7 +480,7 @@ Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recours
 \]</span></p>
 <p>The code that implements this optimization follows below.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' REVISE algoritm - a simplified version</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' REVISE algoritm - a simplified version</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param classifier The fitted classifier.</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param x_star Attributes of individual seeking individual recourse.</span></span>
@@ -568,7 +561,7 @@ Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recours
 <h3 class="anchored" data-anchor-id="simulated-data">Simulated data</h3>
 <p>The synthetic data describing cats and dogs was generated as follows:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">100</span>,averages,<span class="at">noise=</span><span class="fl">0.1</span>) {</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n=</span><span class="dv">100</span>,averages,<span class="at">noise=</span><span class="fl">0.1</span>) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">ncol</span>(averages)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="fu">rbinom</span>(n,<span class="dv">1</span>,<span class="fl">0.5</span>)<span class="sc">-</span><span class="fl">0.5</span>) <span class="co"># generate binary outcome: 1=dog, -1=cat</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(averages[(y<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span><span class="sc">+</span><span class="dv">1</span>,]) <span class="co"># generate attributes conditional on y</span></span>
@@ -583,9 +576,29 @@ Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recours
 </div>
 
 
+
 </section>
 </section>
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-joshi2019towards" class="csl-entry" role="doc-biblioentry">
+Joshi, Shalmali, Oluwasanmi Koyejo, Warut Vijitbenjaronk, Been Kim, and Joydeep Ghosh. 2019. <span>“Towards Realistic Individual Recourse and Actionable Explanations in Black-Box Decision Making Systems.”</span> <em>arXiv Preprint arXiv:1907.09615</em>.
+</div>
+<div id="ref-o2016weapons" class="csl-entry" role="doc-biblioentry">
+O’neil, Cathy. 2016. <em>Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy</em>. Crown.
+</div>
+<div id="ref-ustun2019actionable" class="csl-entry" role="doc-biblioentry">
+Ustun, Berk, Alexander Spangher, and Yang Liu. 2019. <span>“Actionable Recourse in Linear Classification.”</span> In <em>Proceedings of the Conference on Fairness, Accountability, and Transparency</em>, 10–19.
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2021,
+  author = {Patrick Altmeyer and Patrick Altmeyer},
+  title = {Individual Recourse for {Black} {Box} {Models}},
+  date = {2021-04-27},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Patrick Altmeyer, and Patrick Altmeyer. 2021. <span>“Individual Recourse
+for Black Box Models.”</span> April 27, 2021.
+</div></div></section></div></main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

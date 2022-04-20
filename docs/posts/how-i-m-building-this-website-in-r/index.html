@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+  <meta name="generator" content="quarto-0.9.238">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="author" content="Patrick Altmeyer">
   <meta name="dcterms.date" content="2021-02-02">
@@ -94,8 +94,8 @@
   <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
   <script src="../../site_libs/quarto-html/anchor.min.js"></script>
   <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
   <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -103,7 +103,7 @@
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
-    "collapse-after": 2,
+    "collapse-after": 3,
     "panel-placement": "end",
     "type": "overlay",
     "limit": 20,
@@ -153,7 +153,7 @@
 <meta name="twitter:description" content="A small post on how (I used to) build this website using `blogdown`.">
 <meta name="twitter:card" content="summary">
 </head>
-<body>
+<body class="nav-fixed">
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -202,24 +202,27 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting started</a></li>
-<li><a href="#deploying-your-website" class="nav-link" data-scroll-target="#deploying-your-website">Deploying your website</a></li>
-<li><a href="#why-all-the-trouble" class="nav-link" data-scroll-target="#why-all-the-trouble">Why all the trouble?</a></li>
-<li><a href="#a-simple-coding-example" class="nav-link" data-scroll-target="#a-simple-coding-example">A simple coding example</a></li>
-<li><a href="#embedding-existing-work" class="nav-link" data-scroll-target="#embedding-existing-work">Embedding existing work</a></li>
-<li><a href="#resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+<li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting started</a></li>
+<li><a href="#deploying-your-website" id="toc-deploying-your-website" class="nav-link" data-scroll-target="#deploying-your-website">Deploying your website</a></li>
+<li><a href="#why-all-the-trouble" id="toc-why-all-the-trouble" class="nav-link" data-scroll-target="#why-all-the-trouble">Why all the trouble?</a></li>
+<li><a href="#a-simple-coding-example" id="toc-a-simple-coding-example" class="nav-link" data-scroll-target="#a-simple-coding-example">A simple coding example</a></li>
+<li><a href="#embedding-existing-work" id="toc-embedding-existing-work" class="nav-link" data-scroll-target="#embedding-existing-work">Embedding existing work</a></li>
+<li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title display-7">How I’m building this website in R</h1>
-<p class="author">Patrick Altmeyer</p>
-<p class="date">2021-02-02</p>
-</header>
+<header id="title-block-header" class="quarto-title-block default">
+
+
+
+<div class="quarto-title"><h1 class="title display-7">How I’m building this website in R</h1><div class="quarto-description"><p>A small post on how (I used to) build this website using `blogdown`.</p></div></div><div class="quarto-categories"><div class="quarto-category">blogdown</div><div class="quarto-category">rmarkdown</div><div class="quarto-category">C++</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Authors</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
+<p>Patrick Altmeyer</p>
+</a></div><div><div></div></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliations</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
+<p>Delft University of Technology</p>
+</a></p><p>&nbsp;</p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">February 2, 2021</p></div></div></div></header>
 
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -272,7 +275,7 @@ patalt.github.io/
 <h2 class="anchored" data-anchor-id="why-all-the-trouble">Why all the trouble?</h2>
 <p>There are certainly easier ways to build a website. But if like me you do pretty much all your work in R Markdown and want to share some of it, then you will love <code>blogdown</code>. The beauty of it is that once the basic infrastructure is set up, adding content is as simple as running the following wrapper function</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>blogdown<span class="sc">::</span><span class="fu">new_post</span>(<span class="st">"Your new post"</span>, <span class="at">ext =</span> <span class="st">".Rmd"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>blogdown<span class="sc">::</span><span class="fu">new_post</span>(<span class="st">"Your new post"</span>, <span class="at">ext =</span> <span class="st">".Rmd"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>where the first argument is just the title of your post and the <code>ext</code> argument can be used to specify that you want to create an R Markdown document that can include code chucks. The wrapper function will automatically set up a directory for your post under <code>/post/</code>. R Studio will redirect you to the relevant <code>.Rmd</code> file that you can then fill with content. By default that folder will look roughly like this:</p>
 <pre><code>├── index.Rmd
@@ -286,7 +289,7 @@ patalt.github.io/
 <p>As you can probably tell from the code chunks above this post was created just in the way I described. So I thought I might as well go ahead with a simple coding example to add some flavour. Suppose you have built some function that you think is worth sharing with the world or simply learned something new and interesting. As a case in point, I recently had a look at the <code>Rcpp</code> package and wrote a small program in C++ to be used in R. Since R Markdown supports <code>Rcpp</code> code chunks (along with Python, bash, SQL, …) it is straight-forward to show-case that code on this website.</p>
 <p>The program can be used to simulate data from a categorical distribution. This distribution describes the possible results of a random variable that can take on one of <span class="math inline">\(K\)</span> possible categories with different probabilities. In base R we could use <code>rmultinom(n=1000,1,p=c(0.5,0.1,0.4))</code> to simulate draws from one such distribution with three different categories. Alternatively, we could write the program in C++ as follows:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp cell-code code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
@@ -320,7 +323,7 @@ patalt.github.io/
 </div>
 <p>In terms of performance it turns out that the simple C++ program actually does somewhat better than the base R alternative:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.4</span>)</span>
@@ -343,8 +346,18 @@ patalt.github.io/
 <p>For more information about <code>blogdown</code> see <a href="https://bookdown.org/yihui/blogdown/">here</a>. To inspect the code that builds this website check out my <a href="https://github.com/pat-alt/patalt">GitHub repository</a>.</p>
 
 
+
 </section>
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2021,
+  author = {Patrick Altmeyer and Patrick Altmeyer},
+  title = {How {I’m} Building This Website in {R}},
+  date = {2021-02-02},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Patrick Altmeyer, and Patrick Altmeyer. 2021. <span>“How I’m Building
+This Website in R.”</span> February 2, 2021.
+</div></div></section></div></main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

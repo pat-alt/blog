@@ -34,7 +34,10 @@ format:
       dark: darkly
     css: styles.css
     toc: true
-    
-crossref:
-  fig-prefix: Figure
-  tbl-prefix: Table
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+
+filters:
+  - lua/include-files.lua
+  - quarto

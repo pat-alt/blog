@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+  <meta name="generator" content="quarto-0.9.238">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="author" content="Patrick Altmeyer">
   <meta name="dcterms.date" content="2021-02-07">
-  <meta name="description" content="Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.">
+  <meta name="description" content="Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.a">
   <title>blog - A peek inside the ‘Black Box’ - interpreting neural networks</title>
   <style>
     code{white-space: pre-wrap;}
@@ -50,8 +50,8 @@
   <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
   <script src="../../site_libs/quarto-html/anchor.min.js"></script>
   <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
   <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -59,7 +59,7 @@
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
-    "collapse-after": 2,
+    "collapse-after": 3,
     "panel-placement": "end",
     "type": "overlay",
     "limit": 20,
@@ -106,11 +106,11 @@
   <![endif]-->
   <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="blog - A peek inside the ‘Black Box’ - interpreting neural networks">
-<meta name="twitter:description" content="Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.">
-<meta name="twitter:image" content="intro.jpeg">
+<meta name="twitter:description" content="Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.a">
+<meta name="twitter:image" content="www/intro.jpeg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="nav-fixed">
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -159,23 +159,26 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#interpretable-dl" class="nav-link active" data-scroll-target="#interpretable-dl">Interpretable DL - a whistle-stop tour</a></li>
-<li><a href="#rate" class="nav-link" data-scroll-target="#rate">An entropy-based approach to variable importance</a></li>
-<li><a href="#interpreting-bnns" class="nav-link" data-scroll-target="#interpreting-bnns">Application to Bayesian neural networks</a></li>
-<li><a href="#conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-<li><a href="#references" class="nav-link" data-scroll-target="#references">References</a></li>
+<li><a href="#interpretable-dl" id="toc-interpretable-dl" class="nav-link active" data-scroll-target="#interpretable-dl">Interpretable DL - a whistle-stop tour</a></li>
+<li><a href="#rate" id="toc-rate" class="nav-link" data-scroll-target="#rate">An entropy-based approach to variable importance</a></li>
+<li><a href="#interpreting-bnns" id="toc-interpreting-bnns" class="nav-link" data-scroll-target="#interpreting-bnns">Application to Bayesian neural networks</a></li>
+<li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+<li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title display-7">A peek inside the ‘Black Box’ - interpreting neural networks</h1>
-<p class="author">Patrick Altmeyer</p>
-<p class="date">2021-02-07</p>
-</header>
+<header id="title-block-header" class="quarto-title-block default">
+
+
+
+<div class="quarto-title"><h1 class="title display-7">A peek inside the ‘Black Box’ - interpreting neural networks</h1><div class="quarto-description"><p>Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.a</p></div></div><div class="quarto-categories"><div class="quarto-category">deep learning</div><div class="quarto-category">explainable AI</div><div class="quarto-category">bayes</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Author</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
+<p>Patrick Altmeyer</p>
+</a></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliation</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
+<p>Delft University of Technology</p>
+</a></p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">February 7, 2021</p></div></div></div></header>
 
 <div class="intro-gif">
 <figure class="figure">
@@ -270,7 +273,14 @@
 </section>
 <section id="references" class="level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+
+<div style="page-break-after: always;"></div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-arrieta2020explainable" class="csl-entry" role="doc-biblioentry">
 Arrieta, Alejandro Barredo, Natalia Diaz-Rodriguez, Javier Del Ser, Adrien Bennetot, Siham Tabik, Alberto Barbado, Salvador Garcia, et al. 2020. <span>“Explainable Artificial Intelligence (XAI): Concepts, Taxonomies, Opportunities and Challenges Toward Responsible AI.”</span> <em>Information Fusion</em> 58: 82–115.
 </div>
@@ -292,20 +302,24 @@ Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep Learning</em
 <div id="ref-ish2019interpreting" class="csl-entry" role="doc-biblioentry">
 Ish-Horowicz, Jonathan, Dana Udwin, Seth Flaxman, Sarah Filippi, and Lorin Crawford. 2019. <span>“Interpreting Deep Neural Networks Through Variable Importance.”</span> <em>arXiv Preprint arXiv:1901.09839</em>.
 </div>
-</div>
-<div style="page-break-after: always;"></div>
-
-
-</section>
-<section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2>Footnotes</h2>
+</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1" role="doc-endnote"><p>Simulatability describes the overall, high-level understandability of the mechanisms underlying the model – put simply, the less complex the model, the higher its simulatability. Decomposability concerns the extent to which the model can be taken apart into smaller pieces – neural networks by there very nature are compositions of multiple layers. Finally, algorithmic transparency refers to the extent to which the training of the algorithm is well-understood and to some extent observable – since DNNs generally deal with optimization of non-convex functions and often lack unique solution they are inherently intransparent.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p>For more detail see for example <a href="https://christophm.github.io/interpretable-ml-book/shapley.html">here</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3" role="doc-endnote"><p>For simplicity I have omitted the deterministic bias term.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-</main> <!-- /main -->
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2021,
+  author = {Patrick Altmeyer},
+  title = {A Peek Inside the “{Black} {Box}” - Interpreting Neural
+    Networks},
+  date = {2021-02-07},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Patrick Altmeyer. 2021. <span>“A Peek Inside the <span>‘Black
+Box’</span> - Interpreting Neural Networks.”</span> February 7, 2021.
+</div></div></section></div></main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

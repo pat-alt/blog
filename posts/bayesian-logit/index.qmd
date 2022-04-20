@@ -1,7 +1,6 @@
 ---
 title: Bayesian Logistic Regression
 subtitle: From scratch in Julia Language
-author: Patrick Altmeyer
 date: '2021-11-15'
 categories:
   - bayes
@@ -9,11 +8,7 @@ categories:
   - Julia
 description: >-
   An introduction to Bayesian Logistic Regression from the bottom up with examples in Julia language.
-bibliography: ../../bib.bib
 image: www/intro.gif
-comments:
-  utterances:
-    repo: pat-alt/blog
 ---
 
 ```{r setup, include=FALSE}

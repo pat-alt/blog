@@ -1,18 +1,13 @@
 ---
 title: "A peek inside the 'Black Box' - interpreting neural networks"
-author: "Patrick Altmeyer"
 date: "2021-02-07"
 categories: 
   - deep learning
   - explainable AI
   - bayes
 description: >-
-  Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.
-bibliography: ../../bib.bib
-image: intro.jpeg
-comments:
-  utterances:
-    repo: pat-alt/blog
+  Research on explainable AI has recently gained considerable momentum. In this post I explore a Bayesian approach to ex-post explainability of Deep Neural Networks.a
+image: www/intro.jpeg
 ---
 
 ```{r setup, include=FALSE}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
   <meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+  <meta name="generator" content="quarto-0.9.238">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="author" content="Patrick Altmeyer">
   <meta name="dcterms.date" content="2022-02-18">
@@ -113,8 +113,8 @@
   <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
   <script src="../../site_libs/quarto-html/anchor.min.js"></script>
   <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
   <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
   <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
   <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -122,7 +122,7 @@
   <script id="quarto-search-options" type="application/json">{
     "location": "navbar",
     "copy-button": false,
-    "collapse-after": 2,
+    "collapse-after": 3,
     "panel-placement": "end",
     "type": "overlay",
     "limit": 20,
@@ -173,7 +173,7 @@
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="nav-fixed">
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -222,28 +222,31 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">On this page</h2>
 <ul>
-<li><a href="#the-case-for-bayesian-deep-learning" class="nav-link active" data-scroll-target="#the-case-for-bayesian-deep-learning">The case for Bayesian Deep Learning</a></li>
-<li><a href="#laplace-approximation" class="nav-link" data-scroll-target="#laplace-approximation">Laplace Approximation</a>
+<li><a href="#the-case-for-bayesian-deep-learning" id="toc-the-case-for-bayesian-deep-learning" class="nav-link active" data-scroll-target="#the-case-for-bayesian-deep-learning">The case for Bayesian Deep Learning</a></li>
+<li><a href="#laplace-approximation" id="toc-laplace-approximation" class="nav-link" data-scroll-target="#laplace-approximation">Laplace Approximation</a>
 <ul class="collapse">
-<li><a href="#from-bayesian-logistic-regression" class="nav-link" data-scroll-target="#from-bayesian-logistic-regression">From Bayesian Logistic Regression …</a></li>
-<li><a href="#to-bayesian-neural-networks" class="nav-link" data-scroll-target="#to-bayesian-neural-networks">… to Bayesian Neural Networks</a></li>
+<li><a href="#from-bayesian-logistic-regression" id="toc-from-bayesian-logistic-regression" class="nav-link" data-scroll-target="#from-bayesian-logistic-regression">From Bayesian Logistic Regression …</a></li>
+<li><a href="#to-bayesian-neural-networks" id="toc-to-bayesian-neural-networks" class="nav-link" data-scroll-target="#to-bayesian-neural-networks">… to Bayesian Neural Networks</a></li>
 </ul></li>
-<li><a href="#wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
-<li><a href="#resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
-<li><a href="#references" class="nav-link" data-scroll-target="#references">References</a></li>
+<li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
+<li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+<li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
 </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title display-7">Go deep, but also … go Bayesian!</h1>
-<p class="subtitle lead">Effortless Bayesian Deep Learning in Julia</p>
-<p class="author">Patrick Altmeyer</p>
-<p class="date">2022-02-18</p>
-</header>
+<header id="title-block-header" class="quarto-title-block default">
+
+
+
+
+<div class="quarto-title"><h1 class="title display-7">Go deep, but also … go Bayesian!</h1><p class="subtitle lead">Effortless Bayesian Deep Learning in Julia</p><div class="quarto-description"><p>An introduction to effortless Bayesian deep learning through Laplace approximation coded from scratch in Julia. </p></div></div><div class="quarto-categories"><div class="quarto-category">bayes</div><div class="quarto-category">deep learning</div><div class="quarto-category">Julia</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Authors</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
+<p>Patrick Altmeyer</p>
+</a></div><div><div></div></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliations</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
+<p>Delft University of Technology</p>
+</a></p><p>&nbsp;</p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">February 18, 2022</p></div></div></div></header>
 
 <div class="intro-gif">
 <figure class="figure">
@@ -285,8 +288,8 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <p>As our first step towards Bayesian deep learning, we observe the following: the loss function above corresponds to the objective faced by a single-layer artificial neural network with sigmoid activation and weight decay<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. In other words, regularized logistic regression is equivalent to a very simple neural network architecture and hence it is not surprising that underlying concepts can in theory be applied in much the same way.</p>
 <p>So let’s quickly recap the next core concept: LA relies on the fact that the second-order Taylor expansion of our loss function <span class="math inline">\(\ell\)</span> evaluated at the <strong>maximum a posteriori</strong> (MAP) estimate <span class="math inline">\(\mathbf{\hat{w}}=\arg\max_{\mathbf{w}} p(\mathbf{w}|\mathcal{D})\)</span> amounts to a multi-variate Gaussian distribution. In particular, that Gaussian is centered around the MAP estimate with covariance equal to the inverse Hessian evaluated at the mode <span class="math inline">\(\hat{\Sigma}=(\mathbf{H}(\mathbf{\hat{w}}))^{-1}\)</span> <span class="citation" data-cites="murphy2022probabilistic">(<a href="#ref-murphy2022probabilistic" role="doc-biblioref">Murphy 2022</a>)</span>.</p>
 <p>That is basically all there is to the story: if we have a good estimate of <span class="math inline">\(\mathbf{H}(\mathbf{\hat{w}})\)</span> we have an analytical expression for an (approximate) posterior over parameters. So let’s go ahead and start by run Bayesian Logistic regression using <a href="https://fluxml.ai/">Flux.jl</a>. We begin by loading some required packages including <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a>. It ships with a helper function <code>toy_data_linear</code> that creates a toy data set composed of linearly separable samples evenly balanced across the two classes.</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode" id="cb1"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries.</span></span>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Plots</span>, <span class="bu">Random</span>, <span class="bu">PlotThemes</span>, <span class="bu">Statistics</span>, <span class="bu">BayesLaplace</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="op">:</span>wong)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of points to generate.</span></span>
@@ -295,16 +298,16 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">zip</span>(xs,y);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we proceed to prepare the single-layer neural network with weight decay. The term <span class="math inline">\(\lambda\)</span> determines the strength of the <span class="math inline">\(\ell2\)</span> penalty: we regularize parameters <span class="math inline">\(\theta\)</span> more heavily for higher values. Equivalently, we can say that from the Bayesian perspective it governs the strength of the prior <span class="math inline">\(p(\theta) \sim \mathcal{N} \left( \theta | \mathbf{0}, \sigma_0^2 \mathbf{I} \right)= \mathcal{N} \left( \mathbf{w} | \mathbf{0}, \lambda_0^{-2} \mathbf{I} \right)\)</span>: a higher value of <span class="math inline">\(\lambda\)</span> indicates a higher conviction about our prior belief that <span class="math inline">\(\theta=\mathbf{0}\)</span>, which is of course equivalent to regularizing more heavily. The exact choice of <span class="math inline">\(\lambda=0.5\)</span> for this toy example is somewhat arbitrary (it made for good visualizations below). Note that I have used <span class="math inline">\(\theta\)</span> to denote our neural parameters to distinguish the case from Bayesian logistic regression, but we are in fact still solving the same problem.</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode" id="cb2"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nn <span class="op">=</span> <span class="fu">Chain</span>(<span class="fu">Dense</span>(<span class="fl">2</span>,<span class="fl">1</span>))</span>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nn <span class="op">=</span> <span class="fu">Chain</span>(<span class="fu">Dense</span>(<span class="fl">2</span>,<span class="fl">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>λ <span class="op">=</span> <span class="fl">0.5</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqnorm</span>(x) <span class="op">=</span> <span class="fu">sum</span>(abs2, x)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">weight_regularization</span>(λ<span class="op">=</span>λ) <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> λ<span class="op">^</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sum</span>(sqnorm, Flux.<span class="fu">params</span>(nn))</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">loss</span>(x, y) <span class="op">=</span> Flux.Losses.<span class="fu">logitbinarycrossentropy</span>(<span class="fu">nn</span>(x), y) <span class="op">+</span> <span class="fu">weight_regularization</span>();</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Before we apply Laplace approximation we train our model:</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode" id="cb3"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Optimise</span>: update!, ADAM</span>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Optimise</span>: update!, ADAM</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> <span class="fu">ADAM</span>()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="fl">50</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -318,13 +321,13 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Up until this point we have just followed the standard recipe for training a regularized artificial neural network in <a href="https://fluxml.ai/">Flux.jl</a> for a simple binary classification task. To compute the Laplace approximation using <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a> we need just two more lines of code:</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode" id="cb4"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>la <span class="op">=</span> <span class="fu">laplace</span>(nn, λ<span class="op">=</span>λ)</span>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>la <span class="op">=</span> <span class="fu">laplace</span>(nn, λ<span class="op">=</span>λ)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(la, data);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Under the hood the Hessian is approximated through the <strong>empirical Fisher</strong>, which can be computed using only the gradients of our loss function <span class="math inline">\(\nabla_{\theta}\ell(f(\mathbf{x}_n;\theta,y_n))\)</span> where <span class="math inline">\(\{\mathbf{x}_n,y_n\}\)</span> are training data (see <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> for details). Finally, <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a> ships with a function <code>predict(𝑳::LaplaceRedux, X::AbstractArray; link_approx=:probit)</code> that computes the posterior predictive using a probit approximation, much like we saw in the previous post. That function is used under the hood of the <code>plot_contour</code> function below to create the right panel of <a href="#fig-logit">Figure&nbsp;1</a>. It visualizes the posterior predictive distribution in the 2D feature space. For comparison I have added the corresponding plugin estimate as well. Note how for the Laplace approximation the predicted probabilities fan out indicating that confidence decreases in regions scarce of data.</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode" id="cb5"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_plugin <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Plugin"</span>,<span class="kw">type</span><span class="op">=:</span>plugin);</span>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_plugin <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Plugin"</span>,<span class="kw">type</span><span class="op">=:</span>plugin);</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p_laplace <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Laplace"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the posterior distribution with a contour plot.</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt <span class="op">=</span> <span class="fu">plot</span>(p_plugin, p_laplace, layout<span class="op">=</span>(<span class="fl">1</span>,<span class="fl">2</span>), size<span class="op">=</span>(<span class="fl">1000</span>,<span class="fl">400</span>))</span>
@@ -340,8 +343,8 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <section id="to-bayesian-neural-networks" class="level3">
 <h3 class="anchored" data-anchor-id="to-bayesian-neural-networks">… to Bayesian Neural Networks</h3>
 <p>Now let’s step it up a notch: we will repeat the exercise from above, but this time for data that is not linearly separable using a simple MLP instead of the single-layer neural network we used above. The code below is almost the same as above, so I will not go through the various steps again.</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode" id="cb6"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of points to generate:</span></span>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of points to generate:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>xs, y <span class="op">=</span> <span class="fu">toy_data_non_linear</span>(<span class="fl">200</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">hcat</span>(xs<span class="op">...</span>); <span class="co"># bring into tabular format</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">zip</span>(xs,y)</span>
@@ -370,8 +373,8 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Fitting the Laplace approximation is also analogous, but note that this we have added an argument: <code>subset_of_weights=:last_layer</code>. This specifies that we only want to use the parameters of the last layer of our MLP. While we could have used all of them (<code>subset_of_weights=:all</code>), <span class="citation" data-cites="daxberger2021laplace">Daxberger et al. (<a href="#ref-daxberger2021laplace" role="doc-biblioref">2021</a>)</span> find that the last-layer Laplace approximation produces satisfying results, while be computationally cheaper. <a href="#fig-mlp">Figure&nbsp;2</a> demonstrates that once again the Laplace approximation yields a posterior predictive distribution that is more conservative than the over-confident plugin estimate.</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode" id="cb7"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>la <span class="op">=</span> <span class="fu">laplace</span>(nn, λ<span class="op">=</span>λ, subset_of_weights<span class="op">=:</span>last_layer)</span>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>la <span class="op">=</span> <span class="fu">laplace</span>(nn, λ<span class="op">=</span>λ, subset_of_weights<span class="op">=:</span>last_layer)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(la, data);</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p_plugin <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Plugin"</span>,<span class="kw">type</span><span class="op">=:</span>plugin)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>p_laplace <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Laplace"</span>)</span>
@@ -386,8 +389,8 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 </figure>
 </div>
 <p>To see why this is a desirable outcome consider the zoomed out version of <a href="#fig-mlp">Figure&nbsp;2</a> below: the plugin estimator classifies with full confidence in regions completely scarce of any data. Arguably Laplace approximation produces a much more reasonable picture, even though it too could likely be improved by fine-tuning our choice of <span class="math inline">\(\lambda\)</span> and the neural network architecture.</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode" id="cb8"><pre class="sourceCode julia cell-code code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>zoom<span class="op">=-</span><span class="fl">50</span></span>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>zoom<span class="op">=-</span><span class="fl">50</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>p_plugin <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Plugin"</span>,<span class="kw">type</span><span class="op">=:</span>plugin,zoom<span class="op">=</span>zoom);</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>p_laplace <span class="op">=</span> <span class="fu">plot_contour</span>(X<span class="op">'</span>,y,la;title<span class="op">=</span><span class="st">"Laplace"</span>,zoom<span class="op">=</span>zoom);</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the posterior distribution with a contour plot.</span></span>
@@ -417,10 +420,14 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 </ul>
 </section>
 <section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bastounis2021mathematics" class="csl-entry" role="doc-biblioentry">
 Bastounis, Alexander, Anders C Hansen, and Verner Vlačić. 2021. <span>“The Mathematics of Adversarial Attacks in AI–Why Deep Learning Is Unstable Despite the Existence of Stable Neural Networks.”</span> <em>arXiv Preprint arXiv:2109.06098</em>.
 </div>
@@ -448,9 +455,7 @@ Slack, Dylan, Sophie Hilgard, Emily Jia, Sameer Singh, and Himabindu Lakkaraju. 
 <div id="ref-wilson2020case" class="csl-entry" role="doc-biblioentry">
 Wilson, Andrew Gordon. 2020. <span>“The Case for Bayesian Deep Learning.”</span> <em>arXiv Preprint arXiv:2001.10995</em>.
 </div>
-</div>
-</section>
-<section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2>Footnotes</h2>
+</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1" role="doc-endnote"><p>See for example <a href="https://www.technologyreview.com/2019/01/25/1436/we-analyzed-16625-papers-to-figure-out-where-ai-is-headed-next/">this article</a> in the MIT Technology Review<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -458,8 +463,16 @@ Wilson, Andrew Gordon. 2020. <span>“The Case for Bayesian Deep Learning.”</s
 <li id="fn3" role="doc-endnote"><p>Proponents of Causal AI like Judea Pearl would argue that the Bayesian treatment still does not go far enough: in their view model explanations can only be truly compelling if they are causally found.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4" role="doc-endnote"><p>See this <a href="https://stats.stackexchange.com/a/500973/288736">answer</a> on Stack Exchange for a detailed discussion.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
-</main> <!-- /main -->
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2022,
+  author = {Patrick Altmeyer and Patrick Altmeyer},
+  title = {Go Deep, but Also ... Go {Bayesian!}},
+  date = {2022-02-18},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Patrick Altmeyer, and Patrick Altmeyer. 2022. <span>“Go Deep, but Also
+... Go Bayesian!”</span> February 18, 2022.
+</div></div></section></div></main> <!-- /main -->
 <script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

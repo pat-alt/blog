@@ -8,9 +8,6 @@ categories:
   - C++
 description: >-
   A small post on how (I used to) build this website using `blogdown`.
-comments:
-  utterances:
-    repo: pat-alt/blog
 ---
 
 :::{.callout-note}
