@@ -2,7 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/explain-any-model-through-counterfactuals/index.html",
       "/posts/julia-and-quarto-a-match-made-in-heaven/index.html",
       "/posts/effortsless-bayesian-dl/index.html",
       "/posts/bayesian-logit/index.html",

@@ -208,6 +208,8 @@
 <section id="train-model" class="level3">
 <h3 class="anchored" data-anchor-id="train-model">Train model</h3>
 <div class="cell" data-execution_count="1">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Plots</span>, <span class="bu">Random</span>, <span class="bu">PlotThemes</span>, <span class="bu">Statistics</span>, <span class="bu">BayesLaplace</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="op">:</span>wong)</span>
@@ -240,16 +242,22 @@
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">update!</span>(opt, <span class="fu">params</span>(nn), gs)</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="chart" class="level3">
 <h3 class="anchored" data-anchor-id="chart">Chart</h3>
 <div class="cell" data-execution_count="2">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">123</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shuffled_indices <span class="op">=</span> <span class="fu">randperm</span>(<span class="fl">200</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">zip</span>(xs[shuffled_indices], y[shuffled_indices]);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-execution_count="3">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xlim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ylim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>anim <span class="op">=</span> <span class="fu">Animation</span>()</span>
@@ -262,11 +270,17 @@
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    plt <span class="op">=</span> <span class="fu">plot</span>(plt, axis<span class="op">=</span><span class="cn">nothing</span>,background_color<span class="op">=:</span>transparent, size<span class="op">=</span>(<span class="fl">500</span>,<span class="fl">500</span>))</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">frame</span>(anim, plt)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-execution_count="4">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gif</span>(anim, <span class="st">"www/intro.gif"</span>, fps<span class="op">=</span><span class="fl">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-execution_count="5">
+<details>
+<summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>xlim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ylim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]))</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>anim <span class="op">=</span> <span class="fu">Animation</span>()</span>
@@ -280,9 +294,12 @@
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">frame</span>(anim, plt)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">gif</span>(anim, <span class="st">"www/medium.gif"</span>, fps<span class="op">=</span><span class="fl">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 
 
+
+<!-- -->
 
 </section>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer,
@@ -416,6 +433,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
   function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
@@ -466,7 +534,105 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 <script src="https://utteranc.es/client.js" repo="pat-alt/blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
-</script>
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<pre class="markdown" data-shortcodes="false"><code>---
+draft: true
+jupyter: julia-1.6
+execute:
+  eval: false
+---
+
+### Train model
+
+quarto-executable-code-5450563D
+
+```julia
+# Import libraries.
+using Flux, Plots, Random, PlotThemes, Statistics, BayesLaplace
+theme(:wong)
+# Number of points to generate.
+xs, y = toy_data_non_linear(200)
+X = hcat(xs...); # bring into tabular format
+data = zip(xs,y);
+
+# Neural network:
+n_hidden = 32
+D = size(X)[1]
+nn = Chain(
+    Dense(D, n_hidden, σ),
+    Dense(n_hidden, 1)
+)  
+λ = 0.01
+sqnorm(x) = sum(abs2, x)
+weight_regularization(λ=λ) = 1/2 * λ^2 * sum(sqnorm, Flux.params(nn))
+loss(x, y) = Flux.Losses.logitbinarycrossentropy(nn(x), y) + weight_regularization()
+
+# Training:
+using Flux.Optimise: update!, ADAM
+opt = ADAM()
+epochs = 200
+for epoch = 1:epochs
+  for d in data
+    gs = gradient(params(nn)) do
+      l = loss(d...)
+    end
+    update!(opt, params(nn), gs)
+  end
+end
+```
+
+### Chart
+
+quarto-executable-code-5450563D
+
+```julia
+Random.seed!(123)
+shuffled_indices = randperm(200)
+data = zip(xs[shuffled_indices], y[shuffled_indices]);
+```
+
+quarto-executable-code-5450563D
+
+```julia
+xlim = (minimum(X[1,:]),maximum(X[1,:]))
+ylim = (minimum(X[2,:]),maximum(X[2,:]))
+anim = Animation()
+for N in 1:1:length(data)
+    la = laplace(nn, λ=λ, subset_of_weights=:last_layer)
+    fit!(la, Iterators.take(data,N))
+    Xᵢ = reduce(vcat,map(d -&gt; reshape(d[1],1,length(d[1])),Iterators.take(data, N)))
+    yᵢ = map(d -&gt; d[2],Iterators.take(data, N))
+    plt = plot_contour(Xᵢ,yᵢ,la;xlim=xlim,ylim=ylim,zoom=-2,clegend=false)
+    plt = plot(plt, axis=nothing,background_color=:transparent, size=(500,500))
+    frame(anim, plt)
+end
+```
+
+quarto-executable-code-5450563D
+
+```julia
+gif(anim, "www/intro.gif", fps=50)
+```
+
+quarto-executable-code-5450563D
+
+```julia
+xlim = (minimum(X[1,:]),maximum(X[1,:]))
+ylim = (minimum(X[2,:]),maximum(X[2,:]))
+anim = Animation()
+for N in 1:1:length(data)
+    la = laplace(nn, λ=λ, subset_of_weights=:last_layer)
+    fit!(la, Iterators.take(data,N))
+    Xᵢ = reduce(vcat,map(d -&gt; reshape(d[1],1,length(d[1])),Iterators.take(data, N)))
+    yᵢ = map(d -&gt; d[2],Iterators.take(data, N))
+    plt = plot_contour(Xᵢ,yᵢ,la;xlim=xlim,ylim=ylim,zoom=-2,clegend=false)
+    plt = plot(plt, axis=nothing,background_color=:transparent, size=(1200,400))
+    frame(anim, plt)
+end
+gif(anim, "www/medium.gif", fps=50)
+```
+</code></pre>
+</div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

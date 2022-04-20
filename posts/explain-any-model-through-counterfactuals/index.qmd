@@ -12,6 +12,7 @@ image: www/intro.gif
 execute:
   eval: false
   echo: true
+draft: true
 ---
 
 <div class="intro-gif">
