@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/a-new-tool-for-explainable-ai/index.html",
       "/posts/julia-and-quarto-a-match-made-in-heaven/index.html",
       "/posts/effortsless-bayesian-dl/index.html",
       "/posts/bayesian-logit/index.html",
