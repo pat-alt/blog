@@ -1,6 +1,6 @@
 ---
 title: 'Julia and Quarto: a match made in heaven? 🌤'
-subtitle: An opinionated, practical review celebrating the open-source community. 
+subtitle: A new way to publish science
 author: Patrick Altmeyer
 date: '2022-04-07'
 categories:

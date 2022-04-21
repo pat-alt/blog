@@ -7,7 +7,7 @@ categories:
   - rmarkdown
   - C++
 description: >-
-  A small post on how (I used to) build this website using `blogdown`.
+  A small post on how I (used to!) build this website using `blogdown`.
 ---
 
 :::{.callout-note}
