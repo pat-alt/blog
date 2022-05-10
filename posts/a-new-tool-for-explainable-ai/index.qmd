@@ -302,7 +302,7 @@ Compared to models trained in Julia, we need to do a little more work at this po
 :::{.callout-caution}
 ## Experimental functionality
 
-You may have stumbled across the term *respecify* above: does it really seem like a good idea to just replace an existing function from our package? Surely not! There are certainly better ways to go about this, which I will consider when adding native support for Python and R models in future package releases. Which brings us to our final section ...
+You may have stumbled across the term *respecify* above: does it really seem like a good idea to just replace an existing function from our package? Surely not! There are certainly better ways to go about this, which we will consider when adding native support for Python and R models in future package releases. Which brings us to our final section ...
 :::
 
 ```{julia}
@@ -358,7 +358,7 @@ savefig(plt, joinpath(www_path,"interop_r.png"))
 
 ## We need you! 🫵
 
-The ambition for `CounterfactualExplanations.jl` is to provide a go-to place for counterfactual explanations to the Julia community and beyond. This is a grand ambition, especially for a package that has so far been built by a single developer who has little prior experience with Julia. I would therefore very much like to invite community contributions. If you have an interest in trustworthy AI, the open-source community and Julia, please do get involved! This package is still in its early stages of development, so any kind of contribution is welcome: advice on the core package architecture, pull requests, issues, discussions and even just comments below would be much appreciated. 
+The ambition for `CounterfactualExplanations.jl` is to provide a go-to place for counterfactual explanations to the Julia community and beyond. This is a grand ambition, especially for a package that has so far been built by a single developer who has little prior experience with Julia. We would therefore very much like to invite community contributions. If you have an interest in trustworthy AI, the open-source community and Julia, please do get involved! This package is still in its early stages of development, so any kind of contribution is welcome: advice on the core package architecture, pull requests, issues, discussions and even just comments below would be much appreciated. 
 
 To give you a flavor of what type of future developments we envision, here is a non-exhaustive list:
 
@@ -367,11 +367,14 @@ To give you a flavor of what type of future developments we envision, here is a 
 3. Improved preprocessing including native support for categorical features.
 4. Support for regression models.
 
+Finally, if you like this project but don't have much time, then simply sharing this article or starring the [repo](https://github.com/pat-alt/CounterfactualExplanations.jl) on GitHub would also go a long way.
+
 ## Further reading 📚
 
 If you're interested in learning more about this development, feel free to check out the following resources:
 
 - Package docs: [[stable]](https://pat-alt.github.io/CounterfactualExplanations.jl/stable), [[dev]](https://pat-alt.github.io/CounterfactualExplanations.jl/dev).
+- [Contributor's guide](https://www.paltmeyer.com/CounterfactualExplanations.jl/stable/contributing/).
 - [GitHub repo](https://github.com/pat-alt/CounterfactualExplanations.jl).
 
 
