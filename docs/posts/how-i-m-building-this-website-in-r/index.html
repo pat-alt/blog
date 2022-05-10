@@ -238,18 +238,27 @@ cookieconsent.run({
   </div>
 </div>
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <a href="https://www.paltmeyer.com/">Patrick Altmeyer</a> 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://www.tudelft.nl/en/">
+            Delft University of Technology
+            </a>
+          </p>
+      </div>
+    </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Patrick Altmeyer </p>
-          </div>
-  </div>
-    
+      
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
@@ -398,14 +407,14 @@ patalt.github.io/
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2021,
-  author = {Patrick Altmeyer and Patrick Altmeyer},
+  author = {Patrick Altmeyer},
   title = {How {I’m} Building This Website in {R}},
   date = {2021-02-02},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Patrick Altmeyer, and Patrick Altmeyer. 2021. <span>“How I’m Building
-This Website in R.”</span> February 2, 2021.
+Patrick Altmeyer. 2021. <span>“How I’m Building This Website in
+R.”</span> February 2, 2021.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -638,141 +647,140 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> How I'm building this website in R</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> Patrick Altmeyer</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> '2021-02-02'</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - blogdown</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - rmarkdown</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - C++</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &gt;-</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">  A small post on how I (used to!) build this website using `blogdown`.</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>**Update on Feb 20, 2022**</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>The post below was written when I still used <span class="in">`blogdown`</span> in combination with Hugo to build this blog. I have recently migrated the blog (along pretty much everything else I do) to <span class="co">[</span><span class="ot">quarto</span><span class="co">](https://quarto.org/)</span>. </span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Quarto® is an open-source scientific and technical publishing system built on Pandoc.</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>Based on my first few experiences I would go further and say that quarto is *the only* open-source scientific and technical publishing system you'll ever need. The project is supported by RStudio and (unsurprisingly) Yihui Xie is one of the contributors. Go check it out!</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting started</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>It turns out building a static website in R is remarkably easy, as long as you know your way around R Markdown. Knowledge of HTML and CSS helps, but is not strictly necessary and can be acquired along the way. My package of choice for this website is <span class="in">`blogdown`</span> by <span class="co">[</span><span class="ot">Yihui Xie</span><span class="co">](https://yihui.org/)</span> who has had a major impact on the R community through his many package contributions (<span class="in">`knitr`</span>, <span class="in">`bookdown`</span>, <span class="in">`pagedown`</span>, ...) and certainly made my life a lot easier on many occasions. </span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>To get started just follow the instructions on <span class="in">`blogdown`</span>'s <span class="co">[</span><span class="ot">GitHub repository</span><span class="co">](https://github.com/rstudio/blogdown)</span> or keep reading here for a high-level overview. Setting up a basic website in R requires exactly two steps:</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Set up a local directory for the website. Let's suppose you create it here <span class="in">`~/Documents/myAwesomeWebsite`</span>.</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>In R, navigate to the directory and simply run <span class="in">`blogdown::newsite()`</span>.</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>This will set up a basic template which you can develop. Changing the theme and playing with the basic structure of the website is relatively straight-forward. Personally I have so far managed to work things out based on a working knowledge of HTML and CSS that I've developed in the past through my work with R Shiny.</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deploying your website</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>There are various ways to deploy your website, i.e. make it accessible to the public. This website is deployed through GitHub pages. Detailed instructions on how to do this can be found <span class="co">[</span><span class="ot">here</span><span class="co">](https://bookdown.org/yihui/blogdown/github-pages.html)</span>. Since I already had an existing local clone of my <span class="in">`pat-alt.github.io`</span> repo, I just dropped it in the source directory of the website:</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="in">source/</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="in">│</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="in">├── config.yaml</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="in">├── content/</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="in">├── themes/</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="in">└── ...</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="in">patalt.github.io/</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="in">│</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="in">├── .git/</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="in">├── .nojekyll</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.html</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="in">├── about/</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="in">└── ...</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>After adding <span class="in">`publishDir: pat-alt.github.io`</span> to my <span class="in">`config.yaml`</span> and then running <span class="in">`blogdown::hugo_build()`</span> the website was built inside the clone. All that was left to do was to commit changes from the local clone to the <span class="in">`pat-alt.github.io`</span> remote repo. A few moments later the website was already up and running.</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why all the trouble?</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>There are certainly easier ways to build a website. But if like me you do pretty much all your work in R Markdown and want to share some of it, then you will love <span class="in">`blogdown`</span>. The beauty of it is that once the basic infrastructure is set up, adding content is as simple as running the following wrapper function</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>blogdown<span class="sc">::</span><span class="fu">new_post</span>(<span class="st">"Your new post"</span>, <span class="at">ext =</span> <span class="st">".Rmd"</span>)</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>where the first argument is just the title of your post and the <span class="in">`ext`</span> argument can be used to specify that you want to create an R Markdown document that can include code chucks. The wrapper function will automatically set up a directory for your post under <span class="in">`/post/`</span>. R Studio will redirect you to the relevant <span class="in">`.Rmd`</span> file that you can then fill with content. By default that folder will look roughly like this:</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.Rmd</span></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.html</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="in">└── index_files</span></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="in">    └── header-attrs</span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="in">        └── header-attrs.js</span></span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## A simple coding example</span></span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>As you can probably tell from the code chunks above this post was created just in the way I described. So I thought I might as well go ahead with a simple coding example to add some flavour. Suppose you have built some function that you think is worth sharing with the world or simply learned something new and interesting. As a case in point, I recently had a look at the <span class="in">`Rcpp`</span> package and wrote a small program in C++ to be used in R. Since R Markdown supports <span class="in">`Rcpp`</span> code chunks (along with Python, bash, SQL, ...) it is straight-forward to show-case that code on this website. </span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>The program can be used to simulate data from a categorical distribution. This distribution describes the possible results of a random variable that can take on one of $K$ possible categories with different probabilities. In base R we could use <span class="in">`rmultinom(n=1000,1,p=c(0.5,0.1,0.4))`</span> to simulate draws from one such distribution with three different categories. Alternatively, we could write the program in C++ as follows:</span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{Rcpp}</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="co">#include &lt;Rcpp.h&gt;</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>using namespace Rcpp;</span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> [[Rcpp<span class="sc">::</span>export]]</span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>NumericMatrix <span class="fu">simCategorical</span>(int n, NumericVector p) {</span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>  int k <span class="ot">=</span> <span class="fu">p.size</span>();</span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>  NumericMatrix <span class="fu">mat</span>(k, n);</span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Normalise prob <span class="cf">if</span> necessary<span class="sc">:</span></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(p)<span class="sc">!=</span><span class="dv">1</span>) {</span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">=</span> p<span class="sc">/</span><span class="fu">sum</span>(p);</span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>  NumericVector emp_cdf <span class="ot">=</span> <span class="fu">cumsum</span>(p);</span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>  NumericVector u <span class="ot">=</span> Rcpp<span class="sc">::</span><span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Matrix <span class="cf">for</span> <span class="dv">1</span><span class="sc">-</span>hot<span class="sc">-</span>encoding<span class="sc">:</span></span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (int <span class="at">j =</span> <span class="dv">0</span>; j <span class="sc">&lt;</span> n; j<span class="sc">++</span>) {</span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>    <span class="sc">/</span><span class="er">/</span> Perform binary search<span class="sc">:</span></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>    int l <span class="ot">=</span> <span class="dv">0</span>;</span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>    int r <span class="ot">=</span> k;</span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>    double target <span class="ot">=</span> u[j];</span>
-<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (l <span class="sc">&lt;</span> r) {</span>
-<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>      int m <span class="ot">=</span> <span class="fu">floor</span>((l<span class="sc">+</span>r)<span class="sc">/</span><span class="dv">2</span>);</span>
-<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (emp_cdf[m] <span class="sc">&gt;</span> target) {</span>
-<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">=</span> m;</span>
-<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>        l <span class="ot">=</span> m<span class="sc">+</span><span class="dv">1</span>;</span>
-<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mat</span>(r,j) <span class="ot">=</span> <span class="dv">1</span>;</span>
-<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>  return mat;</span>
-<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>In terms of performance it turns out that the simple C++ program actually does somewhat better than the base R alternative:</span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=F, warning=F}</span></span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.4</span>)</span>
-<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">microbenchmark</span>(</span>
-<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rmultinom"</span> <span class="ot">=</span> {<span class="fu">rmultinom</span>(n, <span class="dv">1</span>, p)},</span>
-<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Rcpp"</span> <span class="ot">=</span> {<span class="fu">simCategorical</span>(n, p)}</span>
-<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mb)</span>
-<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## Embedding existing work</span></span>
-<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a>If you have some existing work that you would like to share you can just use it to overwrite the <span class="in">`index.Rmd`</span> file. <span class="in">`blogdown`</span> supports any kind of R Markdown documents so you can use all of your favourite markdown packages (<span class="in">`bookdown`</span>, <span class="in">`pagedown`</span>, ...). Just make sure to specify HTML output in the YAML header.</span>
-<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
-<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>For more information about <span class="in">`blogdown`</span> see <span class="co">[</span><span class="ot">here</span><span class="co">](https://bookdown.org/yihui/blogdown/)</span>. To inspect the code that builds this website check out my <span class="co">[</span><span class="ot">GitHub repository</span><span class="co">](https://github.com/pat-alt/patalt)</span>.</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> '2021-02-02'</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - blogdown</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - rmarkdown</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - C++</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &gt;-</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">  A small post on how I (used to!) build this website using `blogdown`.</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>**Update on Feb 20, 2022**</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>The post below was written when I still used <span class="in">`blogdown`</span> in combination with Hugo to build this blog. I have recently migrated the blog (along pretty much everything else I do) to <span class="co">[</span><span class="ot">quarto</span><span class="co">](https://quarto.org/)</span>. </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Quarto® is an open-source scientific and technical publishing system built on Pandoc.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>Based on my first few experiences I would go further and say that quarto is *the only* open-source scientific and technical publishing system you'll ever need. The project is supported by RStudio and (unsurprisingly) Yihui Xie is one of the contributors. Go check it out!</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting started</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>It turns out building a static website in R is remarkably easy, as long as you know your way around R Markdown. Knowledge of HTML and CSS helps, but is not strictly necessary and can be acquired along the way. My package of choice for this website is <span class="in">`blogdown`</span> by <span class="co">[</span><span class="ot">Yihui Xie</span><span class="co">](https://yihui.org/)</span> who has had a major impact on the R community through his many package contributions (<span class="in">`knitr`</span>, <span class="in">`bookdown`</span>, <span class="in">`pagedown`</span>, ...) and certainly made my life a lot easier on many occasions. </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>To get started just follow the instructions on <span class="in">`blogdown`</span>'s <span class="co">[</span><span class="ot">GitHub repository</span><span class="co">](https://github.com/rstudio/blogdown)</span> or keep reading here for a high-level overview. Setting up a basic website in R requires exactly two steps:</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Set up a local directory for the website. Let's suppose you create it here <span class="in">`~/Documents/myAwesomeWebsite`</span>.</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>In R, navigate to the directory and simply run <span class="in">`blogdown::newsite()`</span>.</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>This will set up a basic template which you can develop. Changing the theme and playing with the basic structure of the website is relatively straight-forward. Personally I have so far managed to work things out based on a working knowledge of HTML and CSS that I've developed in the past through my work with R Shiny.</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deploying your website</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>There are various ways to deploy your website, i.e. make it accessible to the public. This website is deployed through GitHub pages. Detailed instructions on how to do this can be found <span class="co">[</span><span class="ot">here</span><span class="co">](https://bookdown.org/yihui/blogdown/github-pages.html)</span>. Since I already had an existing local clone of my <span class="in">`pat-alt.github.io`</span> repo, I just dropped it in the source directory of the website:</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="in">source/</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="in">│</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="in">├── config.yaml</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="in">├── content/</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="in">├── themes/</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="in">└── ...</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="in">patalt.github.io/</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="in">│</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="in">├── .git/</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="in">├── .nojekyll</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.html</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="in">├── about/</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="in">└── ...</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>After adding <span class="in">`publishDir: pat-alt.github.io`</span> to my <span class="in">`config.yaml`</span> and then running <span class="in">`blogdown::hugo_build()`</span> the website was built inside the clone. All that was left to do was to commit changes from the local clone to the <span class="in">`pat-alt.github.io`</span> remote repo. A few moments later the website was already up and running.</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why all the trouble?</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>There are certainly easier ways to build a website. But if like me you do pretty much all your work in R Markdown and want to share some of it, then you will love <span class="in">`blogdown`</span>. The beauty of it is that once the basic infrastructure is set up, adding content is as simple as running the following wrapper function</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>blogdown<span class="sc">::</span><span class="fu">new_post</span>(<span class="st">"Your new post"</span>, <span class="at">ext =</span> <span class="st">".Rmd"</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>where the first argument is just the title of your post and the <span class="in">`ext`</span> argument can be used to specify that you want to create an R Markdown document that can include code chucks. The wrapper function will automatically set up a directory for your post under <span class="in">`/post/`</span>. R Studio will redirect you to the relevant <span class="in">`.Rmd`</span> file that you can then fill with content. By default that folder will look roughly like this:</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.Rmd</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="in">├── index.html</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="in">└── index_files</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="in">    └── header-attrs</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="in">        └── header-attrs.js</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## A simple coding example</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>As you can probably tell from the code chunks above this post was created just in the way I described. So I thought I might as well go ahead with a simple coding example to add some flavour. Suppose you have built some function that you think is worth sharing with the world or simply learned something new and interesting. As a case in point, I recently had a look at the <span class="in">`Rcpp`</span> package and wrote a small program in C++ to be used in R. Since R Markdown supports <span class="in">`Rcpp`</span> code chunks (along with Python, bash, SQL, ...) it is straight-forward to show-case that code on this website. </span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>The program can be used to simulate data from a categorical distribution. This distribution describes the possible results of a random variable that can take on one of $K$ possible categories with different probabilities. In base R we could use <span class="in">`rmultinom(n=1000,1,p=c(0.5,0.1,0.4))`</span> to simulate draws from one such distribution with three different categories. Alternatively, we could write the program in C++ as follows:</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{Rcpp}</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="co">#include &lt;Rcpp.h&gt;</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>using namespace Rcpp;</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">/</span> [[Rcpp<span class="sc">::</span>export]]</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>NumericMatrix <span class="fu">simCategorical</span>(int n, NumericVector p) {</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  int k <span class="ot">=</span> <span class="fu">p.size</span>();</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>  NumericMatrix <span class="fu">mat</span>(k, n);</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Normalise prob <span class="cf">if</span> necessary<span class="sc">:</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(p)<span class="sc">!=</span><span class="dv">1</span>) {</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">=</span> p<span class="sc">/</span><span class="fu">sum</span>(p);</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>  NumericVector emp_cdf <span class="ot">=</span> <span class="fu">cumsum</span>(p);</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>  NumericVector u <span class="ot">=</span> Rcpp<span class="sc">::</span><span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> Matrix <span class="cf">for</span> <span class="dv">1</span><span class="sc">-</span>hot<span class="sc">-</span>encoding<span class="sc">:</span></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (int <span class="at">j =</span> <span class="dv">0</span>; j <span class="sc">&lt;</span> n; j<span class="sc">++</span>) {</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>    <span class="sc">/</span><span class="er">/</span> Perform binary search<span class="sc">:</span></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>    int l <span class="ot">=</span> <span class="dv">0</span>;</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>    int r <span class="ot">=</span> k;</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>    double target <span class="ot">=</span> u[j];</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (l <span class="sc">&lt;</span> r) {</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>      int m <span class="ot">=</span> <span class="fu">floor</span>((l<span class="sc">+</span>r)<span class="sc">/</span><span class="dv">2</span>);</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (emp_cdf[m] <span class="sc">&gt;</span> target) {</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>        r <span class="ot">=</span> m;</span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>        l <span class="ot">=</span> m<span class="sc">+</span><span class="dv">1</span>;</span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mat</span>(r,j) <span class="ot">=</span> <span class="dv">1</span>;</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>  return mat;</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>In terms of performance it turns out that the simple C++ program actually does somewhat better than the base R alternative:</span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=F, warning=F}</span></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.4</span>)</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">microbenchmark</span>(</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rmultinom"</span> <span class="ot">=</span> {<span class="fu">rmultinom</span>(n, <span class="dv">1</span>, p)},</span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Rcpp"</span> <span class="ot">=</span> {<span class="fu">simCategorical</span>(n, p)}</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mb)</span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## Embedding existing work</span></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a>If you have some existing work that you would like to share you can just use it to overwrite the <span class="in">`index.Rmd`</span> file. <span class="in">`blogdown`</span> supports any kind of R Markdown documents so you can use all of your favourite markdown packages (<span class="in">`bookdown`</span>, <span class="in">`pagedown`</span>, ...). Just make sure to specify HTML output in the YAML header.</span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>For more information about <span class="in">`blogdown`</span> see <span class="co">[</span><span class="ot">here</span><span class="co">](https://bookdown.org/yihui/blogdown/)</span>. To inspect the code that builds this website check out my <span class="co">[</span><span class="ot">GitHub repository</span><span class="co">](https://github.com/pat-alt/patalt)</span>.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
