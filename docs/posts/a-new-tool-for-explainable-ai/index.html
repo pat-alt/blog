@@ -1,180 +1,185 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-  <meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.238">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Patrick Altmeyer">
-  <meta name="dcterms.date" content="2022-04-20">
-  <meta name="description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.">
-  <title>blog - A new tool 🔧 for explainable AI</title>
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-    }
-    .hanging div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }
-  </style>
 
-  <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-  <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-  <script src="../../site_libs/clipboard/clipboard.min.js"></script>
-  <meta name="quarto:offset" content="../../">
-  <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-  <script src="../../site_libs/quarto-search/fuse.min.js"></script>
-  <script src="../../site_libs/quarto-search/quarto-search.js"></script>
-  <link href="../../favicon.ico" rel="icon">
-  <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-  <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-  <script src="../../site_libs/quarto-html/quarto.js"></script>
-  <script src="../../site_libs/quarto-html/popper.min.js"></script>
-  <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-  <script src="../../site_libs/quarto-html/anchor.min.js"></script>
-  <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
-  <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-  <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-  <link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/bootstrap/bootstrap-dark.min.css">
-  <script id="quarto-search-options" type="application/json">{
-    "location": "navbar",
-    "copy-button": false,
-    "collapse-after": 3,
-    "panel-placement": "end",
-    "type": "overlay",
-    "limit": 20,
-    "language": {
-      "search-no-results-text": "No results",
-      "search-matching-documents-text": "matching documents",
-      "search-copy-link-title": "Copy link to search",
-      "search-hide-matches-text": "Hide additional matches",
-      "search-more-match-text": "more match in this document",
-      "search-more-matches-text": "more matches in this document",
-      "search-clear-button-title": "Clear",
-      "search-detached-cancel-button-title": "Cancel",
-      "search-submit-button-title": "Submit"
-    }
-  }</script>
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BEEZ30787D"></script>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.353">
 
-  <script type="text/plain" cookie-consent="tracking">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
-  </script>
-  
-  <script type="text/javascript" charset="UTF-8">
-  document.addEventListener('DOMContentLoaded', function () {
-  cookieconsent.run({
-    "notice_banner_type":"simple",
-    "consent_type":"implied",
-    "palette":"light",
-    "language":"en",
-    "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
-    "notice_banner_reject_button_hide":false,
-    "preferences_center_close_button_hide":false,
-    "website_name":""
-    });
+<meta name="author" content="Patrick Altmeyer">
+<meta name="dcterms.date" content="2022-04-20">
+<meta name="description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.">
+
+<title>blog - A new tool for explainable AI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/bootstrap/bootstrap-dark.min.css">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BEEZ30787D"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
   });
-  </script> 
-    
+});
+</script> 
+  
+
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
-  <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="blog - A new tool 🔧 for explainable AI">
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="blog - A new tool for explainable AI">
 <meta name="twitter:description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.
 ">
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
+
 <body class="nav-fixed">
+
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -223,35 +228,76 @@
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc">
-<ul>
-<li><a href="#counterfactuals-for-image-data" id="toc-counterfactuals-for-image-data" class="nav-link active" data-scroll-target="#counterfactuals-for-image-data">Counterfactuals for image data 🖼</a>
-<ul class="collapse">
-<li><a href="#black-box-models" id="toc-black-box-models" class="nav-link" data-scroll-target="#black-box-models">Black-box models</a></li>
-<li><a href="#a-simple-tool" id="toc-a-simple-tool" class="nav-link" data-scroll-target="#a-simple-tool">A simple tool</a></li>
-<li><a href="#let-there-be-light" id="toc-let-there-be-light" class="nav-link" data-scroll-target="#let-there-be-light">‘Let there be light’</a></li>
-</ul></li>
-<li><a href="#language-interoperability" id="toc-language-interoperability" class="nav-link" data-scroll-target="#language-interoperability">Language interoperability 👥</a>
-<ul class="collapse">
-<li><a href="#explaining-a-torch-model" id="toc-explaining-a-torch-model" class="nav-link" data-scroll-target="#explaining-a-torch-model">Explaining a <code>torch</code> model</a></li>
-</ul></li>
-<li><a href="#we-need-you" id="toc-we-need-you" class="nav-link" data-scroll-target="#we-need-you">We need you! 🫵</a></li>
-<li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading 📚</a></li>
-</ul>
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#counterfactuals-for-image-data" id="toc-counterfactuals-for-image-data" class="nav-link active" data-scroll-target="#counterfactuals-for-image-data">Counterfactuals for image data 🖼</a>
+  <ul class="collapse">
+  <li><a href="#black-box-models" id="toc-black-box-models" class="nav-link" data-scroll-target="#black-box-models">Black-box models</a></li>
+  <li><a href="#counterfactual-generators" id="toc-counterfactual-generators" class="nav-link" data-scroll-target="#counterfactual-generators">Counterfactual generators</a></li>
+  <li><a href="#explanations" id="toc-explanations" class="nav-link" data-scroll-target="#explanations">Explanations</a></li>
+  </ul></li>
+  <li><a href="#language-interoperability" id="toc-language-interoperability" class="nav-link" data-scroll-target="#language-interoperability">Language interoperability 👥</a>
+  <ul class="collapse">
+  <li><a href="#explaining-a-torch-model" id="toc-explaining-a-torch-model" class="nav-link" data-scroll-target="#explaining-a-torch-model">Explaining a <code>torch</code> model</a></li>
+  </ul></li>
+  <li><a href="#we-need-you" id="toc-we-need-you" class="nav-link" data-scroll-target="#we-need-you">We need you! 🫵</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading 📚</a></li>
+  </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/pat-alt/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">A new tool for explainable AI</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<p class="subtitle lead">Explaining models through counterfactuals</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">counterfactuals</div>
+    <div class="quarto-category">explainable AI</div>
+    <div class="quarto-category">Julia</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    <p>This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.</p>
+  </div>
+</div>
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <a href="https://www.paltmeyer.com/">Patrick Altmeyer</a> 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://www.tudelft.nl/en/">
+            Delft University of Technology
+            </a>
+          </p>
+      </div>
+    </div>
 
 
 
+<div class="quarto-title-meta">
 
-<div class="quarto-title"><div class="quarto-title-block"><div><h1 class="title">A new tool 🔧 for explainable AI</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div><p class="subtitle lead">Explaining models through counterfactuals</p><div class="quarto-description"><p>This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.
-</p></div></div><div class="quarto-categories"><div class="quarto-category">counterfactuals</div><div class="quarto-category">explainable AI</div><div class="quarto-category">Julia</div></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Author</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><div><a href="https://www.paltmeyer.com/">
-<p>Patrick Altmeyer</p>
-</a></div></div></div></div><div><div class="quarto-title-meta-heading">Affilliation</div><div class="quarto-title-meta-contents"><div class="quarto-title-affiliations"><p><a href="https://www.tudelft.nl/en/">
-<p>Delft University of Technology</p>
-</a></p></div></div></div><div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents"><p class="date">April 20, 2022</p></div></div></div></header>
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 20, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
 
 <div class="intro-gif">
 <figure class="figure">
@@ -323,8 +369,8 @@ Turning a 9 (nine) into a 4 (four).
 </details>
 </div>
 </section>
-<section id="a-simple-tool" class="level3">
-<h3 class="anchored" data-anchor-id="a-simple-tool">A simple tool</h3>
+<section id="counterfactual-generators" class="level3">
+<h3 class="anchored" data-anchor-id="counterfactual-generators">Counterfactual generators</h3>
 <p>Next we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by <span class="citation" data-cites="wachter2017counterfactual">Wachter, Mittelstadt, and Russell (<a href="#ref-wachter2017counterfactual" role="doc-biblioref">2017</a>)</span> and, secondly, a greedy generator introduced by <span class="citation" data-cites="schut2021generating">Schut et al. (<a href="#ref-schut2021generating" role="doc-biblioref">2021</a>)</span>. The greedy generator is desiged to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It is greedy in the sense that it does not rely on a complexity penalty that is typically used in this context to ensure that counterfactual explanations are realistic and unambiguous among other desirable characteristics. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are actually populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019towards">(<a href="#ref-joshi2019towards" role="doc-biblioref">Joshi et al. 2019</a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea. The following code instantiates the two generators for the problem at hand.</p>
 <div class="cell" data-execution_count="4">
 <details>
@@ -334,8 +380,8 @@ Turning a 9 (nine) into a 4 (four).
 </details>
 </div>
 </section>
-<section id="let-there-be-light" class="level3">
-<h3 class="anchored" data-anchor-id="let-there-be-light">‘Let there be light’</h3>
+<section id="explanations" class="level3">
+<h3 class="anchored" data-anchor-id="explanations">Explanations</h3>
 <p>Once the model and counterfactual generator are specified, actually running counterfactual search is very easy using the package. For a given factual (<code>x</code>), target class (<code>target</code>) and data set (<code>counterfactual_data</code>), simply running</p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_counterfactual</span>(x, target, counterfactual_data, M, generic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -460,11 +506,11 @@ Experimental functionality
 </ul>
 
 
-
 <!-- -->
 
 
 </section>
+
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-antoran2020getting" class="csl-entry" role="doc-biblioentry">
@@ -500,15 +546,15 @@ Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfac
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2022,
   author = {Patrick Altmeyer},
-  title = {A New Tool 🔧 for Explainable {AI}},
+  title = {A New Tool for Explainable {AI}},
   date = {2022-04-20},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-altmeyer2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Patrick Altmeyer. 2022. <span>“A New Tool 🔧 for Explainable AI.”</span>
+Patrick Altmeyer. 2022. <span>“A New Tool for Explainable AI.”</span>
 April 20, 2022.
 </div></div></section></div></main> <!-- /main -->
-<script type="application/javascript">
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {
     for (let i=0; i < stylesheets.length; i++) {
@@ -626,7 +672,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.blur();
     // flash "checked"
     button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
     setTimeout(function() {
+      button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
@@ -735,7 +784,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <script src="https://utteranc.es/client.js" repo="pat-alt/blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <pre class="markdown" data-shortcodes="false"><code>---
-title: "A new tool 🔧 for explainable AI"
+title: "A new tool for explainable AI"
 subtitle: "Explaining models through counterfactuals"
 date: '2022-04-20'
 description: |
@@ -834,7 +883,7 @@ probs(M::FittedEnsemble, X::AbstractArray) = mean(stack([softmax(m(X)) for m in 
 M_ensemble = FittedEnsemble(ensemble)
 ```
 
-### A simple tool
+### Counterfactual generators
 
 Next we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by @wachter2017counterfactual and, secondly, a greedy generator introduced by @schut2021generating. The greedy generator is desiged to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It is greedy in the sense that it does not rely on a complexity penalty that is typically used in this context to ensure that counterfactual explanations are realistic and unambiguous among other desirable characteristics. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are actually populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE [@joshi2019towards] and CLUE [@antoran2020getting] also play with this simple idea. The following code instantiates the two generators for the problem at hand. 
 
@@ -845,7 +894,7 @@ generic = GenericGenerator(;loss=:logitcrossentropy)
 greedy = GreedyGenerator(;loss=:logitcrossentropy)
 ```
 
-### 'Let there be light' 
+### Explanations
 
 quarto-executable-code-5450563D
 
@@ -1140,6 +1189,7 @@ If you're interested in learning more about this development, feel free to check
       <div class="nav-footer-center">© 2022, Patrick Altmeyer<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
   </div>
 </footer>
+
 
 
 </body></html>

@@ -1,5 +1,5 @@
 ---
-title: "A new tool 🔧 for explainable AI"
+title: "A new tool for explainable AI"
 subtitle: "Explaining models through counterfactuals"
 date: '2022-04-20'
 description: |
@@ -92,7 +92,7 @@ probs(M::FittedEnsemble, X::AbstractArray) = mean(stack([softmax(m(X)) for m in 
 M_ensemble = FittedEnsemble(ensemble)
 ```
 
-### A simple tool
+### Counterfactual generators
 
 Next we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by @wachter2017counterfactual and, secondly, a greedy generator introduced by @schut2021generating. The greedy generator is desiged to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It is greedy in the sense that it does not rely on a complexity penalty that is typically used in this context to ensure that counterfactual explanations are realistic and unambiguous among other desirable characteristics. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are actually populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE [@joshi2019towards] and CLUE [@antoran2020getting] also play with this simple idea. The following code instantiates the two generators for the problem at hand. 
 
@@ -101,7 +101,7 @@ generic = GenericGenerator(;loss=:logitcrossentropy)
 greedy = GreedyGenerator(;loss=:logitcrossentropy)
 ```
 
-### 'Let there be light' 
+### Explanations
 
 ```{julia}
 #| echo: false
