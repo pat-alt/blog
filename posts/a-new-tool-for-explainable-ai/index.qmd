@@ -203,6 +203,7 @@ savefig(plt, joinpath(www_path, "mnist_9_to_4.png"))
 ![Counterfactual explanations for MNIST: turning a nine (9) into a four (4).](www/mnist_9_to_4.png){#fig-mnist-9to4}
 
 ```{julia}
+#| echo: false
 X = counterfactuals["Ensemble - Greedy"].search[:path]
 anim = @animate for t in 1:length(X)
     plot(convert2image(reshape(X[t],Int(√(input_dim)),Int(√(input_dim)))),axis=nothing,size=(300,300))
@@ -212,7 +213,7 @@ gif(anim, joinpath(www_path, "intro.gif"))
 
 ## Language interoperability 👥
 
-The Julia language offers unique support for programming language interoperability. For example, calling R or Python is made remarkably easy through `RCall.jl` and `PyCall.jl`, respectively. This functionality can be leveraged to use `CounterfactualExplanations.jl` to generate explanations for models that were developed in other programming languages. At this time there is no native support for foreign programming languages, but the following example involving a `torch` neural network trained in `R` demonstrates how versatile the package is.^[The corresponding example involving `PyTorch` is analogous and therefore not included here. You may find it here: [https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/](https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/)] 
+The Julia language offers unique support for programming language interoperability. For example, calling R or Python is made remarkably easy through `RCall.jl` and `PyCall.jl`, respectively. This functionality can be leveraged to use `CounterfactualExplanations.jl` to generate explanations for models that were developed in other programming languages. At this time there is no native support for foreign programming languages, but the following example involving a `torch` neural network trained in `R` demonstrates how versatile the package is.^[The corresponding example involving `PyTorch` is analogous and therefore not included here. You may find it [here](https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/).]
 
 ### Explaining a `torch` model 
 

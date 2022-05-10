@@ -399,16 +399,6 @@ Turning a 9 (nine) into a 4 (four).
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Counterfactual explanations for MNIST: turning a nine (9) into a four (4).</figcaption><p></p>
 </figure>
 </div>
-<div class="cell" data-execution_count="9">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> counterfactuals[<span class="st">"Ensemble - Greedy"</span>].search[<span class="op">:</span>path]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>anim <span class="op">=</span> <span class="pp">@animate</span> <span class="cf">for</span> t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(X)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="fu">convert2image</span>(<span class="fu">reshape</span>(X[t],<span class="fu">Int</span>(<span class="fu">√</span>(input_dim)),<span class="fu">Int</span>(<span class="fu">√</span>(input_dim)))),axis<span class="op">=</span><span class="cn">nothing</span>,size<span class="op">=</span>(<span class="fl">300</span>,<span class="fl">300</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span> every <span class="fl">10</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gif</span>(anim, <span class="fu">joinpath</span>(www_path, <span class="st">"intro.gif"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 </section>
 <section id="language-interoperability" class="level2">
@@ -420,26 +410,26 @@ Turning a 9 (nine) into a 4 (four).
 <div class="cell" data-execution_count="12">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations</span>, <span class="bu">CounterfactualExplanations.Models</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Models</span>: logits, probs <span class="co"># import functions in order to extend</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> TorchNetwork <span class="op">&lt;:</span><span class="dt"> Models.AbstractFittedModel</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    nn<span class="op">::</span><span class="dt">Any</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2)</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logits</span>(M<span class="op">::</span><span class="dt">TorchNetwork</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  nn <span class="op">=</span> M.nn</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> <span class="fu">rcopy</span>(R<span class="st">"as_array(</span><span class="sc">$</span>nn<span class="st">(torch_tensor(t(</span><span class="sc">$</span>X<span class="st">))))"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> <span class="fu">isa</span>(y, <span class="dt">AbstractArray</span>) ? y <span class="op">:</span> [y]</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> y<span class="op">'</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">probs</span>(M<span class="op">::</span><span class="dt">TorchNetwork</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">σ</span>.(<span class="fu">logits</span>(M, X))</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="fu">TorchNetwork</span>(R<span class="st">"model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations</span>, <span class="bu">CounterfactualExplanations.Models</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Models</span>: logits, probs <span class="co"># import functions in order to extend</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> TorchNetwork <span class="op">&lt;:</span><span class="dt"> Models.AbstractFittedModel</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    nn<span class="op">::</span><span class="dt">Any</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2)</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logits</span>(M<span class="op">::</span><span class="dt">TorchNetwork</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  nn <span class="op">=</span> M.nn</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> <span class="fu">rcopy</span>(R<span class="st">"as_array(</span><span class="sc">$</span>nn<span class="st">(torch_tensor(t(</span><span class="sc">$</span>X<span class="st">))))"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> <span class="fu">isa</span>(y, <span class="dt">AbstractArray</span>) ? y <span class="op">:</span> [y]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> y<span class="op">'</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">probs</span>(M<span class="op">::</span><span class="dt">TorchNetwork</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">σ</span>.(<span class="fu">logits</span>(M, X))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="fu">TorchNetwork</span>(R<span class="st">"model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Compared to models trained in Julia, we need to do a little more work at this point. Since our counterfactual generators need gradient access, we essentially need to allow our package to communicate with the R <code>torch</code> library. While this may sound daunting, it turns out to be quite manageable: all we have to do is respecify the function that computes the gradient with respect to the counterfactual loss function so that it can deal with the <code>TorchNetwork</code> type we defined above. That is all the adjustment needed to use <code>CounterfactualExplanations.jl</code> for our custom R model. <a href="#fig-torch">Figure&nbsp;2</a> shows a counterfactual path for a randomly chosen sample with respect to the MLP trained in R.</p>
@@ -459,27 +449,27 @@ Experimental functionality
 <div class="cell" data-execution_count="13">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Generators</span>: ∂ℓ</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Countefactual loss:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">∂ℓ</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    generator<span class="op">::</span><span class="dt">AbstractGradientBasedGenerator</span>, </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    counterfactual_state<span class="op">::</span><span class="dt">CounterfactualState</span>) </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  M <span class="op">=</span> counterfactual_state.M</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  nn <span class="op">=</span> M.nn</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  x′ <span class="op">=</span> counterfactual_state.x′</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  t <span class="op">=</span> counterfactual_state.target_encoded</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  R<span class="st">"""</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">  x &lt;- torch_tensor(</span><span class="sc">$</span>x<span class="st">′, requires_grad=TRUE)</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="st">  output &lt;- </span><span class="sc">$</span>nn<span class="st">(x)</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="st">  loss_fun &lt;- nnf_binary_cross_entropy_with_logits</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="st">  obj_loss &lt;- loss_fun(output,</span><span class="sc">$</span>t<span class="st">)</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="st">  obj_loss</span><span class="sc">$</span>backward<span class="st">()</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="st">  """</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  grad <span class="op">=</span> <span class="fu">rcopy</span>(R<span class="st">"as_array(x</span><span class="sc">$</span>grad<span class="st">)"</span>)</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> grad</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Generators</span>: ∂ℓ</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Countefactual loss:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">∂ℓ</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    generator<span class="op">::</span><span class="dt">AbstractGradientBasedGenerator</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    counterfactual_state<span class="op">::</span><span class="dt">CounterfactualState</span>) </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  M <span class="op">=</span> counterfactual_state.M</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  nn <span class="op">=</span> M.nn</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  x′ <span class="op">=</span> counterfactual_state.x′</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  t <span class="op">=</span> counterfactual_state.target_encoded</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  R<span class="st">"""</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">  x &lt;- torch_tensor(</span><span class="sc">$</span>x<span class="st">′, requires_grad=TRUE)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">  output &lt;- </span><span class="sc">$</span>nn<span class="st">(x)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">  loss_fun &lt;- nnf_binary_cross_entropy_with_logits</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">  obj_loss &lt;- loss_fun(output,</span><span class="sc">$</span>t<span class="st">)</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="st">  obj_loss</span><span class="sc">$</span>backward<span class="st">()</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="st">  """</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  grad <span class="op">=</span> <span class="fu">rcopy</span>(R<span class="st">"as_array(x</span><span class="sc">$</span>grad<span class="st">)"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> grad</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="fig-torch" class="quarto-figure quarto-figure-center anchored">
@@ -1013,6 +1003,7 @@ savefig(plt, joinpath(www_path, "mnist_9_to_4.png"))
 quarto-executable-code-5450563D
 
 ```julia
+#| echo: false
 X = counterfactuals["Ensemble - Greedy"].search[:path]
 anim = @animate for t in 1:length(X)
     plot(convert2image(reshape(X[t],Int(√(input_dim)),Int(√(input_dim)))),axis=nothing,size=(300,300))
