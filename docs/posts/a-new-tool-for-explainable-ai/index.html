@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.353">
+<meta name="generator" content="quarto-0.9.624">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -102,13 +102,14 @@ div.csl-indent {
 }
 </style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
@@ -117,12 +118,10 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/bootstrap/bootstrap-dark.min.css">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -172,8 +171,7 @@ cookieconsent.run({
 
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="blog - A new tool for explainable AI">
-<meta name="twitter:description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.
-">
+<meta name="twitter:description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.">
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -214,9 +212,6 @@ cookieconsent.run({
  </a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
               <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -251,7 +246,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">A new tool for explainable AI</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">A new tool for explainable AI</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Explaining models through counterfactuals</p>
   <div class="quarto-categories">
     <div class="quarto-category">counterfactuals</div>
@@ -281,8 +276,6 @@ cookieconsent.run({
           </p>
       </div>
     </div>
-
-
 
 <div class="quarto-title-meta">
 
@@ -325,7 +318,6 @@ Turning a 9 (nine) into a 4 (four).
 <section id="black-box-models" class="level3">
 <h3 class="anchored" data-anchor-id="black-box-models">Black-box models</h3>
 <p>The code below loads relevant packages along with the MNIST data and pre-trained models.</p>
-<div class="cell" data-execution_count="2">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load package, models and data:</span></span>
@@ -336,14 +328,12 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ensemble <span class="op">=</span> <span class="fu">mnist_ensemble</span>()</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>counterfactual_data <span class="op">=</span> <span class="fu">CounterfactualData</span>(X,ys;domain<span class="op">=</span>(<span class="fl">0</span>,<span class="fl">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
 <p>While the package can currently handle a few simple classification models natively, it is designed to be easily extensible through users and contributors. Extending the package to deal with custom models typically involves only two simple steps:</p>
 <ol type="1">
 <li><strong>Subtyping</strong>: the custom model needs to be declared as a subtype of the package-internal type <code>AbstractFittedModel</code>.</li>
 <li><strong>Multiple dispatch</strong>: the package-internal functions <code>logits</code> and <code>probs</code> need to be extended through custom methods for the new model type.</li>
 </ol>
 <p>The following code implements these two steps first for the MLP and then for the deep ensemble.</p>
-<div class="cell" data-execution_count="3">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations.Models</span></span>
@@ -370,27 +360,22 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">probs</span>(M<span class="op">::</span><span class="dt">FittedEnsemble</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>) <span class="op">=</span> <span class="fu">mean</span>(<span class="fu">stack</span>([<span class="fu">softmax</span>(<span class="fu">m</span>(X)) for m <span class="kw">in</span> M.ensemble],<span class="fl">3</span>),dims<span class="op">=</span><span class="fl">3</span>)</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>M_ensemble <span class="op">=</span> <span class="fu">FittedEnsemble</span>(ensemble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
 </section>
 <section id="counterfactual-generators" class="level3">
 <h3 class="anchored" data-anchor-id="counterfactual-generators">Counterfactual generators</h3>
 <p>Next, we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by <span class="citation" data-cites="wachter2017counterfactual">Wachter, Mittelstadt, and Russell (<a href="#ref-wachter2017counterfactual" role="doc-biblioref">2017</a>)</span> and, secondly, a greedy generator introduced by <span class="citation" data-cites="schut2021generating">Schut et al. (<a href="#ref-schut2021generating" role="doc-biblioref">2021</a>)</span>.</p>
 <p>The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019towards">(<a href="#ref-joshi2019towards" role="doc-biblioref">Joshi et al. 2019</a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea.</p>
 <p>The following code instantiates the two generators for the problem at hand.</p>
-<div class="cell" data-execution_count="4">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>generic <span class="op">=</span> <span class="fu">GenericGenerator</span>(;loss<span class="op">=:</span>logitcrossentropy)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>greedy <span class="op">=</span> <span class="fu">GreedyGenerator</span>(;loss<span class="op">=:</span>logitcrossentropy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
 </section>
 <section id="explanations" class="level3">
 <h3 class="anchored" data-anchor-id="explanations">Explanations</h3>
 <p>Once the model and counterfactual generator are specified, running counterfactual search is very easy using the package. For a given factual (<code>x</code>), target class (<code>target</code>) and data set (<code>counterfactual_data</code>), simply running</p>
-<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_counterfactual</span>(x, target, counterfactual_data, M, generic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>will generate the results, in this case using the generic generator (<code>generic</code>) for the MLP (<code>M</code>). Since we have specified two different black-box models and two different counterfactual generators, we have four combinations of a model and a generator in total. For each of these combinations I have used the <code>generate_counterfactual</code> function to produce the results in <a href="#fig-mnist-9to4">Figure&nbsp;1</a>.</p>
 <p>In every case the desired label switch is in fact achieved, but arguably from a human perspective only the counterfactuals for the deep ensemble look like a four. The generic generator produces mild perturbations in regions that seem irrelevant from a human perspective, but nonetheless yields a counterfactual that can pass as a four. The greedy approach clearly targets pixels at the top of the handwritten nine and yields the best result overall. For the non-Bayesian MLP, both the generic and the greedy approach generate counterfactuals that look much like adversarial examples: they perturb pixels in seemingly random regions on the image.</p>
 <div id="fig-mnist-9to4" class="quarto-figure quarto-figure-center anchored">
@@ -407,7 +392,6 @@ Turning a 9 (nine) into a 4 (four).
 <section id="explaining-a-torch-model" class="level3">
 <h3 class="anchored" data-anchor-id="explaining-a-torch-model">Explaining a <code>torch</code> model</h3>
 <p>We will consider a simple MLP trained for a binary classification task. As before we first need to adapt this custom model for use with our package. The code below the two necessary steps - sub-typing and method extension. Logits are returned by the <code>torch</code> model and copied from the R environment into the Julia scope. Probabilities are then computed inside the Julia scope by passing the logits through the sigmoid function.</p>
-<div class="cell" data-execution_count="12">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span></span>
@@ -431,7 +415,6 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="fu">TorchNetwork</span>(R<span class="st">"model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
 <p>Compared to models trained in Julia, we need to do a little more work at this point. Since our counterfactual generators need gradient access, we essentially need to allow our package to communicate with the R <code>torch</code> library. While this may sound daunting, it turns out to be quite manageable: all we have to do is respecify the function that computes the gradient with respect to the counterfactual loss function so that it can deal with the <code>TorchNetwork</code> type we defined above. That is all the adjustment needed to use <code>CounterfactualExplanations.jl</code> for our custom R model. <a href="#fig-torch">Figure&nbsp;2</a> shows a counterfactual path for a randomly chosen sample with respect to the MLP trained in R.</p>
 <div class="callout-caution callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -446,7 +429,6 @@ Experimental functionality
 <p>You may have stumbled across the term <em>respecify</em> above: does it really seem like a good idea to just replace an existing function from our package? Surely not! There are certainly better ways to go about this, which we will consider when adding native support for Python and R models in future package releases. Which brings us to our final section …</p>
 </div>
 </div>
-<div class="cell" data-execution_count="13">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Generators</span>: ∂ℓ</span>
@@ -471,7 +453,6 @@ Experimental functionality
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> grad</span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
 <div id="fig-torch" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/interop_r.gif" class="img-fluid figure-img"></p>
@@ -539,7 +520,7 @@ Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfac
 <ol>
 <li id="fn1" role="doc-endnote"><p>See: [<a href="https://towardsdatascience.com/individual-recourse-for-black-box-models-5e9ed1e4b4cc">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/individual-recourse-for-black-box-models/">blog</a>]<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p>For more information on Bayesian deep learning see my previous post: [<a href="https://towardsdatascience.com/go-deep-but-also-go-bayesian-ab25efa6f7b">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/effortsless-bayesian-dl/">blog</a>].<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>The corresponding example involving <code>PyTorch</code> is analogous and therefore not included here. You may find it here: <a href="https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/">https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>The corresponding example involving <code>PyTorch</code> is analogous and therefore not included here. You may find it <a href="https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/">here</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2022,
   author = {Patrick Altmeyer},
@@ -553,103 +534,6 @@ April 20, 2022.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-    } else {
-      disableStylesheet(alternateStylesheets);
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  let localAlternateSentinel = 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } 
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1013,7 +897,7 @@ gif(anim, joinpath(www_path, "intro.gif"))
 
 ## Language interoperability 👥
 
-The Julia language offers unique support for programming language interoperability. For example, calling R or Python is made remarkably easy through `RCall.jl` and `PyCall.jl`, respectively. This functionality can be leveraged to use `CounterfactualExplanations.jl` to generate explanations for models that were developed in other programming languages. At this time there is no native support for foreign programming languages, but the following example involving a `torch` neural network trained in `R` demonstrates how versatile the package is.^[The corresponding example involving `PyTorch` is analogous and therefore not included here. You may find it here: [https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/](https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/)] 
+The Julia language offers unique support for programming language interoperability. For example, calling R or Python is made remarkably easy through `RCall.jl` and `PyCall.jl`, respectively. This functionality can be leveraged to use `CounterfactualExplanations.jl` to generate explanations for models that were developed in other programming languages. At this time there is no native support for foreign programming languages, but the following example involving a `torch` neural network trained in `R` demonstrates how versatile the package is.^[The corresponding example involving `PyTorch` is analogous and therefore not included here. You may find it [here](https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/).]
 
 ### Explaining a `torch` model 
 
