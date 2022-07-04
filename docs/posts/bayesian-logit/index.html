@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.353">
+<meta name="generator" content="quarto-0.9.624">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -102,13 +102,14 @@ div.csl-indent {
 }
 </style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
 <link href="../../favicon.ico" rel="icon">
 <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
@@ -117,12 +118,10 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link class="quarto-color-scheme" href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="../../site_libs/bootstrap/bootstrap-dark.min.css">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -213,9 +212,6 @@ cookieconsent.run({
  </a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
               <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -281,8 +277,6 @@ cookieconsent.run({
       </div>
     </div>
 
-
-
 <div class="quarto-title-meta">
 
       
@@ -330,7 +324,7 @@ Simulation of changing parameter distribution.
 &amp;&amp; p(y_n|\mathbf{x}_n;\mathbf{w})&amp;\sim\text{Ber}(y_n|\sigma(\mathbf{w}^T\mathbf{x}_n)) \\
 \end{aligned}
 \end{equation}
-\qquad(1)\]</span></span></p>
+\tag{1}\]</span></span></p>
 <p>where <span class="math inline">\(\sigma(a)=1/(1+e^{-a})\)</span> is the <strong>sigmoid</strong> or <strong>logit</strong> function <span class="citation" data-cites="murphy2022probabilistic">(<a href="#ref-murphy2022probabilistic" role="doc-biblioref">Murphy 2022</a>)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Features are generated from a mixed Gaussian model.</p>
 <p>To add a little bit of life to our example we will assume that the binary labels classify samples into cats and dogs, based on their height and tail length. <a href="#fig-ground">Figure&nbsp;1</a> shows the synthetic data in the two-dimensional feature domain. Following an introduction to Bayesian Logistic Regression in the next section we will use the synthetic data <span class="math inline">\(\mathcal{D}\)</span> to estimate our model.</p>
 <div class="cell" data-layout-align="center">
@@ -368,7 +362,7 @@ Simulation of changing parameter distribution.
 &amp;&amp; p(\mathbf{w}|\mathcal{D})&amp;\propto p(\mathcal{D}|\mathbf{w})p(\mathbf{w}) \\
 \end{aligned}
 \end{equation}
-\qquad(2)\]</span></span></p>
+\tag{2}\]</span></span></p>
 <p>Formally, this says that the posterior distribution of parameters <span class="math inline">\(\mathbf{w}\)</span> is proportional to the product of the likelihood of observing <span class="math inline">\(\mathcal{D}\)</span> given <span class="math inline">\(\mathbf{w}\)</span> and the prior density of <span class="math inline">\(\mathbf{w}\)</span>. Applied to our context this can intuitively be understood as follows: our posterior beliefs around <span class="math inline">\(\mathbf{w}\)</span> are formed by both our prior beliefs and the evidence we observe. Yet another way to look at this is that maximising <a href="#eq-posterior">Equation&nbsp;2</a> with respect to <span class="math inline">\(\mathbf{w}\)</span> corresponds to maximum likelihood estimation regularized by prior beliefs (we will come back to this).</p>
 <p>Under the assumption that individual label-feature pairs are <strong>independently</strong> and <strong>identically</strong> distributed, their joint likelihood is simply the product over their individual densities. The prior beliefs around <span class="math inline">\(\mathbf{w}\)</span> are at our discretion. In practice they may be derived from previous experiments. Here we will use a zero-mean spherical Gaussian prior for reasons explained further below. To sum this up we have</p>
 <p><span id="eq-prior"><span class="math display">\[
@@ -378,7 +372,7 @@ Simulation of changing parameter distribution.
 &amp;&amp; p(\mathbf{w})&amp; \sim \mathcal{N} \left( \mathbf{w} | \mathbf{w}_0, \Sigma_0 \right) \\
 \end{aligned}
 \end{equation}
-\qquad(3)\]</span></span></p>
+\tag{3}\]</span></span></p>
 <p>with <span class="math inline">\(\mathbf{w}_0=\mathbf{0}\)</span> and <span class="math inline">\(\Sigma_0=\sigma^2\mathbf{I}\)</span>. Plugging this into Bayes’ rule we finally have</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -398,7 +392,7 @@ Simulation of changing parameter distribution.
 &amp;&amp; \nabla^2_{\mathbf{w}}\ell(\mathbf{w})&amp;= \sum_{n=1}^{N} (\mu_n-y_n) \left( \mu_n(1-\mu_n) \mathbf{x}_n \mathbf{x}_n^T \right) + \mathbf{H}_0\\
 \end{aligned}
 \end{equation}
-\qquad(4)\]</span></span></p>
+\tag{4}\]</span></span></p>
 <div class="sidenote">
 <p><strong>SIDENOTE</strong> 💡</p>
 <p>Note how earlier I mentioned that maximising the posterior likelihood can be seen as regularized maximum likelihood estimation. We can now make that connection explicit: in <a href="#eq-likeli">Equation&nbsp;4</a> let us assume that <span class="math inline">\(\mathbf{w}_0=\mathbf{0}\)</span>. Then since <span class="math inline">\(\mathbf{H}_0=\lambda\mathbf{I}\)</span> with <span class="math inline">\(1/\sigma^2\)</span> the second term in the first line is simply <span class="math inline">\(\lambda \frac{1}{2} \mathbf{w}^T\mathbf{w}=\lambda \frac{1}{2} ||\mathbf{w}||_2^2\)</span>. This is equivalent to running logistic regression with an <span class="math inline">\(\ell_2\)</span>-penalty <span class="citation" data-cites="bishop2006pattern">(<a href="#ref-bishop2006pattern" role="doc-biblioref">Bishop 2006</a>)</span>.</p>
@@ -416,7 +410,7 @@ Simulation of changing parameter distribution.
 &amp;&amp; p(y=1|\mathbf{x}, \mathcal{D})&amp;= \int \sigma(\mathbf{w}^T \mathbf{x})p(\mathbf{w}|\mathcal{D})d\mathbf{w} \\
 \end{aligned}
 \end{equation}
-\qquad(5)\]</span></span></p>
+\tag{5}\]</span></span></p>
 <div class="sidenote">
 <p><strong>SIDENOTE</strong> 💡</p>
 <p>The approach that ignores uncertainty altogether corresponds to what is referred to as <strong>plugin</strong> approximation of the posterior predictive. Formally, it imposes <span class="math inline">\(p(y=1|\mathbf{x}, \mathcal{D})\approx p(y=1|\mathbf{x}, \hat{\mathbf{w}})\)</span>.</p>
@@ -480,16 +474,8 @@ Simulation of changing parameter distribution.
 <p>As a great reference for further reading about probabilistic machine learning I can highly recommend <span class="citation" data-cites="murphy2022probabilistic">Murphy (<a href="#ref-murphy2022probabilistic" role="doc-biblioref">2022</a>)</span>. An electronic version of the book is currently freely available as a draft. Finally, remember that if you want to try yourself at the code, you can check out this <a href="https://colab.research.google.com/github/pat-alt/pat-alt.github.io/blob/main/content/post/2021-11-15-bayesian-logistic-regression/julia_implementation.ipynb">interactive notebook</a>.</p>
 </section>
 <section id="references" class="level2">
-
-
-
-
-<!-- -->
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bishop2006pattern" class="csl-entry" role="doc-biblioentry">
 Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. springer.
 </div>
@@ -505,7 +491,15 @@ Murphy, Kevin P. 2012. <em>Machine Learning: A Probabilistic Perspective</em>. M
 <div id="ref-schut2021generating" class="csl-entry" role="doc-biblioentry">
 Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating Interpretable Counterfactual Explanations by Implicit Minimisation of Epistemic and Aleatoric Uncertainties.”</span> In <em>International Conference on Artificial Intelligence and Statistics</em>, 1756–64. PMLR.
 </div>
-</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+</div>
+
+
+<!-- -->
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1" role="doc-endnote"><p>We let <span class="math inline">\(\mathbf{w}=(10, 0.75, -2.5)^T\)</span> define the true coefficients.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -523,103 +517,6 @@ November 15, 2021.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-    } else {
-      disableStylesheet(alternateStylesheets);
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  let localAlternateSentinel = 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } 
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
