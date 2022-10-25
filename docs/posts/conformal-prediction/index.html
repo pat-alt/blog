@@ -222,7 +222,7 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#enter-conformal-prediction" id="toc-enter-conformal-prediction" class="nav-link active" data-scroll-target="#enter-conformal-prediction">👉 Enter: Conformal Prediction</a></li>
-  <li><a href="#conformal-prediction-in-julia" id="toc-conformal-prediction-in-julia" class="nav-link" data-scroll-target="#conformal-prediction-in-julia">🟣🔴🟢 Conformal Prediction in Julia</a></li>
+  <li><a href="#conformal-prediction-in-julia" id="toc-conformal-prediction-in-julia" class="nav-link" data-scroll-target="#conformal-prediction-in-julia">💻 Conformal Prediction in Julia</a></li>
   <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">🏃‍♀️ TL;DR</a></li>
   <li><a href="#related-packages" id="toc-related-packages" class="nav-link" data-scroll-target="#related-packages">📦 Related Packages</a></li>
   <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">📚 Further Resources</a></li>
@@ -273,7 +273,7 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 </header>
 
 <div class="cell" data-execution_count="1">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">activate</span>(<span class="st">"posts/conformal-prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -306,109 +306,103 @@ Note
 </div>
 </section>
 <section id="conformal-prediction-in-julia" class="level2">
-<h2 class="anchored" data-anchor-id="conformal-prediction-in-julia">🟣🔴🟢 Conformal Prediction in Julia</h2>
+<h2 class="anchored" data-anchor-id="conformal-prediction-in-julia">💻 Conformal Prediction in Julia</h2>
 <p>In this section of this first post on CP we will see how <em>split conformal prediction</em> (SCP) can be implemented in Julia to be compatible with any of the many supervised machine learning models available in <a href="https://alan-turing-institute.github.io/MLJ.jl/dev/">MLJ</a>: a beautiful, comprehensive machine learning framework funded by the <a href="https://www.turing.ac.uk/">Alan Turing Institute</a> and the <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/">New Zealand Strategic Science Investment Fund</a>.</p>
-<p>We consider a simple multi-class prediction problem. Let <span class="math inline">\((X_i, Y_i), \ i=1,...,n\)</span> denote our feature-label pairs and let <span class="math inline">\(\mu: \mathcal{X} \mapsto \mathcal{Y}\)</span> denote the mapping from features to labels. A corresponding toy dataset is shown in <strong>?@fig-data</strong>.</p>
+<p>We consider a simple multi-class prediction problem. Let <span class="math inline">\((X_i, Y_i), \ i=1,...,n\)</span> denote our feature-label pairs and let <span class="math inline">\(\mu: \mathcal{X} \mapsto \mathcal{Y}\)</span> denote the mapping from features to labels. For illustration purposes we will use the iris dataset.</p>
 <div class="cell" data-execution_count="2">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Data:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> <span class="pp">@load_iris</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">replace!</span>(y, <span class="st">"setosa"</span> <span class="op">=&gt;</span> <span class="st">"🟣"</span>, <span class="st">"versicolor"</span> <span class="op">=&gt;</span> <span class="st">"🔴"</span>, <span class="st">"virginica"</span> <span class="op">=&gt;</span> <span class="st">"🟢"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> <span class="fu">partition</span>(<span class="fu">eachindex</span>(y), <span class="fl">0.8</span>, shuffle<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">42</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Data:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> <span class="pp">@load_iris</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> <span class="fu">partition</span>(<span class="fu">eachindex</span>(y), <span class="fl">0.8</span>, shuffle<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Split conformal prediction (also elsewhere referred to as <em>inductive</em> conformal prediction) can then be summarized as follows:</p>
 <ol type="1">
-<li>Partition the training into a proper training set and a separate calibration set: <span class="math inline">\(\mathcal{D}_n=\mathcal{D}^{\text{train}} \cup \mathcal{D}^{\text{calibration}}\)</span>.</li>
+<li>Partition the training into a proper training set and a separate calibration set: <span class="math inline">\(\mathcal{D}_n=\mathcal{D}^{\text{train}} \cup \mathcal{D}^{\text{cali}}\)</span>.</li>
 <li>Train the machine learning model on the proper training set: <span class="math inline">\(\hat\mu_{i \in \mathcal{D}^{\text{train}}}(X_i,Y_i)\)</span>.</li>
-<li>Compute nonconformity scores, <span class="math inline">\(\mathcal{S}\)</span>, using the calibration data <span class="math inline">\(\mathcal{D}^{\text{calibration}}\)</span> and the fitted model <span class="math inline">\(\hat\mu_{i \in \mathcal{D}^{\text{train}}}\)</span>.</li>
+<li>Compute nonconformity scores, <span class="math inline">\(\mathcal{S}\)</span>, using the calibration data <span class="math inline">\(\mathcal{D}^{\text{cali}}\)</span> and the fitted model <span class="math inline">\(\hat\mu_{i \in \mathcal{D}^{\text{train}}}\)</span>.</li>
 <li>For a user-specified desired coverage ratio <span class="math inline">\((1-\alpha)\)</span> compute the corresponding quantile, <span class="math inline">\(\hat{q}\)</span>, of the empirical distribution of nonconformity scores, <span class="math inline">\(\mathcal{S}\)</span>.</li>
 <li>For the given quantile and test sample <span class="math inline">\(X_{\text{test}}\)</span>, form the corresponding conformal prediction set:</li>
 </ol>
-<p><span class="math display">\[
+<p><span id="eq-set"><span class="math display">\[
 C(X_{\text{test}})=\{y:s(X_{\text{test}},y) \le \hat{q}\}
-\]</span> (#eq)</p>
-<p>The code below implements the simplest form of this procedure in Julia. It is lifted from the source code of [<code>ConformalPrediction.jl</code>]: a package for CP in Julia that I have been working on. As a first important step, we begin by defining a concrete type <code>SimpleInductiveClassifier</code> that wraps a supervised model from [<code>MLJ.jl</code>] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we define the way prediction sets are formed based on the estimated nonconformity scores.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">"The `SimpleInductiveClassifier` is the simplest approach to Inductive Conformal Classification. Contrary to the [`NaiveClassifier`](@ref) it computes nonconformity scores using a designated calibration dataset."</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">mutable struct</span> SimpleInductiveClassifier{Model <span class="op">&lt;:</span><span class="dt"> Supervised</span>} <span class="op">&lt;:</span><span class="dt"> ConformalSet</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">::</span><span class="dt">Model</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    coverage<span class="op">::</span><span class="dt">AbstractFloat</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    scores<span class="op">::</span><span class="dt">Union{Nothing,AbstractArray}</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    heuristic<span class="op">::</span><span class="dt">Function</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    train_ratio<span class="op">::</span><span class="dt">AbstractFloat</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">SimpleInductiveClassifier</span>(model<span class="op">::</span><span class="dt">Supervised</span>; coverage<span class="op">::</span><span class="dt">AbstractFloat</span>=<span class="fl">0.95</span>, heuristic<span class="op">::</span><span class="dt">Function</span>=<span class="fu">f</span>(y, ŷ)<span class="op">=</span><span class="fl">1.0</span><span class="op">-</span>ŷ, train_ratio<span class="op">::</span><span class="dt">AbstractFloat</span>=<span class="fl">0.5</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">SimpleInductiveClassifier</span>(model, coverage, <span class="cn">nothing</span>, heuristic, train_ratio)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="pp">@doc</span> <span class="st">raw"""</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">    MMI.fit(conf_model::SimpleInductiveClassifier, verbosity, X, y)</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">For the [`SimpleInductiveClassifier`](@ref) nonconformity scores are computed as follows:</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">``</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">S_i^{\text{CAL}} = s(X_i, Y_i) = h(\hat\mu(X_i), Y_i), \ i \in \mathcal{D}_{\text{calibration}}</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">``</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">A typical choice for the heuristic function is ``h(\hat\mu(X_i), Y_i)=1-\hat\mu(X_i)_{Y_i}`` where ``\hat\mu(X_i)_{Y_i}`` denotes the softmax output of the true class and ``\hat\mu`` denotes the model fitted on training data ``\mathcal{D}_{\text{train}}``. The simple approach only takes the softmax probability of the true label into account.</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> MMI.<span class="fu">fit</span>(conf_model<span class="op">::</span><span class="dt">SimpleInductiveClassifier</span>, verbosity, X, y)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Data Splitting:</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    train, calibration <span class="op">=</span> <span class="fu">partition</span>(<span class="fu">eachindex</span>(y), conf_model.train_ratio)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    Xtrain <span class="op">=</span> MLJ.<span class="fu">matrix</span>(X)[train,<span class="op">:</span>]</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    ytrain <span class="op">=</span> y[train]</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    Xcal <span class="op">=</span> MLJ.<span class="fu">matrix</span>(X)[calibration,<span class="op">:</span>]</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    ycal <span class="op">=</span> y[calibration]</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Training: </span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    fitresult, cache, report <span class="op">=</span> MMI.<span class="fu">fit</span>(conf_model.model, verbosity, MMI.<span class="fu">reformat</span>(conf_model.model, Xtrain, ytrain)<span class="op">...</span>)</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nonconformity Scores:</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    ŷ <span class="op">=</span> <span class="fu">pdf</span>.(MMI.<span class="fu">predict</span>(conf_model.model, fitresult, Xcal), ycal)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    conf_model.scores <span class="op">=</span> @.(conf_model.<span class="fu">heuristic</span>(ycal, ŷ))</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (fitresult, cache, report)</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="pp">@doc</span> <span class="st">raw"""</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="st">    MMI.predict(conf_model::SimpleInductiveClassifier, fitresult, Xnew)</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="st">For the [`SimpleInductiveClassifier`](@ref) prediction sets are computed as follows,</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="st">``</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="st">\hat{C}_{n,\alpha}(X_{n+1}) = \left\{y: s(X_{n+1},y) \le \hat{q}_{n, \alpha}^{+} \{S_i^{\text{CAL}}\} \right\}, \ i \in \mathcal{D}_{\text{calibration}}</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="st">``</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="st">where ``\mathcal{D}_{\text{calibration}}`` denotes the designated calibration data.</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> MMI.<span class="fu">predict</span>(conf_model<span class="op">::</span><span class="dt">SimpleInductiveClassifier</span>, fitresult, Xnew)</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    p̂ <span class="op">=</span> MMI.<span class="fu">predict</span>(conf_model.model, fitresult, MMI.<span class="fu">reformat</span>(conf_model.model, Xnew)<span class="op">...</span>)</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    L <span class="op">=</span> p̂.decoder.classes</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    ŷ <span class="op">=</span> <span class="fu">pdf</span>(p̂, L)</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> conf_model.scores</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    q̂ <span class="op">=</span> <span class="bu">Statistics</span>.<span class="fu">quantile</span>(v, conf_model.coverage)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    ŷ <span class="op">=</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> <span class="fu">collect</span>(key <span class="op">=&gt;</span> <span class="fl">1.0</span><span class="op">-</span>val <span class="op">&lt;=</span> q̂ ? val <span class="op">:</span> <span class="cn">missing</span> <span class="cf">for</span> (key,val) <span class="kw">in</span> <span class="fu">zip</span>(L,x)),<span class="fu">eachrow</span>(ŷ))</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ŷ</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now let’s take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [<code>MLJ.jl</code>] conventions. Using [<code>ConformalPrediction.jl</code>] we then wrap our atomic model into a conformal model using the standard API call <code>conformal_model</code>. To train and predict from our conformal model we can then rely on the conventional [<code>MLJ.jl</code>] procedure again. The final predictions are set-valued.</p>
+\tag{1}\]</span></span></p>
+<p>The code below implements the simplest form of this procedure in Julia. It is lifted from the source code of [<code>ConformalPrediction.jl</code>]: a package for CP in Julia that I have been working on. As a first important step, we begin by defining a concrete type <code>SimpleInductiveClassifier</code> that wraps a supervised model from [<code>MLJ.jl</code>] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in <a href="#eq-set">Equation&nbsp;1</a> to compute the conformal prediction set.</p>
+<script src="https://gist.github.com/pat-alt/6f0dfeb471dca927387a46f93ab5ee1b.js"></script>
+<p>Now let’s take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard <a href="https://alan-turing-institute.github.io/MLJ.jl/v0.18/"><code>MLJ.jl</code></a> conventions. Using <a href="https://github.com/pat-alt/ConformalPrediction.jl"><code>ConformalPrediction.jl</code></a> we then wrap our atomic model into a conformal model using the standard API call <code>conformal_model</code>. To train and predict from our conformal model we can then rely on the conventional <a href="https://alan-turing-institute.github.io/MLJ.jl/v0.18/"><code>MLJ.jl</code></a> procedure again. The final predictions are set-valued.</p>
 <div class="cell" data-execution_count="3">
-<details>
+<details open="">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model:</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>EvoTreeClassifier <span class="op">=</span> <span class="pp">@load</span> EvoTreeClassifier pkg<span class="op">=</span>EvoTrees</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">EvoTreeClassifier</span>() </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Training:</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ConformalPrediction</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>conf_model <span class="op">=</span> <span class="fu">conformal_model</span>(model)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>mach <span class="op">=</span> <span class="fu">machine</span>(conf_model, X, y)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(mach, rows<span class="op">=</span>train)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>Xtest <span class="op">=</span> <span class="fu">selectrows</span>(X, <span class="fu">first</span>(test))</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ytest <span class="op">=</span> y[<span class="fu">first</span>(test)]</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mach, Xtest)[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>EvoTreeClassifier <span class="op">=</span> <span class="pp">@load</span> EvoTreeClassifier pkg<span class="op">=</span>EvoTrees</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">EvoTreeClassifier</span>() </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Training:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ConformalPrediction</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>conf_model <span class="op">=</span> <span class="fu">conformal_model</span>(model; coverage<span class="op">=</span><span class="fl">.9</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>mach <span class="op">=</span> <span class="fu">machine</span>(conf_model, X, y)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(mach, rows<span class="op">=</span>train)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Xtest <span class="op">=</span> <span class="fu">selectrows</span>(X, <span class="fu">first</span>(test))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ytest <span class="op">=</span> y[<span class="fu">first</span>(test)]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mach, Xtest)[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>import EvoTrees ✔</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="199">
+<div class="ansi-escaped-output">
+<pre>                    <span class="ansi-bright-white-fg ansi-bold">UnivariateFinite{Multiclass{3}}</span>      
+              <span class="ansi-bright-black-fg">┌                                        ┐</span> 
+   versicolor <span class="ansi-bright-black-fg">┤</span><span class="ansi-green-fg">■■■■■■■■■■■■■■■■■■■■</span> 0.8198826778948226 <span class="ansi-bright-black-fg"> </span> 
+              <span class="ansi-bright-black-fg">└                                        ┘</span> </pre>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>conf_model <span class="op">=</span> <span class="fu">conformal_model</span>(model; coverage<span class="op">=</span><span class="fl">1.0</span><span class="op">-</span><span class="fl">1e-10</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mach <span class="op">=</span> <span class="fu">machine</span>(conf_model, X, y)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(mach, rows<span class="op">=</span>train)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Xtest <span class="op">=</span> <span class="fu">selectrows</span>(X, <span class="fu">first</span>(test))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ytest <span class="op">=</span> y[<span class="fu">first</span>(test)]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mach, Xtest)[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="200">
+<div class="ansi-escaped-output">
+<pre>                    <span class="ansi-bright-white-fg ansi-bold">UnivariateFinite{Multiclass{3}}</span>      
+              <span class="ansi-bright-black-fg">┌                                        ┐</span> 
+       setosa <span class="ansi-bright-black-fg">┤</span><span class="ansi-green-fg">■■</span> 0.09005168145564542                  <span class="ansi-bright-black-fg"> </span> 
+   versicolor <span class="ansi-bright-black-fg">┤</span><span class="ansi-green-fg">■■■■■■■■■■■■■■■■■■■■</span> 0.8198826778948226 <span class="ansi-bright-black-fg"> </span> 
+    virginica <span class="ansi-bright-black-fg">┤</span><span class="ansi-green-fg">■■</span> 0.09006564064953211                  <span class="ansi-bright-black-fg"> </span> 
+              <span class="ansi-bright-black-fg">└                                        ┘</span> </pre>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<details open="">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>conf_model <span class="op">=</span> <span class="fu">conformal_model</span>(model; coverage<span class="op">=</span><span class="fl">1e-10</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mach <span class="op">=</span> <span class="fu">machine</span>(conf_model, X, y)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(mach, rows<span class="op">=</span>train)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Xtest <span class="op">=</span> <span class="fu">selectrows</span>(X, <span class="fu">first</span>(test))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ytest <span class="op">=</span> y[<span class="fu">first</span>(test)]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mach, Xtest)[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="201">
+<pre><code>missing</code></pre>
+</div>
 </div>
 </section>
 <section id="tldr" class="level2">
@@ -637,175 +631,137 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <script src="https://utteranc.es/client.js" repo="pat-alt/blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<pre class="markdown" data-shortcodes="false"><code>---
-title: Conformal Prediction
-subtitle: From scratch in Julia Language
-author: Patrick Altmeyer
-date: '2022-10-25'
-categories:
-  - probabilistic programming
-  - uncertainty
-  - Julia
-description: &gt;-
-  A very gentle introduction to Conformal Prediction from the bottom up with examples in Julia language.
-image: www/intro.gif
-jupyter: julia-1.7
-execute: 
-  eval: false
-draft: true
----
-
-quarto-executable-code-5450563D
-
-```julia
-using Pkg; Pkg.activate("posts/conformal-prediction")
-```
-
-
-&lt;div class="intro-gif"&gt;
-  &lt;figure&gt;
-    &lt;img src="www/intro.gif"&gt;
-    &lt;figcaption&gt;A Bayesian Neural Network gradually learns.&lt;/figcaption&gt;
-  &lt;/figure&gt;
-&lt;/div&gt;
-
-A first crucial step towards building trustworthy AI systems is to be transparent about predictive uncertainty. Model parameters are random variables and their values are estimated from noisy data. That inherent stochasticity feeds through to model predictions and should to be addressed at the very least in order to avoid overconfidence in models. Beyond that obvious concern, it turns out that quantifying model uncertainty actually opens up a myriad of possibilities to improve up- and downstream modeling tasks like active learning and explainability. In Bayesian Active Learning, for example, uncertainty estimates are used to guide the search for new input samples, which can make ground-truthing tasks more efficient [@houlsby2011bayesian]. With respect to model performance in downstream tasks, uncertainty quantification can be used to improve model calibration and robustness [@lakshminarayanan2016simple]. 
-
-In previous posts we have looked at how uncertainty can be quantified in the Bayesian context. Since in Bayesian modeling we are generally concerned with estimated posterior distributions, we get uncertainty estimates almost as a byproduct. This is great for all intends and purposes, but it hinges on assumptions about prior distributions. Personally, I have no quarrel with the idea of making prior distributional assumptions. On the contrary, I think the Bayesian framework formalizes the idea of integrating prior information in models and therefore provides a powerful toolkit for conducting science. Still, in some cases this requirement may be seen as too restrictive or we may simply lack prior information. 
-
-## 👉 Enter: Conformal Prediction
-
-Conformal Prediction (CP) promises to be a easy-to-understand, distribution-free and model-agnostic way to generate statistically rigorous uncertainty estimates. That's quite a mouthful, so let's break it down: firstly, as I will hopefully manage to illustrate in this post, the underlying concepts truly are fairly straight-forward to understand; secondly, CP indeed relies on only minimal distributional assumptions; thirdly, common procedures to generate conformal predictions really do apply almost universally to all supervised models, therefore making the framework very intriguing to the ML community; and, finally, CP does in fact come with a coverage guarantee that ensures that conformal prediction sets contain the true value with a user-chosen probability. For a formal proof of this *marginal coverage* property and a detailed introduction to the topic, I recommend @angelopoulos2021gentle. 
-
-:::{.callout-note}
-In what follows we will loosely treat the tutorial by @angelopoulos2021gentle and the general framework it sets as a reference. You are not expected to have read the paper, but I also won't reiterate any details here.
-:::
-
-## 🟣🔴🟢 Conformal Prediction in Julia
-
-In this section of this first post on CP we will see how *split conformal prediction* (SCP) can be implemented in Julia to be compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). 
-
-We consider a simple multi-class prediction problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. A corresponding toy dataset is shown in @fig-data. 
-
-quarto-executable-code-5450563D
-
-```julia
-using MLJ
-
-# Data:
-X, y = @load_iris
-replace!(y, "setosa" =&gt; "🟣", "versicolor" =&gt; "🔴", "virginica" =&gt; "🟢")
-train, test = partition(eachindex(y), 0.8, shuffle=true)
-```
-
-Split conformal prediction (also elsewhere referred to as *inductive* conformal prediction) can then be summarized as follows:
-
-1. Partition the training into a proper training set and a separate calibration set: $\mathcal{D}_n=\mathcal{D}^{\text{train}} \cup \mathcal{D}^{\text{calibration}}$.
-2. Train the machine learning model on the proper training set: $\hat\mu_{i \in \mathcal{D}^{\text{train}}}(X_i,Y_i)$.
-3. Compute nonconformity scores, $\mathcal{S}$, using the calibration data $\mathcal{D}^{\text{calibration}}$ and the fitted model $\hat\mu_{i \in \mathcal{D}^{\text{train}}}$. 
-4. For a user-specified desired coverage ratio $(1-\alpha)$ compute the corresponding quantile, $\hat{q}$, of the empirical distribution of nonconformity scores, $\mathcal{S}$.
-5. For the given quantile and test sample $X_{\text{test}}$, form the corresponding conformal prediction set: 
-
-$$
-C(X_{\text{test}})=\{y:s(X_{\text{test}},y) \le \hat{q}\}
-$$ (#eq)
-
-The code below implements the simplest form of this procedure in Julia. It is lifted from the source code of [`ConformalPrediction.jl`]: a package for CP in Julia that I have been working on. As a first important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we define the way prediction sets are formed based on the estimated nonconformity scores.
-
-```{.julia}
-# Simple
-"The `SimpleInductiveClassifier` is the simplest approach to Inductive Conformal Classification. Contrary to the [`NaiveClassifier`](@ref) it computes nonconformity scores using a designated calibration dataset."
-mutable struct SimpleInductiveClassifier{Model &lt;: Supervised} &lt;: ConformalSet
-    model::Model
-    coverage::AbstractFloat
-    scores::Union{Nothing,AbstractArray}
-    heuristic::Function
-    train_ratio::AbstractFloat
-end
-
-function SimpleInductiveClassifier(model::Supervised; coverage::AbstractFloat=0.95, heuristic::Function=f(y, ŷ)=1.0-ŷ, train_ratio::AbstractFloat=0.5)
-    return SimpleInductiveClassifier(model, coverage, nothing, heuristic, train_ratio)
-end
-
-@doc raw"""
-    MMI.fit(conf_model::SimpleInductiveClassifier, verbosity, X, y)
-For the [`SimpleInductiveClassifier`](@ref) nonconformity scores are computed as follows:
-``
-S_i^{\text{CAL}} = s(X_i, Y_i) = h(\hat\mu(X_i), Y_i), \ i \in \mathcal{D}_{\text{calibration}}
-``
-A typical choice for the heuristic function is ``h(\hat\mu(X_i), Y_i)=1-\hat\mu(X_i)_{Y_i}`` where ``\hat\mu(X_i)_{Y_i}`` denotes the softmax output of the true class and ``\hat\mu`` denotes the model fitted on training data ``\mathcal{D}_{\text{train}}``. The simple approach only takes the softmax probability of the true label into account.
-"""
-function MMI.fit(conf_model::SimpleInductiveClassifier, verbosity, X, y)
-    
-    # Data Splitting:
-    train, calibration = partition(eachindex(y), conf_model.train_ratio)
-    Xtrain = MLJ.matrix(X)[train,:]
-    ytrain = y[train]
-    Xcal = MLJ.matrix(X)[calibration,:]
-    ycal = y[calibration]
-
-    # Training: 
-    fitresult, cache, report = MMI.fit(conf_model.model, verbosity, MMI.reformat(conf_model.model, Xtrain, ytrain)...)
-
-    # Nonconformity Scores:
-    ŷ = pdf.(MMI.predict(conf_model.model, fitresult, Xcal), ycal)
-    conf_model.scores = @.(conf_model.heuristic(ycal, ŷ))
-
-    return (fitresult, cache, report)
-end
-
-@doc raw"""
-    MMI.predict(conf_model::SimpleInductiveClassifier, fitresult, Xnew)
-For the [`SimpleInductiveClassifier`](@ref) prediction sets are computed as follows,
-``
-\hat{C}_{n,\alpha}(X_{n+1}) = \left\{y: s(X_{n+1},y) \le \hat{q}_{n, \alpha}^{+} \{S_i^{\text{CAL}}\} \right\}, \ i \in \mathcal{D}_{\text{calibration}}
-``
-where ``\mathcal{D}_{\text{calibration}}`` denotes the designated calibration data.
-"""
-function MMI.predict(conf_model::SimpleInductiveClassifier, fitresult, Xnew)
-    p̂ = MMI.predict(conf_model.model, fitresult, MMI.reformat(conf_model.model, Xnew)...)
-    L = p̂.decoder.classes
-    ŷ = pdf(p̂, L)
-    v = conf_model.scores
-    q̂ = Statistics.quantile(v, conf_model.coverage)
-    ŷ = map(x -&gt; collect(key =&gt; 1.0-val &lt;= q̂ ? val : missing for (key,val) in zip(L,x)),eachrow(ŷ))
-    return ŷ
-end
-```
-
-Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [`MLJ.jl`] conventions. Using [`ConformalPrediction.jl`] we then wrap our atomic model into a conformal model using the standard API call `conformal_model`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`] procedure again. The final predictions are set-valued.
-
-quarto-executable-code-5450563D
-
-```julia
-# Model:
-EvoTreeClassifier = @load EvoTreeClassifier pkg=EvoTrees
-model = EvoTreeClassifier() 
-
-# Training:
-using ConformalPrediction
-conf_model = conformal_model(model)
-mach = machine(conf_model, X, y)
-fit!(mach, rows=train)
-
-# Conformal Prediction:
-Xtest = selectrows(X, first(test))
-ytest = y[first(test)]
-predict(mach, Xtest)[1]
-```
-
-## 🏃‍♀️ TL;DR
-
-Implementing CP directly on top of an existing, powerful machine learning toolkit demonstrates the potential usefulness of this framework to the ML community. 
-
-## 📦 Related Packages
-
-## 📚 Further Resources
-
-Chances are that you have already come across the Awesome Conformal Prediction [repo](https://github.com/valeman/awesome-conformal-prediction): @manokhin2022awesome provides a comprehensive, up-to-date overview of resources related to the conformal prediction. Among the listed articles you will also find @angelopoulos2021gentle, which inspired much of this post. 
-
-
-</code></pre>
+<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> Conformal Prediction</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> From scratch in Julia Language</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> Patrick Altmeyer</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> '2022-10-25'</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - probabilistic programming</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - uncertainty</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - Julia</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &gt;-</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">  A very gentle introduction to Conformal Prediction from the bottom up with examples in Julia language.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> www/intro.gif</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="an">jupyter:</span><span class="co"> julia-1.8</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>using Pkg; Pkg.activate(<span class="ot">"</span><span class="st">posts/conformal-prediction</span><span class="ot">"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">"intro-gif"</span><span class="kw">&gt;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;figure&gt;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"www/intro.gif"</span><span class="kw">&gt;</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;figcaption&gt;</span>A Bayesian Neural Network gradually learns.<span class="kw">&lt;/figcaption&gt;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/figure&gt;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>A first crucial step towards building trustworthy AI systems is to be transparent about predictive uncertainty. Model parameters are random variables and their values are estimated from noisy data. That inherent stochasticity feeds through to model predictions and should to be addressed at the very least in order to avoid overconfidence in models. Beyond that obvious concern, it turns out that quantifying model uncertainty actually opens up a myriad of possibilities to improve up- and downstream modeling tasks like active learning and explainability. In Bayesian Active Learning, for example, uncertainty estimates are used to guide the search for new input samples, which can make ground-truthing tasks more efficient <span class="co">[</span><span class="ot">@houlsby2011bayesian</span><span class="co">]</span>. With respect to model performance in downstream tasks, uncertainty quantification can be used to improve model calibration and robustness <span class="co">[</span><span class="ot">@lakshminarayanan2016simple</span><span class="co">]</span>. </span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>In previous posts we have looked at how uncertainty can be quantified in the Bayesian context. Since in Bayesian modeling we are generally concerned with estimated posterior distributions, we get uncertainty estimates almost as a byproduct. This is great for all intends and purposes, but it hinges on assumptions about prior distributions. Personally, I have no quarrel with the idea of making prior distributional assumptions. On the contrary, I think the Bayesian framework formalizes the idea of integrating prior information in models and therefore provides a powerful toolkit for conducting science. Still, in some cases this requirement may be seen as too restrictive or we may simply lack prior information. </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## 👉 Enter: Conformal Prediction</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>Conformal Prediction (CP) promises to be a easy-to-understand, distribution-free and model-agnostic way to generate statistically rigorous uncertainty estimates. That's quite a mouthful, so let's break it down: firstly, as I will hopefully manage to illustrate in this post, the underlying concepts truly are fairly straight-forward to understand; secondly, CP indeed relies on only minimal distributional assumptions; thirdly, common procedures to generate conformal predictions really do apply almost universally to all supervised models, therefore making the framework very intriguing to the ML community; and, finally, CP does in fact come with a coverage guarantee that ensures that conformal prediction sets contain the true value with a user-chosen probability. For a formal proof of this *marginal coverage* property and a detailed introduction to the topic, I recommend @angelopoulos2021gentle. </span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>In what follows we will loosely treat the tutorial by @angelopoulos2021gentle and the general framework it sets as a reference. You are not expected to have read the paper, but I also won't reiterate any details here.</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## 💻 Conformal Prediction in Julia</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>In this section of this first post on CP we will see how *split conformal prediction* (SCP) can be implemented in Julia to be compatible with any of the many supervised machine learning models available in <span class="co">[</span><span class="ot">MLJ</span><span class="co">](https://alan-turing-institute.github.io/MLJ.jl/dev/)</span>: a beautiful, comprehensive machine learning framework funded by the <span class="co">[</span><span class="ot">Alan Turing Institute</span><span class="co">](https://www.turing.ac.uk/)</span> and the <span class="co">[</span><span class="ot">New Zealand Strategic Science Investment Fund</span><span class="co">](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/)</span>. </span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>We consider a simple multi-class prediction problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. For illustration purposes we will use the iris dataset. </span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>using MLJ</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>using Random</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>Random.seed!(<span class="dv">42</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Data:</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>X, <span class="ot">y </span>= <span class="dt">@load_iris</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>train, test = partition(eachindex(y), <span class="fl">0.8</span>, shuffle=true)</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="st">Split conformal prediction (also elsewhere referred to as *inductive* conformal prediction) can then be summarized as follows:</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="st">1. Partition the training into a proper training set and a separate calibration set: </span><span class="wa">$\</span><span class="st">mathcal{D}_n=\mathcal{D}^{</span><span class="ch">\t</span><span class="st">ext{train}} </span><span class="ch">\cu</span><span class="st">p \mathcal{D}^{</span><span class="ch">\t</span><span class="st">ext{cali}}</span><span class="wa">$.</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="st">2. Train the machine learning model on the proper training set: </span><span class="wa">$\</span><span class="st">hat\mu_{i \in \mathcal{D}^{</span><span class="ch">\t</span><span class="st">ext{train}}}(X_i,Y_i)</span><span class="wa">$.</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="st">3. Compute nonconformity scores, </span><span class="wa">$\</span><span class="st">mathcal{S}</span><span class="wa">$,</span><span class="st"> using the calibration data </span><span class="wa">$\</span><span class="st">mathcal{D}^{</span><span class="ch">\t</span><span class="st">ext{cali}}$ and the fitted model </span><span class="wa">$\</span><span class="st">hat\mu_{i \in \mathcal{D}^{</span><span class="ch">\t</span><span class="st">ext{train}}}</span><span class="wa">$.</span><span class="st"> </span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="st">4. For a user-specified desired coverage ratio </span><span class="wa">$(</span><span class="st">1-</span><span class="ch">\a</span><span class="st">lpha)$ compute the corresponding quantile, </span><span class="wa">$\</span><span class="st">hat{q}</span><span class="wa">$,</span><span class="st"> of the empirical distribution of nonconformity scores, </span><span class="wa">$\</span><span class="st">mathcal{S}</span><span class="wa">$.</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="st">5. For the given quantile and test sample </span><span class="dt">$X_</span><span class="st">{</span><span class="ch">\t</span><span class="st">ext{test}}</span><span class="wa">$,</span><span class="st"> form the corresponding conformal prediction set: </span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="wa">$$</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="st">C(X_{</span><span class="ch">\t</span><span class="st">ext{test}})=\{y:s(X_{</span><span class="ch">\t</span><span class="st">ext{test}},y) </span><span class="ch">\l</span><span class="st">e </span><span class="ch">\h</span><span class="st">at{q}\}</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="wa">$$</span><span class="st"> {#eq-set}</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="st">The code below implements the simplest form of this procedure in Julia. It is lifted from the source code of [</span><span class="ot">`</span>ConformalPrediction.jl<span class="ot">`</span><span class="st">]: a package for CP in Julia that I have been working on. As a first important step, we begin by defining a concrete type </span><span class="ot">`</span>SimpleInductiveClassifier<span class="ot">`</span><span class="st"> that wraps a supervised model from [</span><span class="ot">`</span>MLJ.jl<span class="ot">`</span><span class="st">] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in </span><span class="dt">@eq</span><span class="st">-set to compute the conformal prediction set.</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;script src="https://gist.github.com/pat-alt/6f0dfeb471dca927387a46f93ab5ee1b.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="st">Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [</span><span class="ot">`</span>MLJ.jl<span class="ot">`</span><span class="st">](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [</span><span class="ot">`</span>ConformalPrediction.jl<span class="ot">`</span><span class="st">](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call </span><span class="ot">`</span>conformal_model<span class="ot">`</span><span class="st">. To train and predict from our conformal model we can then rely on the conventional [</span><span class="ot">`</span>MLJ.jl<span class="ot">`</span><span class="st">](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. The final predictions are set-valued.</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: true</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="co"># Model:</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>EvoTreeClassifier = <span class="dt">@load</span> EvoTreeClassifier pkg=EvoTrees</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>model = EvoTreeClassifier() </span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="co"># Training:</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>using ConformalPrediction</span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>conf_model = conformal_model(model; coverage=.<span class="dv">9</span>)</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>mach = machine(conf_model, X, y)</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>fit!(mach, rows=train)</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>Xtest = selectrows(X, first(test))</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>ytest = <span class="ot">y</span>[first(test)]</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>predict(mach, Xtest)[<span class="dv">1</span>]</span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: true</span></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>conf_model = conformal_model(model; coverage=<span class="fl">1.0</span><span class="dv">-1</span>e<span class="dv">-10</span>)</span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>mach = machine(conf_model, X, y)</span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>fit!(mach, rows=train)</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>Xtest = selectrows(X, first(test))</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>ytest = <span class="ot">y</span>[first(test)]</span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>predict(mach, Xtest)[<span class="dv">1</span>]</span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: true</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a>conf_model = conformal_model(model; coverage=<span class="dv">1</span>e<span class="dv">-10</span>)</span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>mach = machine(conf_model, X, y)</span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>fit!(mach, rows=train)</span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="co"># Conformal Prediction:</span></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>Xtest = selectrows(X, first(test))</span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>ytest = <span class="ot">y</span>[first(test)]</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>predict(mach, Xtest)[<span class="dv">1</span>]</span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="st">## 🏃‍♀️ TL;DR</span></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="st">Implementing CP directly on top of an existing, powerful machine learning toolkit demonstrates the potential usefulness of this framework to the ML community. </span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="st">## 📦 Related Packages</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="st">## 📚 Further Resources</span></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="st">Chances are that you have already come across the Awesome Conformal Prediction [repo](https://github.com/valeman/awesome-conformal-prediction): </span><span class="dt">@manokhin2022awesome</span><span class="st"> provides a comprehensive, up-to-date overview of resources related to the conformal prediction. Among the listed articles you will also find </span><span class="dt">@angelopoulos2021gentle</span><span class="st">, which inspired much of this post. </span></span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

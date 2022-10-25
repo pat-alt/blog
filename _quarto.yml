@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  execute-dir: project
 
 website:
   title: "blog"
@@ -31,7 +32,7 @@ format:
     theme: solar
     css: styles.css
     toc: true
-    code-fold: true
+    code-fold: show
     code-summary: "Show the code"
     code-tools: true
 

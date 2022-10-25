@@ -1,6 +1,6 @@
 ---
 draft: true
-jupyter: julia-1.6
+jupyter: julia-1.7
 execute:
   eval: false
 ---

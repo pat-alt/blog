@@ -97,8 +97,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../favicon.ico" rel="icon">
-<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -129,29 +127,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BEEZ30787D"></script>
 
-<script type="text/plain" cookie-consent="tracking">
+<script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 </script>
-
-<script type="text/javascript" charset="UTF-8">
-document.addEventListener('DOMContentLoaded', function () {
-cookieconsent.run({
-  "notice_banner_type":"simple",
-  "consent_type":"implied",
-  "palette":"light",
-  "language":"en",
-  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
-  "notice_banner_reject_button_hide":false,
-  "preferences_center_close_button_hide":false,
-  "website_name":""
-  });
-});
-</script> 
-  
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -487,7 +469,7 @@ Just had my first go <a href="https://twitter.com/hashtag/quarto?src=hash&amp;re
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span><span class="at"> </span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">eval</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jupyter</span><span class="kw">:</span><span class="at"> julia-1.6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jupyter</span><span class="kw">:</span><span class="at"> julia-1.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can see that it points to Bibtex file I host on another Github repository. This makes it very easy to generate citations and references for the rendered Markdown documents, that also show up in the docs (e.g.&nbsp;<a href="https://www.paltmeyer.com/CounterfactualExplanations.jl/stable/cats_dogs/">here</a>). Unfortunately, cross-referencing only partially works, because it relies on auto-generated HTML and <code>Documenter.jl</code> expects this to be passed in blocks. Choosing <code>variant: -raw_html</code> is only a workaround as I have discussed <a href="https://github.com/JuliaDocs/Documenter.jl/issues/1778">here</a>. Ideally, <code>Documenter.jl</code> would just accept HTML documents rendered from Quarto, but currently only Markdown documents are accepted by <code>make_docs</code>. Still, if anything this workaround is a nice gimmick that extends the default <code>Documenter.jl</code> functionality, without any hassle involved. Hopefully, this can be improved in the future.</p>
 </section>
 <section id="using-quarto-for-juliacon-proceedings" class="level4">
@@ -715,7 +697,7 @@ image: www/intro.gif
 comments:
   utterances:
     repo: pat-alt/blog
-jupyter: julia-1.6
+jupyter: julia-1.7
 execute:
     echo: false
     eval: false
@@ -938,7 +920,7 @@ output: asis
 execute: 
   echo: true
   eval: false
-jupyter: julia-1.6
+jupyter: julia-1.7
 ```
 
 You can see that it points to Bibtex file I host on another Github repository. This makes it very easy to generate citations and references for the rendered Markdown documents, that also show up in the docs (e.g. [here](https://www.paltmeyer.com/CounterfactualExplanations.jl/stable/cats_dogs/)). Unfortunately, cross-referencing only partially works, because it relies on auto-generated HTML and `Documenter.jl` expects this to be passed in blocks. Choosing `variant: -raw_html` is only a workaround as I have discussed [here](https://github.com/JuliaDocs/Documenter.jl/issues/1778). Ideally, `Documenter.jl` would just accept HTML documents rendered from Quarto, but currently only Markdown documents are accepted by `make_docs`. Still, if anything this workaround is a nice gimmick that extends the default `Documenter.jl` functionality, without any hassle involved. Hopefully, this can be improved in the future.
@@ -954,7 +936,7 @@ In this post I wanted to demonstrate that Quarto might just be the next revoluti
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2022, Patrick Altmeyer<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+      <div class="nav-footer-center">© 2022, Patrick Altmeyer</div>
   </div>
 </footer>
 
