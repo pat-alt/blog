@@ -204,7 +204,7 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 <section id="train-model" class="level3">
 <h3 class="anchored" data-anchor-id="train-model">Train model</h3>
 <div class="cell" data-execution_count="1">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Plots</span>, <span class="bu">Random</span>, <span class="bu">PlotThemes</span>, <span class="bu">Statistics</span>, <span class="bu">BayesLaplace</span></span>
@@ -244,7 +244,7 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 <section id="chart" class="level3">
 <h3 class="anchored" data-anchor-id="chart">Chart</h3>
 <div class="cell" data-execution_count="2">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">123</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shuffled_indices <span class="op">=</span> <span class="fu">randperm</span>(<span class="fl">200</span>)</span>
@@ -252,7 +252,7 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 </details>
 </div>
 <div class="cell" data-execution_count="3">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xlim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ylim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]))</span>
@@ -269,13 +269,13 @@ gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 </details>
 </div>
 <div class="cell" data-execution_count="4">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gif</span>(anim, <span class="st">"www/intro.gif"</span>, fps<span class="op">=</span><span class="fl">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell" data-execution_count="5">
-<details>
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>xlim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">1</span>,<span class="op">:</span>]))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ylim <span class="op">=</span> (<span class="fu">minimum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]),<span class="fu">maximum</span>(X[<span class="fl">2</span>,<span class="op">:</span>]))</span>

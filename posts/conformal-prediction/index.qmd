@@ -55,10 +55,10 @@ We consider a simple multi-class prediction problem. Let $(X_i, Y_i), \ i=1,...,
 ```{julia}
 using MLJ
 using Random
-Random.seed!(42)
+Random.seed!(123)
 
 # Data:
-X, y = make_moons(200; noise=0.1)
+X, y = make_moons(500; noise=0.15)
 train, test = partition(eachindex(y), 0.8, shuffle=true)
 ```
 
@@ -76,8 +76,6 @@ $$ {#eq-set}
 
 The code below implements the simplest form of this procedure in Julia.  As a first important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in @eq-set to compute the conformal prediction set.
 
-<script src="https://gist.github.com/pat-alt/6f0dfeb471dca927387a46f93ab5ee1b.js"></script>
-
 Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call `conformal_model`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. The final predictions are set-valued. 
 
 ```{julia}
@@ -85,7 +83,7 @@ Now let's take this to our data. To illustrate the package functionality we will
 
 # Model:
 KNNClassifier = @load KNNClassifier pkg=NearestNeighborModels
-model = KNNClassifier(;K=15) 
+model = KNNClassifier(;K=50) 
 
 # Training:
 using ConformalPrediction
@@ -103,7 +101,7 @@ While the softmax output remains unchanged for the `SimpleInductiveClassifier`, 
 
 ```{julia}
 #| echo: false
-coverage = .99
+coverage = 1.0
 using Markdown
 Markdown.parse("""
 Below, for example, all three possible classes of iris plants are included in the prediction set when setting coverage the coverage rates equal to $coverage.
@@ -120,8 +118,7 @@ mach = machine(conf_model, X, y)
 fit!(mach, rows=train)
 
 # Conformal Prediction:
-Xtest = selectrows(X, first(test))
-ytest = y[first(test)]
+Xtest = (x1=[1],x2=[0])
 predict(mach, Xtest)[1]
 ```
 
@@ -146,22 +143,15 @@ mach = machine(conf_model, X, y)
 fit!(mach, rows=train)
 
 # Conformal Prediction:
-Xtest = selectrows(X, first(test))
-ytest = y[first(test)]
+Xtest = (x1=[1],x2=[0])
 predict(mach, Xtest)[1]
 ```
 
 ```{julia}
-# Setup
-coverages = [0.5, 0.75, 0.9, 0.99]
-n = 100
-x1_range = range(extrema(X.x1)...,length=n)
-x2_range = range(extrema(X.x2)...,length=n)
-
+#| echo: false
 using Plots
-theme(:mute)
 
-function contourf_setsize(mach::Machine, x1_range, x2_range)
+function contourf_cp(mach::Machine, x1_range, x2_range; type=:set_size)
     set_size = []
     proba = []
     for x2 in x2_range, x1 in x1_range
@@ -174,10 +164,59 @@ function contourf_setsize(mach::Machine, x1_range, x2_range)
         p = ismissing(p̂) ? p̂ : pdf.(p̂, 1)
         push!(proba, p)
     end
-    plt = contourf(x1_range, x2_range, proba, alpha=0.5)
-    # contour!(plt, x1_range, x2_range, set_size)
+    if type == :set_size
+        plt = contourf(x1_range, x2_range, set_size, clim=(0,2), c=cgrad(:blues, 3, categorical = true), title="Set size")
+    elseif type == :proba
+        plt = contourf(x1_range, x2_range, proba, c=:thermal, title="Softmax")
+    end
     return plt
 end
+```
+
+@fig-anim illustrates the effect of the chosen coverage rate on the 
+
+```{julia}
+#| output: true
+#| label: fig-anim
+#| fig-cap: "The effect of the coverage rate on the conformal prediction set. Softmax probabilities are shown on the left. The size of the prediction set is shown on the right."
+
+# Setup
+coverages = range(0.2,1.0,length=5)
+n = 100
+x1_range = range(extrema(X.x1)...,length=n)
+x2_range = range(extrema(X.x2)...,length=n)
+anim = @animate for coverage in coverages
+    conf_model = conformal_model(model; coverage=coverage)
+    mach = machine(conf_model, X, y)
+    fit!(mach, rows=train)
+    p1 = contourf_cp(mach, x1_range, x2_range; type=:proba)
+    scatter!(p1, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
+    scatter!(p1, Xtest.x1, Xtest.x2, ms=5, c=:red, label="Xtest")
+    p2 = contourf_cp(mach, x1_range, x2_range; type=:set_size)
+    scatter!(p2, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
+    scatter!(p2, Xtest.x1, Xtest.x2, ms=5, c=:red, label="Xtest")
+    plot(p1, p2, plot_title="(1-α)=$(round(coverage,digits=2))", size=(800,250))
+end
+
+gif(anim, fps=0.5)
+```
+
+```{julia}
+#| echo: false
+#| eval: false
+# Setup
+coverages = range(0.75,1.0,length=25)
+n = 100
+x1_range = range(extrema(X.x1)...,length=n)
+x2_range = range(extrema(X.x2)...,length=n)
+anim = @animate for coverage in coverages
+    conf_model = conformal_model(model; coverage=coverage)
+    mach = machine(conf_model, X, y)
+    fit!(mach, rows=train)
+    plt = contourf_cp(mach, x1_range, x2_range; type=:proba)
+    plot(plt, axis=nothing, size=(500,500), background_color=:transparent, title="", clegend=false)
+end
+gif(anim, "posts/conformal-prediction/www/intro.gif", fps=5)
 ```
 
 
