@@ -39,7 +39,16 @@ In what follows we will loosely treat the tutorial by @angelopoulos2021gentle an
 
 ## 💻 Conformal Prediction in Julia
 
-In this section of this first post on CP we will see how *split conformal prediction* (SCP) can be implemented in Julia to be compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). 
+In this section of this first short post on CP we will look at conformal prediction can be implemented in Julia to be compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). We will go through some basic usage examples employing a a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
+
+:::{.callout-note}
+## [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl)
+
+`ConformalPrediction.jl` is a package for uncertainty quantification through conformal prediction for machine learning models trained in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/). At the time of writing it is still in its early stages of development. Contributions are very much welcome:
+
+- [Documentation](https://www.paltmeyer.com/ConformalPrediction.jl/stable/)
+- [Contributor's Guide](https://www.paltmeyer.com/ConformalPrediction.jl/stable/#Contribute)
+:::
 
 We consider a simple multi-class prediction problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. For illustration purposes we will use the iris dataset. 
 
@@ -49,11 +58,11 @@ using Random
 Random.seed!(42)
 
 # Data:
-X, y = @load_iris
+X, y = make_moons(200; noise=0.1)
 train, test = partition(eachindex(y), 0.8, shuffle=true)
 ```
 
-Split conformal prediction (also elsewhere referred to as *inductive* conformal prediction) can then be summarized as follows:
+We use a specific case of CP called *split conformal prediction* which can then be summarized as follows:^[In other places split conformal prediction is sometimes referred to as *inductive* conformal prediction.]
 
 1. Partition the training into a proper training set and a separate calibration set: $\mathcal{D}_n=\mathcal{D}^{\text{train}} \cup \mathcal{D}^{\text{cali}}$.
 2. Train the machine learning model on the proper training set: $\hat\mu_{i \in \mathcal{D}^{\text{train}}}(X_i,Y_i)$.
@@ -65,18 +74,18 @@ $$
 C(X_{\text{test}})=\{y:s(X_{\text{test}},y) \le \hat{q}\}
 $$ {#eq-set}
 
-The code below implements the simplest form of this procedure in Julia. It is lifted from the source code of [`ConformalPrediction.jl`]: a package for CP in Julia that I have been working on. As a first important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in @eq-set to compute the conformal prediction set.
+The code below implements the simplest form of this procedure in Julia.  As a first important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in @eq-set to compute the conformal prediction set.
 
 <script src="https://gist.github.com/pat-alt/6f0dfeb471dca927387a46f93ab5ee1b.js"></script>
 
-Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call `conformal_model`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. The final predictions are set-valued.
+Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call `conformal_model`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. The final predictions are set-valued. 
 
 ```{julia}
 #| output: true
 
 # Model:
-EvoTreeClassifier = @load EvoTreeClassifier pkg=EvoTrees
-model = EvoTreeClassifier() 
+KNNClassifier = @load KNNClassifier pkg=NearestNeighborModels
+model = KNNClassifier(;K=15) 
 
 # Training:
 using ConformalPrediction
@@ -90,10 +99,49 @@ ytest = y[first(test)]
 predict(mach, Xtest)[1]
 ```
 
+While the softmax output remains unchanged for the `SimpleInductiveClassifier`, the size of the prediction set depends on the choice of coverage, $(1-\alpha)$. When specifying a coverage rate very close to one, the prediction set will typically include many (in some cases all) of the possible labels.
+
+```{julia}
+#| echo: false
+coverage = .99
+using Markdown
+Markdown.parse("""
+Below, for example, all three possible classes of iris plants are included in the prediction set when setting coverage the coverage rates equal to $coverage.
+""")
+```
+
+This intuitive, since high coverage quite literally requires that the true label is covered by the prediction set with high probability.
+
 ```{julia}
 #| output: true
 
-conf_model = conformal_model(model; coverage=1.0-1e-10)
+conf_model = conformal_model(model; coverage=coverage)
+mach = machine(conf_model, X, y)
+fit!(mach, rows=train)
+
+# Conformal Prediction:
+Xtest = selectrows(X, first(test))
+ytest = y[first(test)]
+predict(mach, Xtest)[1]
+```
+
+Conversely, for low coverage rates, prediction sets can also be empty. 
+
+```{julia}
+#| echo: false
+coverage = .1
+using Markdown
+Markdown.parse("""
+For a choice of $coverage, for example, the prediction set for our test sample is empty.
+""")
+```
+
+This is a bit difficult to think about intuitively and I have not yet come across a satisfactory, intuitive interpretation.^[Any thoughts/comments welcome!]
+
+```{julia}
+#| output: true
+
+conf_model = conformal_model(model; coverage=coverage)
 mach = machine(conf_model, X, y)
 fit!(mach, rows=train)
 
@@ -104,16 +152,32 @@ predict(mach, Xtest)[1]
 ```
 
 ```{julia}
-#| output: true
+# Setup
+coverages = [0.5, 0.75, 0.9, 0.99]
+n = 100
+x1_range = range(extrema(X.x1)...,length=n)
+x2_range = range(extrema(X.x2)...,length=n)
 
-conf_model = conformal_model(model; coverage=1e-10)
-mach = machine(conf_model, X, y)
-fit!(mach, rows=train)
+using Plots
+theme(:mute)
 
-# Conformal Prediction:
-Xtest = selectrows(X, first(test))
-ytest = y[first(test)]
-predict(mach, Xtest)[1]
+function contourf_setsize(mach::Machine, x1_range, x2_range)
+    set_size = []
+    proba = []
+    for x2 in x2_range, x1 in x1_range
+        Xnew = (x1 = [x1], x2 = [x2])
+        p̂ = predict(mach, Xnew)[1]
+        # Set size:
+        z = ismissing(p̂) ? 0 : sum(pdf.(p̂, p̂.decoder.classes) .> 0)
+        push!(set_size, z)
+        # Probability:
+        p = ismissing(p̂) ? p̂ : pdf.(p̂, 1)
+        push!(proba, p)
+    end
+    plt = contourf(x1_range, x2_range, proba, alpha=0.5)
+    # contour!(plt, x1_range, x2_range, set_size)
+    return plt
+end
 ```
 
 
