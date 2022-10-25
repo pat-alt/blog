@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.624">
+<meta name="generator" content="quarto-0.9.629">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -364,7 +364,7 @@ Turning a 9 (nine) into a 4 (four).
 <section id="counterfactual-generators" class="level3">
 <h3 class="anchored" data-anchor-id="counterfactual-generators">Counterfactual generators</h3>
 <p>Next, we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by <span class="citation" data-cites="wachter2017counterfactual">Wachter, Mittelstadt, and Russell (<a href="#ref-wachter2017counterfactual" role="doc-biblioref">2017</a>)</span> and, secondly, a greedy generator introduced by <span class="citation" data-cites="schut2021generating">Schut et al. (<a href="#ref-schut2021generating" role="doc-biblioref">2021</a>)</span>.</p>
-<p>The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019towards">(<a href="#ref-joshi2019towards" role="doc-biblioref">Joshi et al. 2019</a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea.</p>
+<p>The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019towards">(<a href="#ref-joshi2019towards" role="doc-biblioref"><strong>joshi2019towards?</strong></a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea.</p>
 <p>The following code instantiates the two generators for the problem at hand.</p>
 <details>
 <summary>Show the code</summary>
@@ -492,28 +492,25 @@ Experimental functionality
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-antoran2020getting" class="csl-entry" role="doc-biblioentry">
-Antorán, Javier, Umang Bhatt, Tameem Adel, Adrian Weller, and José Miguel Hernández-Lobato. 2020. <span>“Getting a Clue: A Method for Explaining Uncertainty Estimates.”</span> <em>arXiv Preprint arXiv:2006.06848</em>.
-</div>
-<div id="ref-joshi2019towards" class="csl-entry" role="doc-biblioentry">
-Joshi, Shalmali, Oluwasanmi Koyejo, Warut Vijitbenjaronk, Been Kim, and Joydeep Ghosh. 2019. <span>“Towards Realistic Individual Recourse and Actionable Explanations in Black-Box Decision Making Systems.”</span> <em>arXiv Preprint arXiv:1907.09615</em>.
+Antorán, Javier, Umang Bhatt, Tameem Adel, Adrian Weller, and José Miguel Hernández-Lobato. 2020. <span>“Getting a Clue: <span>A</span> Method for Explaining Uncertainty Estimates.”</span> <a href="https://arxiv.org/abs/2006.06848">https://arxiv.org/abs/2006.06848</a>.
 </div>
 <div id="ref-lakshminarayanan2016simple" class="csl-entry" role="doc-biblioentry">
-Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <em>arXiv Preprint arXiv:1612.01474</em>.
+Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <a href="https://arxiv.org/abs/1612.01474">https://arxiv.org/abs/1612.01474</a>.
 </div>
 <div id="ref-lecun1998mnist" class="csl-entry" role="doc-biblioentry">
-LeCun, Yann. 1998. <span>“The MNIST Database of Handwritten Digits.”</span> <em>Http://Yann. Lecun. Com/Exdb/Mnist/</em>.
+LeCun, Yann. 1998. <span>“The <span>MNIST</span> Database of Handwritten Digits.”</span>
 </div>
 <div id="ref-pawelczyk2021carla" class="csl-entry" role="doc-biblioentry">
-Pawelczyk, Martin, Sascha Bielawski, Johannes van den Heuvel, Tobias Richter, and Gjergji Kasneci. 2021. <span>“Carla: A Python Library to Benchmark Algorithmic Recourse and Counterfactual Explanation Algorithms.”</span> <em>arXiv Preprint arXiv:2108.00783</em>.
+Pawelczyk, Martin, Sascha Bielawski, Johannes van den Heuvel, Tobias Richter, and Gjergji Kasneci. 2021. <span>“Carla: A Python Library to Benchmark Algorithmic Recourse and Counterfactual Explanation Algorithms.”</span> <a href="https://arxiv.org/abs/2108.00783">https://arxiv.org/abs/2108.00783</a>.
 </div>
 <div id="ref-rudin2019stop" class="csl-entry" role="doc-biblioentry">
 Rudin, Cynthia. 2019. <span>“Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead.”</span> <em>Nature Machine Intelligence</em> 1 (5): 206–15.
 </div>
 <div id="ref-schut2021generating" class="csl-entry" role="doc-biblioentry">
-Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating Interpretable Counterfactual Explanations by Implicit Minimisation of Epistemic and Aleatoric Uncertainties.”</span> In <em>International Conference on Artificial Intelligence and Statistics</em>, 1756–64. PMLR.
+Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating <span>Interpretable Counterfactual Explanations By Implicit Minimisation</span> of <span>Epistemic</span> and <span>Aleatoric Uncertainties</span>.”</span> In <em>International <span>Conference</span> on <span>Artificial Intelligence</span> and <span>Statistics</span></em>, 1756–64. <span>PMLR</span>.
 </div>
 <div id="ref-wachter2017counterfactual" class="csl-entry" role="doc-biblioentry">
-Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfactual Explanations Without Opening the Black Box: Automated Decisions and the GDPR.”</span> <em>Harv. JL &amp; Tech.</em> 31: 841.
+Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfactual Explanations Without Opening the Black Box: <span>Automated</span> Decisions and the <span>GDPR</span>.”</span> <em>Harv. JL &amp; Tech.</em> 31: 841.
 </div>
 </div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 

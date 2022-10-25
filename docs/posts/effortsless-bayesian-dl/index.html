@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.624">
+<meta name="generator" content="quarto-99.9.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -14,10 +14,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -56,7 +61,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -69,7 +74,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -121,7 +126,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -170,6 +175,10 @@ cookieconsent.run({
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="blog - Go deep, but also … go Bayesian!">
+<meta property="og:description" content="An introduction to effortless Bayesian deep learning through Laplace approximation coded from scratch in Julia.">
+<meta property="og:image" content="www/intro.gif">
+<meta property="og:site-name" content="blog">
 <meta name="twitter:title" content="blog - Go deep, but also … go Bayesian!">
 <meta name="twitter:description" content="An introduction to effortless Bayesian deep learning through Laplace approximation coded from scratch in Julia.">
 <meta name="twitter:image" content="www/intro.gif">
@@ -182,10 +191,14 @@ cookieconsent.run({
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="../../index.html">
-    <img src="../../icon.png" alt="">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../icon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">blog</span>
-  </a>
+    </a>
+  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -194,22 +207,22 @@ cookieconsent.run({
   <li class="nav-item compact">
     <a class="nav-link" href="https://www.paltmeyer.com/"><i class="bi bi-house" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/pat-alt"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/paltmey"><i class="bi bi-twitter" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://medium.com/@patrick.altmeyer"><i class="bi bi-medium" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -222,7 +235,7 @@ cookieconsent.run({
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -260,7 +273,7 @@ cookieconsent.run({
 
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
+  <div class="quarto-title-meta-heading"></div>
   
     <div class="quarto-title-meta-contents">
     <a href="https://www.paltmeyer.com/">Patrick Altmeyer</a> 
@@ -283,6 +296,7 @@ cookieconsent.run({
       <p class="date">February 18, 2022</p>
     </div>
   </div>
+  
     
   </div>
   
@@ -319,7 +333,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 </section>
 <section id="laplace-approximation" class="level2">
 <h2 class="anchored" data-anchor-id="laplace-approximation">Laplace Approximation</h2>
-<p>While LA was first proposed in the 18th century, it has so far not attracted serious attention from the deep learning community largely because it involves a possibly large Hessian computation. <span class="citation" data-cites="daxberger2021laplace">Daxberger et al. (<a href="#ref-daxberger2021laplace" role="doc-biblioref">2021</a>)</span> are on a mission to change the perception that LA has no use in DL: in their <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> they demonstrate empirically that LA can be used to produce Bayesian model averages that are at least at par with existing approaches in terms of uncertainty quantification and out-of-distribution detection and significantly cheaper to compute. They show that recent advancements in autodifferentation can be leveraged to produce fast and accurate approximations of the Hessian and even provide a fully-fledged <a href="https://aleximmer.github.io/Laplace/">Python library</a> that can be used with any pretrained Torch model. For this post, I have built a much less comprehensive, pure-play equivalent of their package in Julia - <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a> can be used with deep learning models built in <a href="https://fluxml.ai/">Flux.jl</a>, which is Julia’s main DL library. As in the previous post on Bayesian logistic regression I will rely on Julia code snippits instead of equations to convey the underlying maths. If you’re curious about the maths, the <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> provides all the detail you need.</p>
+<p>While LA was first proposed in the 18th century, it has so far not attracted serious attention from the deep learning community largely because it involves a possibly large Hessian computation. <span class="citation" data-cites="daxberger2021laplace">Daxberger et al. (<a href="#ref-daxberger2021laplace" role="doc-biblioref">2021</a>)</span> are on a mission to change the perception that LA has no use in DL: in their <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> they demonstrate empirically that LA can be used to produce Bayesian model averages that are at least at par with existing approaches in terms of uncertainty quantification and out-of-distribution detection and significantly cheaper to compute. They show that recent advancements in autodifferentation can be leveraged to produce fast and accurate approximations of the Hessian and even provide a fully-fledged <a href="https://aleximmer.github.io/Laplace/">Python library</a> that can be used with any pretrained Torch model. For this post, I have built a much less comprehensive, pure-play equivalent of their package in Julia - <a href="https://www.paltmeyer.com/LaplaceRedux.jl/dev/">LaplaceRedux.jl</a> can be used with deep learning models built in <a href="https://fluxml.ai/">Flux.jl</a>, which is Julia’s main DL library. As in the previous post on Bayesian logistic regression I will rely on Julia code snippits instead of equations to convey the underlying maths. If you’re curious about the maths, the <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> provides all the detail you need.</p>
 <section id="from-bayesian-logistic-regression" class="level3">
 <h3 class="anchored" data-anchor-id="from-bayesian-logistic-regression">From Bayesian Logistic Regression …</h3>
 <p>Let’s recap: in the case of logistic regression we had a assumed a zero-mean Gaussian prior <span class="math inline">\(p(\mathbf{w}) \sim \mathcal{N} \left( \mathbf{w} | \mathbf{0}, \sigma_0^2 \mathbf{I} \right)=\mathcal{N} \left( \mathbf{w} | \mathbf{0}, \mathbf{H}_0^{-1} \right)\)</span> for the weights that are used to compute logits <span class="math inline">\(\mu_n=\mathbf{w}^T\mathbf{x}_n\)</span>, which in turn are fed to a sigmoid function to produce probabilities <span class="math inline">\(p(y_n=1)=\sigma(\mu_n)\)</span>. We saw that under this assumption solving the logistic regression problem corresponds to minimizing the following differentiable loss function:</p>
@@ -328,12 +342,12 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 \]</span></p>
 <p>As our first step towards Bayesian deep learning, we observe the following: the loss function above corresponds to the objective faced by a single-layer artificial neural network with sigmoid activation and weight decay<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. In other words, regularized logistic regression is equivalent to a very simple neural network architecture and hence it is not surprising that underlying concepts can in theory be applied in much the same way.</p>
 <p>So let’s quickly recap the next core concept: LA relies on the fact that the second-order Taylor expansion of our loss function <span class="math inline">\(\ell\)</span> evaluated at the <strong>maximum a posteriori</strong> (MAP) estimate <span class="math inline">\(\mathbf{\hat{w}}=\arg\max_{\mathbf{w}} p(\mathbf{w}|\mathcal{D})\)</span> amounts to a multi-variate Gaussian distribution. In particular, that Gaussian is centered around the MAP estimate with covariance equal to the inverse Hessian evaluated at the mode <span class="math inline">\(\hat{\Sigma}=(\mathbf{H}(\mathbf{\hat{w}}))^{-1}\)</span> <span class="citation" data-cites="murphy2022probabilistic">(<a href="#ref-murphy2022probabilistic" role="doc-biblioref">Murphy 2022</a>)</span>.</p>
-<p>That is basically all there is to the story: if we have a good estimate of <span class="math inline">\(\mathbf{H}(\mathbf{\hat{w}})\)</span> we have an analytical expression for an (approximate) posterior over parameters. So let’s go ahead and start by run Bayesian Logistic regression using <a href="https://fluxml.ai/">Flux.jl</a>. We begin by loading some required packages including <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a>. It ships with a helper function <code>toy_data_linear</code> that creates a toy data set composed of linearly separable samples evenly balanced across the two classes.</p>
+<p>That is basically all there is to the story: if we have a good estimate of <span class="math inline">\(\mathbf{H}(\mathbf{\hat{w}})\)</span> we have an analytical expression for an (approximate) posterior over parameters. So let’s go ahead and start by run Bayesian Logistic regression using <a href="https://fluxml.ai/">Flux.jl</a>. We begin by loading some required packages including <a href="https://www.paltmeyer.com/LaplaceRedux.jl/dev/">LaplaceRedux.jl</a>. It ships with a helper function <code>toy_data_linear</code> that creates a toy data set composed of linearly separable samples evenly balanced across the two classes.</p>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Plots</span>, <span class="bu">Random</span>, <span class="bu">PlotThemes</span>, <span class="bu">Statistics</span>, <span class="bu">BayesLaplace</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Plots</span>, <span class="bu">Random</span>, <span class="bu">PlotThemes</span>, <span class="bu">Statistics</span>, <span class="bu">LaplaceRedux</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="op">:</span>wong)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of points to generate.</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>xs, y <span class="op">=</span> <span class="fu">toy_data_linear</span>(<span class="fl">100</span>)</span>
@@ -370,7 +384,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Up until this point we have just followed the standard recipe for training a regularized artificial neural network in <a href="https://fluxml.ai/">Flux.jl</a> for a simple binary classification task. To compute the Laplace approximation using <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a> we need just two more lines of code:</p>
+<p>Up until this point we have just followed the standard recipe for training a regularized artificial neural network in <a href="https://fluxml.ai/">Flux.jl</a> for a simple binary classification task. To compute the Laplace approximation using <a href="https://www.paltmeyer.com/LaplaceRedux.jl/dev/">LaplaceRedux.jl</a> we need just two more lines of code:</p>
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Show the code</summary>
@@ -378,7 +392,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fit!</span>(la, data);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Under the hood the Hessian is approximated through the <strong>empirical Fisher</strong>, which can be computed using only the gradients of our loss function <span class="math inline">\(\nabla_{\theta}\ell(f(\mathbf{x}_n;\theta,y_n))\)</span> where <span class="math inline">\(\{\mathbf{x}_n,y_n\}\)</span> are training data (see <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> for details). Finally, <a href="https://www.paltmeyer.com/BayesLaplace.jl/dev/">BayesLaplace.jl</a> ships with a function <code>predict(𝑳::LaplaceRedux, X::AbstractArray; link_approx=:probit)</code> that computes the posterior predictive using a probit approximation, much like we saw in the previous post. That function is used under the hood of the <code>plot_contour</code> function below to create the right panel of <a href="#fig-logit">Figure&nbsp;1</a>. It visualizes the posterior predictive distribution in the 2D feature space. For comparison I have added the corresponding plugin estimate as well. Note how for the Laplace approximation the predicted probabilities fan out indicating that confidence decreases in regions scarce of data.</p>
+<p>Under the hood the Hessian is approximated through the <strong>empirical Fisher</strong>, which can be computed using only the gradients of our loss function <span class="math inline">\(\nabla_{\theta}\ell(f(\mathbf{x}_n;\theta,y_n))\)</span> where <span class="math inline">\(\{\mathbf{x}_n,y_n\}\)</span> are training data (see <a href="https://arxiv.org/pdf/2106.14806.pdf">NeurIPS 2021 paper</a> for details). Finally, <a href="https://www.paltmeyer.com/LaplaceRedux.jl/dev/">LaplaceRedux.jl</a> ships with a function <code>predict(𝑳::LaplaceRedux, X::AbstractArray; link_approx=:probit)</code> that computes the posterior predictive using a probit approximation, much like we saw in the previous post. That function is used under the hood of the <code>plot_contour</code> function below to create the right panel of <a href="#fig-logit">Figure&nbsp;1</a>. It visualizes the posterior predictive distribution in the 2D feature space. For comparison I have added the corresponding plugin estimate as well. Note how for the Laplace approximation the predicted probabilities fan out indicating that confidence decreases in regions scarce of data.</p>
 <div class="cell" data-execution_count="5">
 <details>
 <summary>Show the code</summary>
@@ -392,7 +406,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <div id="fig-logit" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/posterior_predictive_logit.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Posterior predictive distribution of Logistic regression in the 2D feature space using plugin estimator (left) and Laplace approximation (right).</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Posterior predictive distribution of Logistic regression in the 2D feature space using plugin estimator (left) and Laplace approximation (right).</figcaption><p></p>
 </figure>
 </div>
 </section>
@@ -447,7 +461,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <div id="fig-mlp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/posterior_predictive_mlp.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2: Posterior predictive distribution of MLP in the 2D feature space using plugin estimator (left) and Laplace approximation (right).</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Posterior predictive distribution of MLP in the 2D feature space using plugin estimator (left) and Laplace approximation (right).</figcaption><p></p>
 </figure>
 </div>
 <p>To see why this is a desirable outcome consider the zoomed out version of <a href="#fig-mlp">Figure&nbsp;2</a> below: the plugin estimator classifies with full confidence in regions completely scarce of any data. Arguably Laplace approximation produces a much more reasonable picture, even though it too could likely be improved by fine-tuning our choice of <span class="math inline">\(\lambda\)</span> and the neural network architecture.</p>
@@ -465,7 +479,7 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 <div id="fig-mlp-zoom" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/posterior_predictive_mlp_zoom.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3: Posterior predictive distribution of MLP in the 2D feature space using plugin estimator (left) and Laplace approximation (right). Zoomed out.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Posterior predictive distribution of MLP in the 2D feature space using plugin estimator (left) and Laplace approximation (right). Zoomed out.</figcaption><p></p>
 </figure>
 </div>
 </section>
@@ -496,39 +510,39 @@ p(y|x,\mathcal{D}) = \int p(y|x,\theta)p(\theta|\mathcal{D})d\theta
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bastounis2021mathematics" class="csl-entry" role="doc-biblioentry">
-Bastounis, Alexander, Anders C Hansen, and Verner Vlačić. 2021. <span>“The Mathematics of Adversarial Attacks in AI–Why Deep Learning Is Unstable Despite the Existence of Stable Neural Networks.”</span> <em>arXiv Preprint arXiv:2109.06098</em>.
+Bastounis, Alexander, Anders C Hansen, and Verner Vlačić. 2021. <span>“The Mathematics of Adversarial Attacks in <span>AI</span>–<span>Why</span> Deep Learning Is Unstable Despite the Existence of Stable Neural Networks.”</span> <a href="https://arxiv.org/abs/2109.06098">https://arxiv.org/abs/2109.06098</a>.
 </div>
 <div id="ref-daxberger2021laplace" class="csl-entry" role="doc-biblioentry">
-Daxberger, Erik, Agustinus Kristiadi, Alexander Immer, Runa Eschenhagen, Matthias Bauer, and Philipp Hennig. 2021. <span>“Laplace Redux-Effortless Bayesian Deep Learning.”</span> <em>Advances in Neural Information Processing Systems</em> 34.
+Daxberger, Erik, Agustinus Kristiadi, Alexander Immer, Runa Eschenhagen, Matthias Bauer, and Philipp Hennig. 2021. <span>“Laplace <span>Redux-Effortless Bayesian Deep Learning</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 34.
 </div>
 <div id="ref-gal2016dropout" class="csl-entry" role="doc-biblioentry">
-Gal, Yarin, and Zoubin Ghahramani. 2016. <span>“Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning.”</span> In <em>International Conference on Machine Learning</em>, 1050–59. PMLR.
+Gal, Yarin, and Zoubin Ghahramani. 2016. <span>“Dropout as a Bayesian Approximation: <span>Representing</span> Model Uncertainty in Deep Learning.”</span> In <em>International Conference on Machine Learning</em>, 1050–59. <span>PMLR</span>.
 </div>
 <div id="ref-lakshminarayanan2016simple" class="csl-entry" role="doc-biblioentry">
-Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <em>arXiv Preprint arXiv:1612.01474</em>.
+Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <a href="https://arxiv.org/abs/1612.01474">https://arxiv.org/abs/1612.01474</a>.
 </div>
 <div id="ref-murphy2022probabilistic" class="csl-entry" role="doc-biblioentry">
-Murphy, Kevin P. 2022. <em>Probabilistic Machine Learning: An Introduction</em>. MIT Press.
+Murphy, Kevin P. 2022. <em>Probabilistic <span>Machine Learning</span>: <span>An</span> Introduction</em>. <span>MIT Press</span>.
 </div>
 <div id="ref-pearl2018book" class="csl-entry" role="doc-biblioentry">
-Pearl, Judea, and Dana Mackenzie. 2018. <em>The Book of Why: The New Science of Cause and Effect</em>. Basic books.
+Pearl, Judea, and Dana Mackenzie. 2018. <em>The Book of Why: The New Science of Cause and Effect</em>. <span>Basic books</span>.
 </div>
 <div id="ref-raghunathan2019adversarial" class="csl-entry" role="doc-biblioentry">
-Raghunathan, Aditi, Sang Michael Xie, Fanny Yang, John C Duchi, and Percy Liang. 2019. <span>“Adversarial Training Can Hurt Generalization.”</span> <em>arXiv Preprint arXiv:1906.06032</em>.
+Raghunathan, Aditi, Sang Michael Xie, Fanny Yang, John C Duchi, and Percy Liang. 2019. <span>“Adversarial Training Can Hurt Generalization.”</span> <a href="https://arxiv.org/abs/1906.06032">https://arxiv.org/abs/1906.06032</a>.
 </div>
 <div id="ref-slack2020fooling" class="csl-entry" role="doc-biblioentry">
-Slack, Dylan, Sophie Hilgard, Emily Jia, Sameer Singh, and Himabindu Lakkaraju. 2020. <span>“Fooling Lime and Shap: Adversarial Attacks on Post Hoc Explanation Methods.”</span> In <em>Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society</em>, 180–86.
+Slack, Dylan, Sophie Hilgard, Emily Jia, Sameer Singh, and Himabindu Lakkaraju. 2020. <span>“Fooling Lime and Shap: <span>Adversarial</span> Attacks on Post Hoc Explanation Methods.”</span> In <em>Proceedings of the <span>AAAI</span>/<span>ACM Conference</span> on <span>AI</span>, <span>Ethics</span>, and <span>Society</span></em>, 180–86.
 </div>
 <div id="ref-wilson2020case" class="csl-entry" role="doc-biblioentry">
-Wilson, Andrew Gordon. 2020. <span>“The Case for Bayesian Deep Learning.”</span> <em>arXiv Preprint arXiv:2001.10995</em>.
+Wilson, Andrew Gordon. 2020. <span>“The Case for <span>Bayesian</span> Deep Learning.”</span> <a href="https://arxiv.org/abs/2001.10995">https://arxiv.org/abs/2001.10995</a>.
 </div>
-</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1" role="doc-endnote"><p>See for example <a href="https://www.technologyreview.com/2019/01/25/1436/we-analyzed-16625-papers-to-figure-out-where-ai-is-headed-next/">this article</a> in the MIT Technology Review<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>In fact, not treating probabilistic deep learning models as such is sheer madness because remember that the underlying parameters <span class="math inline">\(\theta\)</span> are random variables. Frequentists and Bayesians alike will tell you that relying on a single point estimate of random variables is just nuts!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>Proponents of Causal AI like Judea Pearl would argue that the Bayesian treatment still does not go far enough: in their view model explanations can only be truly compelling if they are causally found.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4" role="doc-endnote"><p>See this <a href="https://stats.stackexchange.com/a/500973/288736">answer</a> on Stack Exchange for a detailed discussion.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See for example <a href="https://www.technologyreview.com/2019/01/25/1436/we-analyzed-16625-papers-to-figure-out-where-ai-is-headed-next/">this article</a> in the MIT Technology Review<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In fact, not treating probabilistic deep learning models as such is sheer madness because remember that the underlying parameters <span class="math inline">\(\theta\)</span> are random variables. Frequentists and Bayesians alike will tell you that relying on a single point estimate of random variables is just nuts!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Proponents of Causal AI like Judea Pearl would argue that the Bayesian treatment still does not go far enough: in their view model explanations can only be truly compelling if they are causally found.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>See this <a href="https://stats.stackexchange.com/a/500973/288736">answer</a> on Stack Exchange for a detailed discussion.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2022,
   author = {Patrick Altmeyer},
@@ -542,6 +556,24 @@ Bayesian!”</span> February 18, 2022.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -563,7 +595,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -642,31 +691,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
@@ -684,7 +752,7 @@ description: &gt;-
   An introduction to effortless Bayesian deep learning through Laplace
   approximation coded from scratch in Julia. 
 image: www/intro.gif
-jupyter: julia-1.6
+jupyter: julia-1.7
 execute: 
   eval: false
 ---
@@ -696,9 +764,7 @@ execute:
   &lt;/figure&gt;
 &lt;/div&gt;
 
-
 Deep learning has dominated AI research in recent years^[See for example [this article](https://www.technologyreview.com/2019/01/25/1436/we-analyzed-16625-papers-to-figure-out-where-ai-is-headed-next/) in the MIT Technology Review] - but how much promise does it really hold? That is very much an ongoing and increasingly polarising debate that you can follow live on [Twitter](https://twitter.com/ilyasut/status/1491554478243258368). On one side you have optimists like Ilya Sutskever, chief scientist of OpenAI, who believes that large deep neural networks may already be slightly conscious - that's "may" and "slightly" and only if you just go deep enough? On the other side you have prominent skeptics like Judea Pearl who has long since argued that deep learning still boils down to curve fitting - purely associational and not even remotely intelligent [@pearl2018book]. 
-
 
 ## The case for Bayesian Deep Learning
 
@@ -731,7 +797,7 @@ If you have read my [previous post](https://towardsdatascience.com/bayesian-logi
 
 ## Laplace Approximation
 
-While LA was first proposed in the 18th century, it has so far not attracted serious attention from the deep learning community largely because it involves a possibly large Hessian computation. @daxberger2021laplace are on a mission to change the perception that LA has no use in DL: in their [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) they demonstrate empirically that LA can be used to produce Bayesian model averages that are at least at par with existing approaches in terms of uncertainty quantification and out-of-distribution detection and significantly cheaper to compute. They show that recent advancements in autodifferentation can be leveraged to produce fast and accurate approximations of the Hessian and even provide a fully-fledged [Python library](https://aleximmer.github.io/Laplace/) that can be used with any pretrained Torch model. For this post, I have built a much less comprehensive, pure-play equivalent of their package in Julia - [BayesLaplace.jl](https://www.paltmeyer.com/BayesLaplace.jl/dev/) can be used with deep learning models built in [Flux.jl](https://fluxml.ai/), which is Julia's main DL library. As in the previous post on Bayesian logistic regression I will rely on Julia code snippits instead of equations to convey the underlying maths. If you're curious about the maths, the [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) provides all the detail you need.
+While LA was first proposed in the 18th century, it has so far not attracted serious attention from the deep learning community largely because it involves a possibly large Hessian computation. @daxberger2021laplace are on a mission to change the perception that LA has no use in DL: in their [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) they demonstrate empirically that LA can be used to produce Bayesian model averages that are at least at par with existing approaches in terms of uncertainty quantification and out-of-distribution detection and significantly cheaper to compute. They show that recent advancements in autodifferentation can be leveraged to produce fast and accurate approximations of the Hessian and even provide a fully-fledged [Python library](https://aleximmer.github.io/Laplace/) that can be used with any pretrained Torch model. For this post, I have built a much less comprehensive, pure-play equivalent of their package in Julia - [LaplaceRedux.jl](https://www.paltmeyer.com/LaplaceRedux.jl/dev/) can be used with deep learning models built in [Flux.jl](https://fluxml.ai/), which is Julia's main DL library. As in the previous post on Bayesian logistic regression I will rely on Julia code snippits instead of equations to convey the underlying maths. If you're curious about the maths, the [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) provides all the detail you need.
 
 ### From Bayesian Logistic Regression ...
 
@@ -745,13 +811,13 @@ As our first step towards Bayesian deep learning, we observe the following: the 
 
 So let's quickly recap the next core concept: LA relies on the fact that the second-order Taylor expansion of our loss function $\ell$ evaluated at the **maximum a posteriori** (MAP) estimate $\mathbf{\hat{w}}=\arg\max_{\mathbf{w}} p(\mathbf{w}|\mathcal{D})$ amounts to a multi-variate Gaussian distribution. In particular, that Gaussian is centered around the MAP estimate with covariance equal to the inverse Hessian evaluated at the mode $\hat{\Sigma}=(\mathbf{H}(\mathbf{\hat{w}}))^{-1}$ [@murphy2022probabilistic]. 
 
-That is basically all there is to the story: if we have a good estimate of $\mathbf{H}(\mathbf{\hat{w}})$ we have an analytical expression for an (approximate) posterior over parameters. So let's go ahead and start by run Bayesian Logistic regression using [Flux.jl](https://fluxml.ai/). We begin by loading some required packages including [BayesLaplace.jl](https://www.paltmeyer.com/BayesLaplace.jl/dev/). It ships with a helper function `toy_data_linear` that creates a toy data set composed of linearly separable samples evenly balanced across the two classes.
+That is basically all there is to the story: if we have a good estimate of $\mathbf{H}(\mathbf{\hat{w}})$ we have an analytical expression for an (approximate) posterior over parameters. So let's go ahead and start by run Bayesian Logistic regression using [Flux.jl](https://fluxml.ai/). We begin by loading some required packages including [LaplaceRedux.jl](https://www.paltmeyer.com/LaplaceRedux.jl/dev/). It ships with a helper function `toy_data_linear` that creates a toy data set composed of linearly separable samples evenly balanced across the two classes.
 
 quarto-executable-code-5450563D
 
 ```julia
 # Import libraries.
-using Flux, Plots, Random, PlotThemes, Statistics, BayesLaplace
+using Flux, Plots, Random, PlotThemes, Statistics, LaplaceRedux
 theme(:wong)
 # Number of points to generate.
 xs, y = toy_data_linear(100)
@@ -790,7 +856,7 @@ for epoch = 1:epochs
 end
 ```
 
-Up until this point we have just followed the standard recipe for training a regularized artificial neural network in [Flux.jl](https://fluxml.ai/) for a simple binary classification task. To compute the Laplace approximation using [BayesLaplace.jl](https://www.paltmeyer.com/BayesLaplace.jl/dev/) we need just two more lines of code:
+Up until this point we have just followed the standard recipe for training a regularized artificial neural network in [Flux.jl](https://fluxml.ai/) for a simple binary classification task. To compute the Laplace approximation using [LaplaceRedux.jl](https://www.paltmeyer.com/LaplaceRedux.jl/dev/) we need just two more lines of code:
 
 quarto-executable-code-5450563D
 
@@ -799,7 +865,7 @@ la = laplace(nn, λ=λ)
 fit!(la, data);
 ```
 
-Under the hood the Hessian is approximated through the **empirical Fisher**, which can be computed using only the gradients of our loss function $\nabla_{\theta}\ell(f(\mathbf{x}_n;\theta,y_n))$ where $\{\mathbf{x}_n,y_n\}$ are training data (see [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) for details). Finally, [BayesLaplace.jl](https://www.paltmeyer.com/BayesLaplace.jl/dev/) ships with a function `predict(𝑳::LaplaceRedux, X::AbstractArray; link_approx=:probit)` that computes the posterior predictive using a probit approximation, much like we saw in the previous post. That function is used under the hood of the `plot_contour` function below to create the right panel of @fig-logit. It visualizes the posterior predictive distribution in the 2D feature space. For comparison I have added the corresponding plugin estimate as well. Note how for the Laplace approximation the predicted probabilities fan out indicating that confidence decreases in regions scarce of data.
+Under the hood the Hessian is approximated through the **empirical Fisher**, which can be computed using only the gradients of our loss function $\nabla_{\theta}\ell(f(\mathbf{x}_n;\theta,y_n))$ where $\{\mathbf{x}_n,y_n\}$ are training data (see [NeurIPS 2021 paper](https://arxiv.org/pdf/2106.14806.pdf) for details). Finally, [LaplaceRedux.jl](https://www.paltmeyer.com/LaplaceRedux.jl/dev/) ships with a function `predict(𝑳::LaplaceRedux, X::AbstractArray; link_approx=:probit)` that computes the posterior predictive using a probit approximation, much like we saw in the previous post. That function is used under the hood of the `plot_contour` function below to create the right panel of @fig-logit. It visualizes the posterior predictive distribution in the 2D feature space. For comparison I have added the corresponding plugin estimate as well. Note how for the Laplace approximation the predicted probabilities fan out indicating that confidence decreases in regions scarce of data.
 
 quarto-executable-code-5450563D
 

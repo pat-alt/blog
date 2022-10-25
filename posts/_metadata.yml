@@ -4,6 +4,8 @@
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 execute:
   freeze: auto
+  eval: true
+  echo: true
 
 author:
   - name: Patrick Altmeyer

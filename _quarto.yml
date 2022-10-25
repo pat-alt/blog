@@ -20,9 +20,8 @@ website:
     location: navbar
     type: overlay
   twitter-card: true
-  opengraph: true
+  open-graph: true
   google-analytics: G-BEEZ30787D
-  cookie-consent: true
   repo-url: https://github.com/pat-alt/blog
   repo-actions: [issue]
   page-footer: '© 2022, Patrick Altmeyer'

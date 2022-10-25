@@ -1,0 +1,7 @@
+[deps]
+ConformalPrediction = "98bfc277-1877-43dc-819b-a3e38c30242f"
+EvoTrees = "f6006082-12f8-11e9-0c9c-0d5d367ab1e5"
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
+MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
+MLJDecisionTreeInterface = "c6f25543-311c-4c74-83dc-3ea6d1015661"
+Term = "22787eb5-b846-44ae-b979-8e399b8463ab"
