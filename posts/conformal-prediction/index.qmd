@@ -35,7 +35,18 @@ In previous posts we have looked at how uncertainty can be quantified in the Bay
 
 Enter: Conformal Prediction (CP) --- a scalable frequentist approach to uncertainty quantification and coverage control. In this post we will go through the basic concepts underlying CP. A number of hands-on usage examples in Julia should hopefully help to convey some intuition and ideally attract people interested in contributing to a new and exciting open-source development. 
 
-## 📖 Background
+:::{.callout-tip}
+
+## 🏃‍♀️ TL;DR
+
+1. Conformal Prediction is an interesting frequentist approach to uncertainty quantification that can even be combined with Bayes (@sec-background).
+2. It is scalable and model-agnostic and therefore well applicable to machine learning (@sec-background).
+3. [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) implements CP in pure Julia and can be used with any supervised model available from [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) (@sec-julia).
+4. Implementing CP directly on top of an existing, powerful machine learning toolkit demonstrates the potential usefulness of this framework to the ML community (@sec-julia). 
+5. Standard conformal classifiers produce set-valued predictions: for ambiguous samples these sets are typically large (for high coverage) or empty (for low coverage) (@sec-scp).
+:::
+
+## 📖 Background {#sec-background}
 
 Conformal Prediction promises to be an easy-to-understand, distribution-free and model-agnostic way to generate statistically rigorous uncertainty estimates. That's quite a mouthful, so let's break it down: firstly, as I will hopefully manage to illustrate in this post, the underlying concepts truly are fairly straight-forward to understand; secondly, CP indeed relies on only minimal distributional assumptions; thirdly, common procedures to generate conformal predictions really do apply almost universally to all supervised models, therefore making the framework very intriguing to the ML community; and, finally, CP does in fact come with a frequentist coverage guarantee that ensures that conformal prediction sets contain the true value with a user-chosen probability. For a formal proof of this *marginal coverage* property and a detailed introduction to the topic, I recommend @angelopoulos2021gentle. 
 
@@ -45,7 +56,7 @@ In what follows we will loosely treat the tutorial by @angelopoulos2021gentle an
 
 CP can be used to generate prediction intervals for regression models and prediction sets for classification models (more in this later). There also some recent work on conformal predictive distributions and probabilistic predictions. Interestingly, it can even be used to complement Bayesian methods. @angelopoulos2021gentle, for example, point out that prior information should be incorporated into prediction sets and demonstrate how Bayesian predictive distributions can be conformalized in order to comply with the frequentist notion of coverage. Relatedly, @hoff2021bayesoptimal proposes a Bayes-optimal prediction procedure. And finally, @stanton2022bayesian very recently proposed a way to introduce conformal prediction in Bayesian Optimization. I find this type of work that combines different schools of thought very promising, but I'm drifting off a little ... So, without further ado, let us look at some code. 
 
-## 💻 Conformal Prediction in Julia
+## 📦 Conformal Prediction in Julia {#sec-julia}
 
 In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look an approach that is compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). We will go through some basic usage examples employing a a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
 
@@ -58,7 +69,7 @@ In this section of this first short post on CP we will look at how conformal pre
 - [Contributor's Guide](https://www.paltmeyer.com/ConformalPrediction.jl/stable/#Contribute)
 :::
 
-### Split Conformal Classification
+### Split Conformal Classification {#sec-scp}
 
 We consider a simple binary classification problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. For illustration purposes we will use the moons dataset 🌙. Using [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) we first generate the data and split into into a training and test set:
 
@@ -189,7 +200,31 @@ end
 
 @fig-anim should provide some more intuition as to what exactly is happening here. It illustrates the effect of the chosen coverage rate on the predicted softmax output and the set size in the two-dimensional feature space. Contours are overlayed with the moon data points (including test data). The two samples highlighted in red, $X_1$ and $X_2$, have been manually added for illustration purposes. Let's look at these one by one.
 
-Firstly, note that $X_1$ falls into a region of the domain that is characterized by high predictive uncertainty. It sits right at the bottom-right corner of our class-zero moon 🌜 (orange), a region that is entirely enveloped by our class-one moon 🌛 (green).
+Firstly, note that $X_1$ (red cross) falls into a region of the domain that is characterized by high predictive uncertainty. It sits right at the bottom-right corner of our class-zero moon 🌜 (orange), a region that is entirely enveloped by our class-one moon 🌛 (green). For low coverage rates the prediction set for $X_1$ is empty: on the left-hand side this is indicated by the missing contour for the softmax probability; on the right-hand side we can observe that the corresponding set size is indeed zero. For high coverage rates the prediction set includes both $y=0$ and $y=1$, indicative of the fact that the conformal classifier is uncertain about the true label.
+
+With respect to $X_2$, we observe that while also sitting on the fringe of our class-zero moon, this sample populates a region that is not fully enveloped by data points from the opposite class. In this region, the underlying atomic classifier can be expected to be more certain about its predictions, but still not highly confident. How is this reflected by our corresponding conformal prediction sets? 
+
+```{julia}
+#| code-fold: true
+
+Xtest_2 = (x1=[-0.5],x2=[0.25])
+cov_ = .9
+conf_model = conformal_model(model; coverage=cov_)
+mach = machine(conf_model, X, y)
+fit!(mach, rows=train)
+p̂_2 = pdf(predict(mach, Xtest_2)[1], 0)
+```
+
+```{julia}
+#| echo: false
+#| output: true
+
+Markdown.parse("""
+Well, for low coverage rates (roughly ``<0.9``) the conformal prediction set does not include ``y=0``: the set size is zero (right panel). Only for higher coverage rates do we have ``C(X_2)=\\{0\\}``: the coverage rate is high enough to include ``y=0``, but the corresponding softmax probability is still fairly low. For example, for ``(1-\\alpha)=$(cov_)`` we have ``\\hat{p}(y=0|X_2)=$(p̂_2).``
+""")
+```
+
+These two examples illustrate an interesting point: for regions characterised by high predictive uncertainty, conformal prediction sets are typically empty (for low coverage) or large (for high coverage). While set-valued predictions may be something to get used to, this notion is overall intuitive. 
 
 ```{julia}
 #| output: true
@@ -202,17 +237,17 @@ coverages = range(0.75,1.0,length=5)
 n = 100
 x1_range = range(extrema(X.x1)...,length=n)
 x2_range = range(extrema(X.x2)...,length=n)
-Xtest_2 = (x1=[-0.5],x2=[0.25])
+
 anim = @animate for coverage in coverages
     conf_model = conformal_model(model; coverage=coverage)
     mach = machine(conf_model, X, y)
     fit!(mach, rows=train)
     p1 = contourf_cp(mach, x1_range, x2_range; type=:proba, title="Softmax", axis=nothing)
-    scatter!(p1, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
+    scatter!(p1, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.75)
     scatter!(p1, Xtest.x1, Xtest.x2, ms=6, c=:red, label="X₁", shape=:cross, msw=6)
     scatter!(p1, Xtest_2.x1, Xtest_2.x2, ms=6, c=:red, label="X₂", shape=:diamond, msw=6)
     p2 = contourf_cp(mach, x1_range, x2_range; type=:set_size, title="Set size", axis=nothing)
-    scatter!(p2, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
+    scatter!(p2, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.75)
     scatter!(p2, Xtest.x1, Xtest.x2, ms=6, c=:red, label="X₁", shape=:cross, msw=6)
     scatter!(p2, Xtest_2.x1, Xtest_2.x2, ms=6, c=:red, label="X₂", shape=:diamond, msw=6)
     plot(p1, p2, plot_title="(1-α)=$(round(coverage,digits=2))", size=(800,300))
@@ -302,15 +337,21 @@ gif(anim, "posts/conformal-prediction/www/medium.gif", fps=5)
 ```
 
 
-## 🏃‍♀️ TL;DR
+## 🏁 Conclusion
 
-Implementing CP directly on top of an existing, powerful machine learning toolkit demonstrates the potential usefulness of this framework to the ML community. 
+This has really been a whistle-stop tour of Conformal Prediction: an active area of research that probably deserves much more attention. Hopefully, though, this post has helped to provide some color and, if anything, made you more curious about the topic. Let's recap the TL;DR from above:
 
-## 📦 Related Packages
+1. Conformal Prediction is an interesting frequentist approach to uncertainty quantification that can even be combined with Bayes (@sec-background).
+2. It is scalable and model-agnostic and therefore well applicable to machine learning (@sec-background).
+3. [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) implements CP in pure Julia and can be used with any supervised model available from [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) (@sec-julia).
+4. Implementing CP directly on top of an existing, powerful machine learning toolkit demonstrates the potential usefulness of this framework to the ML community (@sec-julia). 
+5. Standard conformal classifiers produce set-valued predictions: for ambiguous samples these sets are typically large (for high coverage) or empty (for low coverage) (@sec-scp).
+
+Below I will leave you with some further resources.
 
 ## 📚 Further Resources
 
-Chances are that you have already come across the Awesome Conformal Prediction [repo](https://github.com/valeman/awesome-conformal-prediction): @manokhin2022awesome provides a comprehensive, up-to-date overview of resources related to the conformal prediction. Among the listed articles you will also find @angelopoulos2021gentle, which inspired much of this post. 
+Chances are that you have already come across the Awesome Conformal Prediction [repo](https://github.com/valeman/awesome-conformal-prediction): @manokhin2022awesome provides a comprehensive, up-to-date overview of resources related to the conformal prediction. Among the listed articles you will also find @angelopoulos2021gentle, which inspired much of this post. The repo also points to open-source implementations in other popular programming languages including Python and R.
 
 
 

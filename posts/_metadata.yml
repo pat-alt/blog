@@ -24,3 +24,5 @@ citation: true
 crossref:
   fig-prefix: Figure
   tbl-prefix: Table
+
+jupyter: julia-1.8

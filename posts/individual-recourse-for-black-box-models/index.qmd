@@ -28,7 +28,7 @@ theme_set(theme_minimal())
 cat <- data.table(x=c(3,0,2,5),y=c(5,3,0,2),type="Cat",state=1:4)
 dog <- data.table(y=c(3,0,2,5),x=c(5,3,0,2),type="Dog",state=1:4)
 dt_toy <- rbind(cat,dog)
-dt_toy[,emoji:=sprintf("www/%s.png",tolower(type))]
+dt_toy[,emoji:=sprintf("posts/individual-recourse-for-black-box-models/www/%s.png",tolower(type))]
 p <- ggplot(data=dt_toy, aes(x=x,y=y,image=emoji)) +
   geom_image(size=0.2) +
   transition_states(
@@ -41,7 +41,7 @@ p <- ggplot(data=dt_toy, aes(x=x,y=y,image=emoji)) +
     panel.border = element_rect(colour = "black", fill=NA, size=3)
   ) 
 animate(p, width = 300, height = 300)
-anim_save("www/toy.gif")
+anim_save("posts/individual-recourse-for-black-box-models/www/toy.gif")
 ```
 
 
@@ -55,9 +55,9 @@ anim_save("www/toy.gif")
 >
 > --- Cathy O'Neil
 
-In her popular book [Weapons of Math Destruction](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction) Cathy O'Neil presents the example of public school teacher Sarah Wysocki, who lost her job after a teacher evaluation algorithm had rendered her redundant [@o2016weapons]. Sarah was highly popular among her peers, supervisors and students. 
+In her popular book [Weapons of Math Destruction](https://en.wikipedia.org/wiki/Weapons_of_Math_Destruction) Cathy O'Neil presents the example of public school teacher Sarah Wysocki, who lost her job after a teacher evaluation algorithm had rendered her redundant [@oneil2016weapons]. Sarah was highly popular among her peers, supervisors and students. 
 
-This post looks at a novel algorithmic solution to the problem that individuals like Sarah, who are faced with an undesirable outcome, should be provided with means to revise that outcome. The literature commonly refers to this as *individual recourse*. One of the first approaches towards individual recourse was proposed by @ustun2019actionable.  In a recent follow-up paper, @joshi2019towards propose a methodology coined `REVISE`, which extends the earlier approach in at least three key ways:
+This post looks at a novel algorithmic solution to the problem that individuals like Sarah, who are faced with an undesirable outcome, should be provided with means to revise that outcome. The literature commonly refers to this as *individual recourse*. One of the first approaches towards individual recourse was proposed by @ustun2019actionable.  In a recent follow-up paper, @joshi2019realistic propose a methodology coined `REVISE`, which extends the earlier approach in at least three key ways:
 
 1. `REVISE` provides a framework that avoids suggesting an unrealistic set of changes by imposing a threshold likelihood on the revised attributes.
 2. It is applicable to a broader class of models including Black Box classifiers and structural causal models.
@@ -108,7 +108,7 @@ p <- ggplot(data=dt_plot, aes(x=value)) +
   facet_wrap(~variable,scales="free") +
   scale_fill_manual("Outcome:", values = c("orange","brown")) +
   geom_vline(data=kitty_dt, aes(xintercept=value), colour="orange") +
-  geom_image(data=kitty_dt, aes(x=value, y=c(0.05,0.20)), image="www/cat.png", size=0.1) +
+  geom_image(data=kitty_dt, aes(x=value, y=c(0.05,0.20)), image="posts/individual-recourse-for-black-box-models/www/cat.png", size=0.1) +
   labs(
     x=NULL,
     y="Conditional density"
@@ -119,7 +119,7 @@ p
 Much to her dismay, Kitty has been recognized as a cat by a linear classifier $g_n(X)$ that we trained through stochastic gradient descent using the data on animals' height and tail length. Once again interested readers may find technical details and code in the annex below. @fig-class shows the resulting linear separation in the attribute space with the decision boundary in solid black and Kitty's location indicated by a red circle. Can we provide individual recourse to Kitty?
 
 ```{r fit}
-source("R/linear_classifier.R")
+source("posts/individual-recourse-for-black-box-models/R/linear_classifier.R")
 n_iter <- 1000 
 mod <- linear_classifier(X,y,save_steps = T, n_iter = n_iter) # fit classifier
 y_hat <- predict(mod) # predict labels
@@ -129,7 +129,7 @@ y_hat <- predict(mod) # predict labels
 dt_plot <- data.table(y_hat = factor(y_hat), X)
 levels(dt_plot$y_hat) <- c("Cat", "Dog")
 dt_plot[,alpha:=1]
-dt_plot[,emoji:=sprintf("www/%s.png",tolower(y_hat))]
+dt_plot[,emoji:=sprintf("posts/individual-recourse-for-black-box-models/www/%s.png",tolower(y_hat))]
 p <- ggplot() +
   geom_image(data=dt_plot,aes(x=height,y=tail,image=emoji)) +
   geom_abline(intercept = 0, slope=-mod$coefficients[1,]/mod$coefficients[2,]) +
@@ -142,7 +142,7 @@ p + geom_point(data=kitty_dt_w,aes(x=height,y=tail),colour="coral", shape=1, str
 
 ```{r}
 set.seed(seed)
-source("R/revise.R")
+source("posts/individual-recourse-for-black-box-models/R/revise.R")
 lambda <- c(
   0.00001,0.001,0.1,10
 )
@@ -181,7 +181,7 @@ levels(steps$y_hat) <- c("Cat", "Dog")
 ```
 
 ```{r, eval=FALSE}
-steps[,emoji:=sprintf("www/%s.png",tolower(y_hat))]
+steps[,emoji:=sprintf("posts/individual-recourse-for-black-box-models/www/%s.png",tolower(y_hat))]
 p <- p +
   geom_image(data=steps,aes(x=height,y=tail,image=emoji), size=0.1) +
   facet_wrap(~lambda) +
@@ -194,7 +194,7 @@ p <- p +
     title="Iteration: {closest_state}"
   ) 
 animate(p, width = 600, height = 600)
-anim_save("www/revise.gif")
+anim_save("posts/individual-recourse-for-black-box-models/www/revise.gif")
 ```
 
 Let's see if and how we can apply `REVISE` to Kitty's problem. The following summary should give you some flavour of how the algorithm works:
@@ -208,7 +208,7 @@ Let's see if and how we can apply `REVISE` to Kitty's problem. The following sum
 We also observe that as we increase $\lambda$ for a fixed learning rate, `REVISE` takes longer to converge. This should come as no surprise, since higher values of $\lambda$ lead to greater regularization with respect to the penalty we place on the distance that Kitty has to travel. When we penalize too much ($\lambda=10$), Kitty never reaches the decision boundary, because she is reluctant to change her characteristics beyond a certain point. While not visible to the naked eye, in this particular example $\lambda=0.001$ corresponds to the best choice among the candidate values.
 
 ```{r fig-revise, fig.align='center', fig.cap="The simplified `REVISE` algorithm in action: how Kitty crosses the decision boundary by changing her attributes. Regularization with respect to the distance penalty increases from top left to bottom right."}
-knitr::include_graphics("www/revise.gif")
+knitr::include_graphics("posts/individual-recourse-for-black-box-models/www/revise.gif")
 ```
 
 ```{r, eval=F}
@@ -218,11 +218,11 @@ kableExtra::kable(dt_dist, col.names = c("$\\lambda$","Euclidean distance"))
 
 ## Discussion
 
-While hopefully Kitty’s journey has provided you with some useful intuition, the story is of course very silly. Even if your cat ever seems to signal that she wants to be a dog, helping her cross that decision boundary will be tricky. Some attributes are simply immutable or very difficult to change, which @joshi2019towards do not fail to account for in their framework. Their proposed methodology offers a simple and ingenious approach towards providing individual recourse. Instead of concerning ourselves with Black Box interpretability, why not simply provide remedy in case things go wrong?
+While hopefully Kitty’s journey has provided you with some useful intuition, the story is of course very silly. Even if your cat ever seems to signal that she wants to be a dog, helping her cross that decision boundary will be tricky. Some attributes are simply immutable or very difficult to change, which @joshi2019realistic do not fail to account for in their framework. Their proposed methodology offers a simple and ingenious approach towards providing individual recourse. Instead of concerning ourselves with Black Box interpretability, why not simply provide remedy in case things go wrong?
 
 To some extent that idea has its merit. As this post has hopefully shown, `REVISE` is straight-forward to understand and readily applicable. It could be a very useful tool to provide individual recourse in many real-world applications. As the implementation of our simplified version of `REVISE` demonstrates, researchers should also find it relatively easy to develop the methodology further and tailor it to specific use cases. The simpler version here, for example, may be useful in settings where the dimensionality is relatively small and one can reasonably model the distribution of attributes without the need for generative models.
 
-Still, you may be wondering: if the original classifier is based on poorly defined rules and proxies, then what good does `REVISE` really do? Going back to the example of high-school teacher Sarah Wysocki, one of the key attributes determining teachers' evaluations was their students' performance. Realizing this, some teachers took the shortest route to success by artificially inflating their students' test scores. That same course of action may well have been suggested by `REVISE`. As @joshi2019towards demonstrate, this very property of `REVISE` may actually proof useful in detecting weaknesses of decision making systems before setting them loose (key contribution 3).
+Still, you may be wondering: if the original classifier is based on poorly defined rules and proxies, then what good does `REVISE` really do? Going back to the example of high-school teacher Sarah Wysocki, one of the key attributes determining teachers' evaluations was their students' performance. Realizing this, some teachers took the shortest route to success by artificially inflating their students' test scores. That same course of action may well have been suggested by `REVISE`. As @joshi2019realistic demonstrate, this very property of `REVISE` may actually proof useful in detecting weaknesses of decision making systems before setting them loose (key contribution 3).
 
 Nonetheless, the example above also demonstrates that approaches like `REVISE`, useful as they may be, tend to provide solutions for very particular problems. In reality data-driven decision making systems are often subject to many different problems and hence research on trustworthy AI will need to tackle the issue from various angles. A few places to start include the question of dealing with data that is inherently biased, improving ad-hoc and post-hoc model interpretability and continuing efforts around causality-inspired AI.
 
@@ -261,7 +261,7 @@ The code below uses this analytical solution to perform SGD over $T$ iterations 
 
 ### `REVISE` (simplified)
 
-As flagged above, we are looking at a slightly simplified version of the algorithm presented in @joshi2019towards. In particular, the approach here does not incorporate the threshold on the likelihood nor does it account for immutable attributes.
+As flagged above, we are looking at a slightly simplified version of the algorithm presented in @joshi2019realistic. In particular, the approach here does not incorporate the threshold on the likelihood nor does it account for immutable attributes.
 
 Let $y\in\{-1,1\}$ be a binary outcome variable, $X\in\mathbb{R}^d$ a feature matrix containing individuals' attributes and $g_n(X)$ a corresponding data-dependent classifier. Suppose $y_i=-1$ (the negative outcome) for some individual characterized by attributes $\mathbf{x}_i$. Then we want to find $\mathbf{x}_i'$ closest to $\mathbf{x}_i$ such that the classifier assigns the positive outcome $g(\mathbf{x}_i^{'})=1$. In order to do so, we use gradient descent with Hinge loss $\ell$ to minimize the following function 
 
@@ -279,7 +279,7 @@ $$
 \end{aligned}
 $$
 
-where $\eta$ is the learning rate. The descent step is almost equivalent to the one described in @joshi2019towards, but here we greatly simplify things by optimizing directly in the attribute space instead of a latent space. The gradient of the loss function looks very similar to @eq-hinge. With respect to the Euclidean distance partial derivatives are of the following form:
+where $\eta$ is the learning rate. The descent step is almost equivalent to the one described in @joshi2019realistic, but here we greatly simplify things by optimizing directly in the attribute space instead of a latent space. The gradient of the loss function looks very similar to @eq-hinge. With respect to the Euclidean distance partial derivatives are of the following form:
 
 $$
 \begin{aligned}
