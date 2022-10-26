@@ -25,6 +25,19 @@ draft: true
 Pkg.build("IJulia")
 ```
 
+# Pros
+
+- when using `.qmd` the code junks running Jupyter connect to the REPL in VSCode (demo)
+
 ## Quarto for package devs
+
+- For admonitions use the following (see [here](https://github.com/quarto-dev/quarto-cli/discussions/2947#discussioncomment-3960202)):
+
+```{.md}
+| !!! Note "An optional title"
+|     Here is something that you should pay attention to.   
+```
+
+
 
 ## Quarto for academic writing

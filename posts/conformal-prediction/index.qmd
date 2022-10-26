@@ -1,6 +1,6 @@
 ---
-title: Conformal Prediction
-subtitle: From scratch in Julia Language
+title: Conformal Prediction in Julia 🟣🔴🟢
+subtitle: Part 1 - Introduction
 author: Patrick Altmeyer
 date: '2022-10-25'
 categories:
@@ -8,49 +8,59 @@ categories:
   - uncertainty
   - Julia
 description: >-
-  A very gentle introduction to Conformal Prediction from the bottom up with examples in Julia language.
+  A (very) gentle introduction to Conformal Prediction in Julia using my new package [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).
 image: www/intro.gif
 jupyter: julia-1.8
 draft: false
 ---
 
 ```{julia}
+#| echo: false
+
 using Pkg; Pkg.activate("posts/conformal-prediction")
 ```
 
 <div class="intro-gif">
   <figure>
     <img src="www/intro.gif">
-    <figcaption>A Bayesian Neural Network gradually learns.</figcaption>
+    <figcaption>Prediction sets for two different samples <br> and changing coverage rates. <br> As coverage grows, so does the size of the <br> prediction sets.</figcaption>
   </figure>
 </div>
 
-A first crucial step towards building trustworthy AI systems is to be transparent about predictive uncertainty. Model parameters are random variables and their values are estimated from noisy data. That inherent stochasticity feeds through to model predictions and should to be addressed at the very least in order to avoid overconfidence in models. Beyond that obvious concern, it turns out that quantifying model uncertainty actually opens up a myriad of possibilities to improve up- and downstream modeling tasks like active learning and explainability. In Bayesian Active Learning, for example, uncertainty estimates are used to guide the search for new input samples, which can make ground-truthing tasks more efficient [@houlsby2011bayesian]. With respect to model performance in downstream tasks, uncertainty quantification can be used to improve model calibration and robustness [@lakshminarayanan2016simple]. 
+A first crucial step towards building trustworthy AI systems is to be transparent about predictive uncertainty. Model parameters are random variables and their values are estimated from noisy data. That inherent stochasticity feeds through to model predictions and should to be addressed, at the very least in order to avoid overconfidence in models. 
 
-In previous posts we have looked at how uncertainty can be quantified in the Bayesian context. Since in Bayesian modeling we are generally concerned with estimated posterior distributions, we get uncertainty estimates almost as a byproduct. This is great for all intends and purposes, but it hinges on assumptions about prior distributions. Personally, I have no quarrel with the idea of making prior distributional assumptions. On the contrary, I think the Bayesian framework formalizes the idea of integrating prior information in models and therefore provides a powerful toolkit for conducting science. Still, in some cases this requirement may be seen as too restrictive or we may simply lack prior information. 
+Beyond that obvious concern, it turns out that quantifying model uncertainty actually opens up a myriad of possibilities to improve up- and down-stream modeling tasks like active learning and explainability. In Bayesian Active Learning, for example, uncertainty estimates are used to guide the search for new input samples, which can make ground-truthing tasks more efficient [@houlsby2011bayesian]. With respect to model performance in downstream tasks, uncertainty quantification can be used to improve model calibration and robustness [@lakshminarayanan2016simple]. 
 
-## 👉 Enter: Conformal Prediction
+In previous posts we have looked at how uncertainty can be quantified in the Bayesian context (see [here](https://www.paltmeyer.com/blog/posts/bayesian-logit/) and [here](https://www.paltmeyer.com/blog/posts/effortsless-bayesian-dl/)). Since in Bayesian modeling we are generally concerned with estimating posterior distributions, we get uncertainty estimates almost as a byproduct. This is great for all intends and purposes, but it hinges on assumptions about prior distributions. Personally, I have no quarrel with the idea of making prior distributional assumptions. On the contrary, I think the Bayesian framework formalizes the idea of integrating prior information in models and therefore provides a powerful toolkit for conducting science. Still, in some cases this requirement may be seen as too restrictive or we may simply lack prior information. 
 
-Conformal Prediction (CP) promises to be a easy-to-understand, distribution-free and model-agnostic way to generate statistically rigorous uncertainty estimates. That's quite a mouthful, so let's break it down: firstly, as I will hopefully manage to illustrate in this post, the underlying concepts truly are fairly straight-forward to understand; secondly, CP indeed relies on only minimal distributional assumptions; thirdly, common procedures to generate conformal predictions really do apply almost universally to all supervised models, therefore making the framework very intriguing to the ML community; and, finally, CP does in fact come with a coverage guarantee that ensures that conformal prediction sets contain the true value with a user-chosen probability. For a formal proof of this *marginal coverage* property and a detailed introduction to the topic, I recommend @angelopoulos2021gentle. 
+Enter: Conformal Prediction (CP) --- a scalable frequentist approach to uncertainty quantification and coverage control. In this post we will go through the basic concepts underlying CP. A number of hands-on usage examples in Julia should hopefully help to convey some intuition and ideally attract people interested in contributing to a new and exciting open-source development. 
+
+## 📖 Background
+
+Conformal Prediction promises to be an easy-to-understand, distribution-free and model-agnostic way to generate statistically rigorous uncertainty estimates. That's quite a mouthful, so let's break it down: firstly, as I will hopefully manage to illustrate in this post, the underlying concepts truly are fairly straight-forward to understand; secondly, CP indeed relies on only minimal distributional assumptions; thirdly, common procedures to generate conformal predictions really do apply almost universally to all supervised models, therefore making the framework very intriguing to the ML community; and, finally, CP does in fact come with a frequentist coverage guarantee that ensures that conformal prediction sets contain the true value with a user-chosen probability. For a formal proof of this *marginal coverage* property and a detailed introduction to the topic, I recommend @angelopoulos2021gentle. 
 
 :::{.callout-note}
 In what follows we will loosely treat the tutorial by @angelopoulos2021gentle and the general framework it sets as a reference. You are not expected to have read the paper, but I also won't reiterate any details here.
 :::
 
+CP can be used to generate prediction intervals for regression models and prediction sets for classification models (more in this later). There also some recent work on conformal predictive distributions and probabilistic predictions. Interestingly, it can even be used to complement Bayesian methods. @angelopoulos2021gentle, for example, point out that prior information should be incorporated into prediction sets and demonstrate how Bayesian predictive distributions can be conformalized in order to comply with the frequentist notion of coverage. Relatedly, @hoff2021bayesoptimal proposes a Bayes-optimal prediction procedure. And finally, @stanton2022bayesian very recently proposed a way to introduce conformal prediction in Bayesian Optimization. I find this type of work that combines different schools of thought very promising, but I'm drifting off a little ... So, without further ado, let us look at some code. 
+
 ## 💻 Conformal Prediction in Julia
 
-In this section of this first short post on CP we will look at conformal prediction can be implemented in Julia to be compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). We will go through some basic usage examples employing a a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
+In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look an approach that is compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). We will go through some basic usage examples employing a a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
 
 :::{.callout-note}
 ## [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl)
 
-`ConformalPrediction.jl` is a package for uncertainty quantification through conformal prediction for machine learning models trained in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/). At the time of writing it is still in its early stages of development. Contributions are very much welcome:
+`ConformalPrediction.jl` is a package for uncertainty quantification through conformal prediction for machine learning models trained in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/). At the time of writing it is still in its early stages of development, but already implements a range of different approaches to CP. Contributions are very much welcome:
 
 - [Documentation](https://www.paltmeyer.com/ConformalPrediction.jl/stable/)
 - [Contributor's Guide](https://www.paltmeyer.com/ConformalPrediction.jl/stable/#Contribute)
 :::
 
-We consider a simple multi-class prediction problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. For illustration purposes we will use the iris dataset. 
+### Split Conformal Classification
+
+We consider a simple binary classification problem. Let $(X_i, Y_i), \ i=1,...,n$ denote our feature-label pairs and let $\mu: \mathcal{X} \mapsto \mathcal{Y}$ denote the mapping from features to labels. For illustration purposes we will use the moons dataset 🌙. Using [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) we first generate the data and split into into a training and test set:
 
 ```{julia}
 using MLJ
@@ -62,7 +72,7 @@ X, y = make_moons(500; noise=0.15)
 train, test = partition(eachindex(y), 0.8, shuffle=true)
 ```
 
-We use a specific case of CP called *split conformal prediction* which can then be summarized as follows:^[In other places split conformal prediction is sometimes referred to as *inductive* conformal prediction.]
+Here we will use a specific case of CP called *split conformal prediction* which can then be summarized as follows:^[In other places split conformal prediction is sometimes referred to as *inductive* conformal prediction.]
 
 1. Partition the training into a proper training set and a separate calibration set: $\mathcal{D}_n=\mathcal{D}^{\text{train}} \cup \mathcal{D}^{\text{cali}}$.
 2. Train the machine learning model on the proper training set: $\hat\mu_{i \in \mathcal{D}^{\text{train}}}(X_i,Y_i)$.
@@ -74,9 +84,17 @@ $$
 C(X_{\text{test}})=\{y:s(X_{\text{test}},y) \le \hat{q}\}
 $$ {#eq-set}
 
-The code below implements the simplest form of this procedure in Julia.  As a first important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`] and reserves additional fields for a few hyperparameters. As a second step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a third step we implement the procedure in @eq-set to compute the conformal prediction set.
+This is the default procedure used for classification and regression in [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl). 
 
-Now let's take this to our data. To illustrate the package functionality we will use the package API to construct our conformal predictor. We first define our atomic machine learning model following standard [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call `conformal_model`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. The final predictions are set-valued. 
+You may want to take a look at the source code for the classification case [here](https://github.com/pat-alt/ConformalPrediction.jl/blob/67712e870dc3a438bf0846d376fa48480612f042/src/ConformalModels/inductive_classification.jl#L1). As a [first](https://github.com/pat-alt/ConformalPrediction.jl/blob/67712e870dc3a438bf0846d376fa48480612f042/src/ConformalModels/inductive_classification.jl#L3) important step, we begin by defining a concrete type `SimpleInductiveClassifier` that wraps a supervised model from [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) and reserves additional fields for a few hyperparameters. As a [second](https://github.com/pat-alt/ConformalPrediction.jl/blob/67712e870dc3a438bf0846d376fa48480612f042/src/ConformalModels/inductive_classification.jl#L26) step, we define the training procedure, which includes the data-splitting and calibration step. Finally, as a [third](https://github.com/pat-alt/ConformalPrediction.jl/blob/67712e870dc3a438bf0846d376fa48480612f042/src/ConformalModels/inductive_classification.jl#L56) step we implement the procedure in @eq-set to compute the conformal prediction set.
+
+:::{.callout-warning}
+## Development Status
+
+The permalinks above take you to the version of the package that was up-to-date at the time of writing. Since the package is in its early stages of development, the code base and API can be expected to change.
+:::
+
+Now let's take this to our 🌙 data. To illustrate the package functionality we will demonstrate the envisioned workflow. We first define our atomic machine learning model following standard [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) conventions. Using [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl) we then wrap our atomic model into a conformal model using the standard API call `conformal_model(model::Supervised; kwargs...)`. To train and predict from our conformal model we can then rely on the conventional [`MLJ.jl`](https://alan-turing-institute.github.io/MLJ.jl/v0.18/) procedure again. In particular, we wrap our conformal model in data (turning it into a machine) and then fit it on the training set. Finally, we use our machine to predict the label for a new test sample `Xtest`:
 
 ```{julia}
 #| output: true
@@ -97,18 +115,17 @@ ytest = y[first(test)]
 predict(mach, Xtest)[1]
 ```
 
-While the softmax output remains unchanged for the `SimpleInductiveClassifier`, the size of the prediction set depends on the choice of coverage, $(1-\alpha)$. When specifying a coverage rate very close to one, the prediction set will typically include many (in some cases all) of the possible labels.
-
+The final predictions are set-valued. While the softmax output remains unchanged for the `SimpleInductiveClassifier`, the size of the prediction set depends on the chosen coverage rate, $(1-\alpha)$. 
 ```{julia}
 #| echo: false
+#| output: true
+
 coverage = 1.0
 using Markdown
 Markdown.parse("""
-Below, for example, all three possible classes of iris plants are included in the prediction set when setting coverage the coverage rates equal to $coverage.
+When specifying a coverage rate very close to one, the prediction set will typically include many (in some cases all) of the possible labels. Below, for example, both classes are included in the prediction set when setting coverage the coverage rates equal to ``(1-\\alpha)``=$coverage. This intuitive, since high coverage quite literally requires that the true label is covered by the prediction set with high probability.
 """)
 ```
-
-This intuitive, since high coverage quite literally requires that the true label is covered by the prediction set with high probability.
 
 ```{julia}
 #| output: true
@@ -122,18 +139,16 @@ Xtest = (x1=[1],x2=[0])
 predict(mach, Xtest)[1]
 ```
 
-Conversely, for low coverage rates, prediction sets can also be empty. 
-
 ```{julia}
 #| echo: false
+#| output: true
+
 coverage = .1
 using Markdown
 Markdown.parse("""
-For a choice of $coverage, for example, the prediction set for our test sample is empty.
+Conversely, for low coverage rates, prediction sets can also be empty. For a choice of ``(1-\\alpha)``=$coverage, for example, the prediction set for our test sample is empty. This is a bit difficult to think about intuitively and I have not yet come across a satisfactory, intuitive interpretation.^[Any thoughts/comments welcome!] When the prediction set is empty, the `predict` call currently returns `missing`:
 """)
 ```
-
-This is a bit difficult to think about intuitively and I have not yet come across a satisfactory, intuitive interpretation.^[Any thoughts/comments welcome!]
 
 ```{julia}
 #| output: true
@@ -143,7 +158,6 @@ mach = machine(conf_model, X, y)
 fit!(mach, rows=train)
 
 # Conformal Prediction:
-Xtest = (x1=[1],x2=[0])
 predict(mach, Xtest)[1]
 ```
 
@@ -151,7 +165,7 @@ predict(mach, Xtest)[1]
 #| echo: false
 using Plots
 
-function contourf_cp(mach::Machine, x1_range, x2_range; type=:set_size)
+function contourf_cp(mach::Machine, x1_range, x2_range; type=:set_size, kwargs...)
     set_size = []
     proba = []
     for x2 in x2_range, x1 in x1_range
@@ -165,37 +179,43 @@ function contourf_cp(mach::Machine, x1_range, x2_range; type=:set_size)
         push!(proba, p)
     end
     if type == :set_size
-        plt = contourf(x1_range, x2_range, set_size, clim=(0,2), c=cgrad(:blues, 3, categorical = true), title="Set size")
+        plt = contourf(x1_range, x2_range, set_size; clim=(0,2), c=cgrad(:blues, 3, categorical = true),  kwargs...)
     elseif type == :proba
-        plt = contourf(x1_range, x2_range, proba, c=:thermal, title="Softmax")
+        plt = contourf(x1_range, x2_range, proba; c=:thermal, kwargs...)
     end
     return plt
 end
 ```
 
-@fig-anim illustrates the effect of the chosen coverage rate on the 
+@fig-anim should provide some more intuition as to what exactly is happening here. It illustrates the effect of the chosen coverage rate on the predicted softmax output and the set size in the two-dimensional feature space. Contours are overlayed with the moon data points (including test data). The two samples highlighted in red, $X_1$ and $X_2$, have been manually added for illustration purposes. Let's look at these one by one.
+
+Firstly, note that $X_1$ falls into a region of the domain that is characterized by high predictive uncertainty. It sits right at the bottom-right corner of our class-zero moon 🌜 (orange), a region that is entirely enveloped by our class-one moon 🌛 (green).
 
 ```{julia}
 #| output: true
 #| label: fig-anim
 #| fig-cap: "The effect of the coverage rate on the conformal prediction set. Softmax probabilities are shown on the left. The size of the prediction set is shown on the right."
+#| code-fold: true
 
 # Setup
-coverages = range(0.2,1.0,length=5)
+coverages = range(0.75,1.0,length=5)
 n = 100
 x1_range = range(extrema(X.x1)...,length=n)
 x2_range = range(extrema(X.x2)...,length=n)
+Xtest_2 = (x1=[-0.5],x2=[0.25])
 anim = @animate for coverage in coverages
     conf_model = conformal_model(model; coverage=coverage)
     mach = machine(conf_model, X, y)
     fit!(mach, rows=train)
-    p1 = contourf_cp(mach, x1_range, x2_range; type=:proba)
+    p1 = contourf_cp(mach, x1_range, x2_range; type=:proba, title="Softmax", axis=nothing)
     scatter!(p1, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
-    scatter!(p1, Xtest.x1, Xtest.x2, ms=5, c=:red, label="Xtest")
-    p2 = contourf_cp(mach, x1_range, x2_range; type=:set_size)
+    scatter!(p1, Xtest.x1, Xtest.x2, ms=6, c=:red, label="X₁", shape=:cross, msw=6)
+    scatter!(p1, Xtest_2.x1, Xtest_2.x2, ms=6, c=:red, label="X₂", shape=:diamond, msw=6)
+    p2 = contourf_cp(mach, x1_range, x2_range; type=:set_size, title="Set size", axis=nothing)
     scatter!(p2, X.x1, X.x2, group=y, ms=2, msw=0, alpha=0.5)
-    scatter!(p2, Xtest.x1, Xtest.x2, ms=5, c=:red, label="Xtest")
-    plot(p1, p2, plot_title="(1-α)=$(round(coverage,digits=2))", size=(800,250))
+    scatter!(p2, Xtest.x1, Xtest.x2, ms=6, c=:red, label="X₁", shape=:cross, msw=6)
+    scatter!(p2, Xtest_2.x1, Xtest_2.x2, ms=6, c=:red, label="X₂", shape=:diamond, msw=6)
+    plot(p1, p2, plot_title="(1-α)=$(round(coverage,digits=2))", size=(800,300))
 end
 
 gif(anim, fps=0.5)
@@ -204,6 +224,9 @@ gif(anim, fps=0.5)
 ```{julia}
 #| echo: false
 #| eval: false
+
+using Plots.PlotMeasures
+
 # Setup
 coverages = range(0.75,1.0,length=25)
 n = 100
@@ -213,10 +236,69 @@ anim = @animate for coverage in coverages
     conf_model = conformal_model(model; coverage=coverage)
     mach = machine(conf_model, X, y)
     fit!(mach, rows=train)
-    plt = contourf_cp(mach, x1_range, x2_range; type=:proba)
-    plot(plt, axis=nothing, size=(500,500), background_color=:transparent, title="", clegend=false)
+    plt = contourf_cp(mach, x1_range, x2_range; type=:proba, axis=nothing, size=(500,500), background_color=:transparent, colorbar=false, margin=-1.5mm)
+
+    # Annotations
+
+    # First:
+    p̂ = predict(mach, Xtest)[1]
+    if ismissing(p̂)
+        z = "∅"
+    else
+        L = p̂.decoder.classes
+        set_contents = reduce((x,y) -> x * ", " * y, string.(L[pdf.(p̂, L) .> 0]))
+        z = "{$(set_contents)}"
+    end
+    ann_Xtest = (Xtest.x1, Xtest.x2, ("ŷ₁=$z", 20, :white))
+    annotate!(plt, ann_Xtest)
+
+    # Second
+    p̂ = predict(mach, Xtest_2)[1]
+    if ismissing(p̂)
+        z = "∅"
+    else
+        L = p̂.decoder.classes
+        set_contents = reduce((x,y) -> x * ", " * y, string.(L[pdf.(p̂, L) .> 0]))
+        z = "{$(set_contents)}"
+    end
+    ann_Xtest = (Xtest_2.x1, Xtest_2.x2, ("ŷ₂=$z", 20, :white))
+    annotate!(plt, ann_Xtest)
 end
 gif(anim, "posts/conformal-prediction/www/intro.gif", fps=5)
+
+anim = @animate for coverage in coverages
+    conf_model = conformal_model(model; coverage=coverage)
+    mach = machine(conf_model, X, y)
+    fit!(mach, rows=train)
+    plt = contourf_cp(mach, x1_range, x2_range; type=:proba, axis=nothing, size=(1200,400), background_color=:transparent, colorbar=false, margin=-1.5mm)
+    
+    # Annotations
+
+    # First:
+    p̂ = predict(mach, Xtest)[1]
+    if ismissing(p̂)
+        z = "∅"
+    else
+        L = p̂.decoder.classes
+        set_contents = reduce((x,y) -> x * ", " * y, string.(L[pdf.(p̂, L) .> 0]))
+        z = "{$(set_contents)}"
+    end
+    ann_Xtest = (Xtest.x1, Xtest.x2, ("ŷ₁=$z", 20, :white))
+    annotate!(plt, ann_Xtest)
+
+    # Second
+    p̂ = predict(mach, Xtest_2)[1]
+    if ismissing(p̂)
+        z = "∅"
+    else
+        L = p̂.decoder.classes
+        set_contents = reduce((x,y) -> x * ", " * y, string.(L[pdf.(p̂, L) .> 0]))
+        z = "{$(set_contents)}"
+    end
+    ann_Xtest = (Xtest_2.x1, Xtest_2.x2, ("ŷ₂=$z", 20, :white))
+    annotate!(plt, ann_Xtest)
+end
+gif(anim, "posts/conformal-prediction/www/medium.gif", fps=5)
 ```
 
 
