@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.624">
+<meta name="generator" content="quarto-99.9.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -14,10 +14,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -56,7 +61,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -69,7 +74,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -111,8 +116,6 @@ div.csl-indent {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../favicon.ico" rel="icon">
-<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,7 +124,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,7 +146,7 @@ div.csl-indent {
 }</script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BEEZ30787D"></script>
 
-<script type="text/plain" cookie-consent="tracking">
+<script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -151,27 +154,15 @@ gtag('js', new Date());
 gtag('config', 'G-BEEZ30787D', { 'anonymize_ip': true});
 </script>
 
-<script type="text/javascript" charset="UTF-8">
-document.addEventListener('DOMContentLoaded', function () {
-cookieconsent.run({
-  "notice_banner_type":"simple",
-  "consent_type":"implied",
-  "palette":"light",
-  "language":"en",
-  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
-  "notice_banner_reject_button_hide":false,
-  "preferences_center_close_button_hide":false,
-  "website_name":""
-  });
-});
-</script> 
-  
-
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="blog - A new tool for explainable AI">
+<meta property="og:description" content="This post introduces a new Julia package for generating counterfactual explanations.">
+<meta property="og:image" content="www/intro.gif">
+<meta property="og:site-name" content="blog">
 <meta name="twitter:title" content="blog - A new tool for explainable AI">
-<meta name="twitter:description" content="This post introduces a new Julia package for generating counterfactual explanations. The package can be used to explain machine learning algorithms developed and trained in Julia as well as other popular programming languages like Python and R.">
+<meta name="twitter:description" content="This post introduces a new Julia package for generating counterfactual explanations.">
 <meta name="twitter:image" content="www/intro.gif">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -182,10 +173,14 @@ cookieconsent.run({
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="../../index.html">
-    <img src="../../icon.png" alt="">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../icon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">blog</span>
-  </a>
+    </a>
+  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -194,22 +189,22 @@ cookieconsent.run({
   <li class="nav-item compact">
     <a class="nav-link" href="https://www.paltmeyer.com/"><i class="bi bi-house" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/pat-alt"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/paltmey"><i class="bi bi-twitter" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://medium.com/@patrick.altmeyer"><i class="bi bi-medium" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -222,7 +217,7 @@ cookieconsent.run({
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -246,7 +241,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">A new tool for explainable AI</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">A new tool for explainable AI</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 <p class="subtitle lead">Explaining models through counterfactuals</p>
   <div class="quarto-categories">
     <div class="quarto-category">counterfactuals</div>
@@ -263,7 +258,7 @@ cookieconsent.run({
 
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
+  <div class="quarto-title-meta-heading"></div>
   
     <div class="quarto-title-meta-contents">
     <a href="https://www.paltmeyer.com/">Patrick Altmeyer</a> 
@@ -286,6 +281,7 @@ cookieconsent.run({
       <p class="date">April 20, 2022</p>
     </div>
   </div>
+  
     
   </div>
   
@@ -318,7 +314,8 @@ Turning a 9 (nine) into a 4 (four).
 <section id="black-box-models" class="level3">
 <h3 class="anchored" data-anchor-id="black-box-models">Black-box models</h3>
 <p>The code below loads relevant packages along with the MNIST data and pre-trained models.</p>
-<details>
+<div class="cell" data-execution_count="2">
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load package, models and data:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations</span>, <span class="bu">Flux</span></span>
@@ -328,13 +325,15 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ensemble <span class="op">=</span> <span class="fu">mnist_ensemble</span>()</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>counterfactual_data <span class="op">=</span> <span class="fu">CounterfactualData</span>(X,ys;domain<span class="op">=</span>(<span class="fl">0</span>,<span class="fl">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 <p>While the package can currently handle a few simple classification models natively, it is designed to be easily extensible through users and contributors. Extending the package to deal with custom models typically involves only two simple steps:</p>
 <ol type="1">
 <li><strong>Subtyping</strong>: the custom model needs to be declared as a subtype of the package-internal type <code>AbstractFittedModel</code>.</li>
 <li><strong>Multiple dispatch</strong>: the package-internal functions <code>logits</code> and <code>probs</code> need to be extended through custom methods for the new model type.</li>
 </ol>
 <p>The following code implements these two steps first for the MLP and then for the deep ensemble.</p>
-<details>
+<div class="cell" data-execution_count="3">
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations.Models</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Models</span>: logits, probs</span>
@@ -360,28 +359,33 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">probs</span>(M<span class="op">::</span><span class="dt">FittedEnsemble</span>, X<span class="op">::</span><span class="dt">AbstractArray</span>) <span class="op">=</span> <span class="fu">mean</span>(<span class="fu">stack</span>([<span class="fu">softmax</span>(<span class="fu">m</span>(X)) for m <span class="kw">in</span> M.ensemble],<span class="fl">3</span>),dims<span class="op">=</span><span class="fl">3</span>)</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>M_ensemble <span class="op">=</span> <span class="fu">FittedEnsemble</span>(ensemble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 </section>
 <section id="counterfactual-generators" class="level3">
 <h3 class="anchored" data-anchor-id="counterfactual-generators">Counterfactual generators</h3>
 <p>Next, we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by <span class="citation" data-cites="wachter2017counterfactual">Wachter, Mittelstadt, and Russell (<a href="#ref-wachter2017counterfactual" role="doc-biblioref">2017</a>)</span> and, secondly, a greedy generator introduced by <span class="citation" data-cites="schut2021generating">Schut et al. (<a href="#ref-schut2021generating" role="doc-biblioref">2021</a>)</span>.</p>
-<p>The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019towards">(<a href="#ref-joshi2019towards" role="doc-biblioref">Joshi et al. 2019</a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea.</p>
+<p>The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE <span class="citation" data-cites="joshi2019realistic">(<a href="#ref-joshi2019realistic" role="doc-biblioref">Joshi et al. 2019</a>)</span> and CLUE <span class="citation" data-cites="antoran2020getting">(<a href="#ref-antoran2020getting" role="doc-biblioref">Antorán et al. 2020</a>)</span> also play with this simple idea.</p>
 <p>The following code instantiates the two generators for the problem at hand.</p>
-<details>
+<div class="cell" data-execution_count="4">
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>generic <span class="op">=</span> <span class="fu">GenericGenerator</span>(;loss<span class="op">=:</span>logitcrossentropy)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>greedy <span class="op">=</span> <span class="fu">GreedyGenerator</span>(;loss<span class="op">=:</span>logitcrossentropy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 </section>
 <section id="explanations" class="level3">
 <h3 class="anchored" data-anchor-id="explanations">Explanations</h3>
 <p>Once the model and counterfactual generator are specified, running counterfactual search is very easy using the package. For a given factual (<code>x</code>), target class (<code>target</code>) and data set (<code>counterfactual_data</code>), simply running</p>
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_counterfactual</span>(x, target, counterfactual_data, M, generic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>will generate the results, in this case using the generic generator (<code>generic</code>) for the MLP (<code>M</code>). Since we have specified two different black-box models and two different counterfactual generators, we have four combinations of a model and a generator in total. For each of these combinations I have used the <code>generate_counterfactual</code> function to produce the results in <a href="#fig-mnist-9to4">Figure&nbsp;1</a>.</p>
 <p>In every case the desired label switch is in fact achieved, but arguably from a human perspective only the counterfactuals for the deep ensemble look like a four. The generic generator produces mild perturbations in regions that seem irrelevant from a human perspective, but nonetheless yields a counterfactual that can pass as a four. The greedy approach clearly targets pixels at the top of the handwritten nine and yields the best result overall. For the non-Bayesian MLP, both the generic and the greedy approach generate counterfactuals that look much like adversarial examples: they perturb pixels in seemingly random regions on the image.</p>
 <div id="fig-mnist-9to4" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/mnist_9_to_4.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Counterfactual explanations for MNIST: turning a nine (9) into a four (4).</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Counterfactual explanations for MNIST: turning a nine (9) into a four (4).</figcaption><p></p>
 </figure>
 </div>
 </section>
@@ -392,7 +396,8 @@ Turning a 9 (nine) into a 4 (four).
 <section id="explaining-a-torch-model" class="level3">
 <h3 class="anchored" data-anchor-id="explaining-a-torch-model">Explaining a <code>torch</code> model</h3>
 <p>We will consider a simple MLP trained for a binary classification task. As before we first need to adapt this custom model for use with our package. The code below the two necessary steps - sub-typing and method extension. Logits are returned by the <code>torch</code> model and copied from the R environment into the Julia scope. Probabilities are then computed inside the Julia scope by passing the logits through the sigmoid function.</p>
-<details>
+<div class="cell" data-execution_count="12">
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CounterfactualExplanations</span>, <span class="bu">CounterfactualExplanations.Models</span></span>
@@ -415,6 +420,7 @@ Turning a 9 (nine) into a 4 (four).
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="fu">TorchNetwork</span>(R<span class="st">"model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 <p>Compared to models trained in Julia, we need to do a little more work at this point. Since our counterfactual generators need gradient access, we essentially need to allow our package to communicate with the R <code>torch</code> library. While this may sound daunting, it turns out to be quite manageable: all we have to do is respecify the function that computes the gradient with respect to the counterfactual loss function so that it can deal with the <code>TorchNetwork</code> type we defined above. That is all the adjustment needed to use <code>CounterfactualExplanations.jl</code> for our custom R model. <a href="#fig-torch">Figure&nbsp;2</a> shows a counterfactual path for a randomly chosen sample with respect to the MLP trained in R.</p>
 <div class="callout-caution callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -429,7 +435,8 @@ Experimental functionality
 <p>You may have stumbled across the term <em>respecify</em> above: does it really seem like a good idea to just replace an existing function from our package? Surely not! There are certainly better ways to go about this, which we will consider when adding native support for Python and R models in future package releases. Which brings us to our final section …</p>
 </div>
 </div>
-<details>
+<div class="cell" data-execution_count="13">
+<details open="">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CounterfactualExplanations.Generators</span>: ∂ℓ</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
@@ -453,10 +460,11 @@ Experimental functionality
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> grad</span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 <div id="fig-torch" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="www/interop_r.gif" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2: Counterfactual path using the generic counterfactual generator for a model trained in R.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Counterfactual path using the generic counterfactual generator for a model trained in R.</figcaption><p></p>
 </figure>
 </div>
 <!-- kicker -->
@@ -492,35 +500,35 @@ Experimental functionality
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-antoran2020getting" class="csl-entry" role="doc-biblioentry">
-Antorán, Javier, Umang Bhatt, Tameem Adel, Adrian Weller, and José Miguel Hernández-Lobato. 2020. <span>“Getting a Clue: A Method for Explaining Uncertainty Estimates.”</span> <em>arXiv Preprint arXiv:2006.06848</em>.
+Antorán, Javier, Umang Bhatt, Tameem Adel, Adrian Weller, and José Miguel Hernández-Lobato. 2020. <span>“Getting a Clue: <span>A</span> Method for Explaining Uncertainty Estimates.”</span> <a href="https://arxiv.org/abs/2006.06848">https://arxiv.org/abs/2006.06848</a>.
 </div>
-<div id="ref-joshi2019towards" class="csl-entry" role="doc-biblioentry">
-Joshi, Shalmali, Oluwasanmi Koyejo, Warut Vijitbenjaronk, Been Kim, and Joydeep Ghosh. 2019. <span>“Towards Realistic Individual Recourse and Actionable Explanations in Black-Box Decision Making Systems.”</span> <em>arXiv Preprint arXiv:1907.09615</em>.
+<div id="ref-joshi2019realistic" class="csl-entry" role="doc-biblioentry">
+Joshi, Shalmali, Oluwasanmi Koyejo, Warut Vijitbenjaronk, Been Kim, and Joydeep Ghosh. 2019. <span>“Towards Realistic Individual Recourse and Actionable Explanations in Black-Box Decision Making Systems.”</span> <a href="https://arxiv.org/abs/1907.09615">https://arxiv.org/abs/1907.09615</a>.
 </div>
 <div id="ref-lakshminarayanan2016simple" class="csl-entry" role="doc-biblioentry">
-Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <em>arXiv Preprint arXiv:1612.01474</em>.
+Lakshminarayanan, Balaji, Alexander Pritzel, and Charles Blundell. 2016. <span>“Simple and Scalable Predictive Uncertainty Estimation Using Deep Ensembles.”</span> <a href="https://arxiv.org/abs/1612.01474">https://arxiv.org/abs/1612.01474</a>.
 </div>
 <div id="ref-lecun1998mnist" class="csl-entry" role="doc-biblioentry">
-LeCun, Yann. 1998. <span>“The MNIST Database of Handwritten Digits.”</span> <em>Http://Yann. Lecun. Com/Exdb/Mnist/</em>.
+LeCun, Yann. 1998. <span>“The <span>MNIST</span> Database of Handwritten Digits.”</span>
 </div>
 <div id="ref-pawelczyk2021carla" class="csl-entry" role="doc-biblioentry">
-Pawelczyk, Martin, Sascha Bielawski, Johannes van den Heuvel, Tobias Richter, and Gjergji Kasneci. 2021. <span>“Carla: A Python Library to Benchmark Algorithmic Recourse and Counterfactual Explanation Algorithms.”</span> <em>arXiv Preprint arXiv:2108.00783</em>.
+Pawelczyk, Martin, Sascha Bielawski, Johannes van den Heuvel, Tobias Richter, and Gjergji Kasneci. 2021. <span>“Carla: <span>A</span> Python Library to Benchmark Algorithmic Recourse and Counterfactual Explanation Algorithms.”</span> <a href="https://arxiv.org/abs/2108.00783">https://arxiv.org/abs/2108.00783</a>.
 </div>
 <div id="ref-rudin2019stop" class="csl-entry" role="doc-biblioentry">
 Rudin, Cynthia. 2019. <span>“Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead.”</span> <em>Nature Machine Intelligence</em> 1 (5): 206–15.
 </div>
 <div id="ref-schut2021generating" class="csl-entry" role="doc-biblioentry">
-Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating Interpretable Counterfactual Explanations by Implicit Minimisation of Epistemic and Aleatoric Uncertainties.”</span> In <em>International Conference on Artificial Intelligence and Statistics</em>, 1756–64. PMLR.
+Schut, Lisa, Oscar Key, Rory Mc Grath, Luca Costabello, Bogdan Sacaleanu, Yarin Gal, et al. 2021. <span>“Generating <span>Interpretable Counterfactual Explanations By Implicit Minimisation</span> of <span>Epistemic</span> and <span>Aleatoric Uncertainties</span>.”</span> In <em>International <span>Conference</span> on <span>Artificial Intelligence</span> and <span>Statistics</span></em>, 1756–64. <span>PMLR</span>.
 </div>
 <div id="ref-wachter2017counterfactual" class="csl-entry" role="doc-biblioentry">
-Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfactual Explanations Without Opening the Black Box: Automated Decisions and the GDPR.”</span> <em>Harv. JL &amp; Tech.</em> 31: 841.
+Wachter, Sandra, Brent Mittelstadt, and Chris Russell. 2017. <span>“Counterfactual Explanations Without Opening the Black Box: <span>Automated</span> Decisions and the <span>GDPR</span>.”</span> <em>Harv. JL &amp; Tech.</em> 31: 841.
 </div>
-</div></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1" role="doc-endnote"><p>See: [<a href="https://towardsdatascience.com/individual-recourse-for-black-box-models-5e9ed1e4b4cc">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/individual-recourse-for-black-box-models/">blog</a>]<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>For more information on Bayesian deep learning see my previous post: [<a href="https://towardsdatascience.com/go-deep-but-also-go-bayesian-ab25efa6f7b">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/effortsless-bayesian-dl/">blog</a>].<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>The corresponding example involving <code>PyTorch</code> is analogous and therefore not included here. You may find it <a href="https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/">here</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>See: [<a href="https://towardsdatascience.com/individual-recourse-for-black-box-models-5e9ed1e4b4cc">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/individual-recourse-for-black-box-models/">blog</a>]<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For more information on Bayesian deep learning see my previous post: [<a href="https://towardsdatascience.com/go-deep-but-also-go-bayesian-ab25efa6f7b">TDS</a>], [<a href="https://www.paltmeyer.com/blog/posts/effortsless-bayesian-dl/">blog</a>].<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The corresponding example involving <code>PyTorch</code> is analogous and therefore not included here. You may find it <a href="https://www.paltmeyer.com/CounterfactualExplanations.jl/dev/tutorials/interop/">here</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{altmeyer2022,
   author = {Patrick Altmeyer},
@@ -534,6 +542,24 @@ April 20, 2022.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -555,7 +581,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -634,31 +677,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
@@ -774,7 +836,7 @@ M_ensemble = FittedEnsemble(ensemble)
 
 Next, we need to specify the counterfactual generators we want to use. The package currently ships with two default generators that both need gradient access: firstly, the generic generator introduced by @wachter2017counterfactual and, secondly, a greedy generator introduced by @schut2021generating. 
 
-The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE [@joshi2019towards] and CLUE [@antoran2020getting] also play with this simple idea. 
+The greedy generator is designed to be used with models that incorporate uncertainty in their predictions such as the deep ensemble introduced above. It works for probabilistic (Bayesian) models, because they only produce high-confidence predictions in regions of the feature domain that are populated by training samples. As long as the model is expressive enough and well-specified, counterfactuals in these regions will always be realistic and unambiguous since by construction they should look very similar to training samples. Other popular approaches to counterfactual explanations like REVISE [@joshi2019realistic] and CLUE [@antoran2020getting] also play with this simple idea. 
 
 The following code instantiates the two generators for the problem at hand. 
 
@@ -1081,7 +1143,7 @@ If you're interested in learning more about this development, feel free to check
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">© 2022, Patrick Altmeyer<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+      <div class="nav-footer-center">© 2022, Patrick Altmeyer</div>
   </div>
 </footer>
 

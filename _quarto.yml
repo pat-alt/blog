@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  execute-dir: project
 
 website:
   title: "blog"
@@ -20,9 +21,8 @@ website:
     location: navbar
     type: overlay
   twitter-card: true
-  opengraph: true
+  open-graph: true
   google-analytics: G-BEEZ30787D
-  cookie-consent: true
   repo-url: https://github.com/pat-alt/blog
   repo-actions: [issue]
   page-footer: '© 2022, Patrick Altmeyer'
@@ -32,7 +32,7 @@ format:
     theme: solar
     css: styles.css
     toc: true
-    code-fold: true
+    code-fold: show
     code-summary: "Show the code"
     code-tools: true
 
