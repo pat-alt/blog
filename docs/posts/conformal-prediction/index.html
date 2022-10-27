@@ -328,7 +328,7 @@ Note
 </section>
 <section id="sec-julia" class="level2">
 <h2 class="anchored" data-anchor-id="sec-julia">📦 Conformal Prediction in Julia</h2>
-<p>In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look at an approach that is compatible with any of the many supervised machine learning models available in <a href="https://alan-turing-institute.github.io/MLJ.jl/dev/">MLJ</a>: a beautiful, comprehensive machine learning framework funded by the <a href="https://www.turing.ac.uk/">Alan Turing Institute</a> and the <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/">New Zealand Strategic Science Investment Fund</a>. We will go through some basic usage examples employing a new Julia package that I have been working on: <a href="https://github.com/pat-alt/ConformalPrediction.jl"><code>ConformalPrediction.jl</code></a>.</p>
+<p>In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look at an approach that is compatible with any of the many supervised machine learning models available in <a href="https://alan-turing-institute.github.io/MLJ.jl/dev/">MLJ</a>: a beautiful, comprehensive machine learning framework funded by the <a href="https://www.turing.ac.uk/">Alan Turing Institute</a> and the <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/">New Zealand Strategic Science Investment Fund</a> <span class="citation" data-cites="blaom2020mlj">Blaom et al. (<a href="#ref-blaom2020mlj" role="doc-biblioref">2020</a>)</span>. We will go through some basic usage examples employing a new Julia package that I have been working on: <a href="https://github.com/pat-alt/ConformalPrediction.jl"><code>ConformalPrediction.jl</code></a>.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -407,10 +407,10 @@ Development Status
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(mach, Xtest)[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>import NearestNeighborModels ✔</code></pre>
+<pre><code>import NearestNeighborModels</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code></code></pre>
+<pre><code> ✔</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div class="ansi-escaped-output">
@@ -548,6 +548,9 @@ Development Status
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-angelopoulos2021gentle" class="csl-entry" role="doc-biblioentry">
 Angelopoulos, Anastasios N., and Stephen Bates. 2021. <span>“A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification.”</span> <a href="https://arxiv.org/abs/2107.07511">https://arxiv.org/abs/2107.07511</a>.
+</div>
+<div id="ref-blaom2020mlj" class="csl-entry" role="doc-biblioentry">
+Blaom, Anthony D., Franz Kiraly, Thibaut Lienart, Yiannis Simillides, Diego Arenas, and Sebastian J. Vollmer. 2020. <span>“<span>MLJ</span>: <span>A Julia</span> Package for Composable Machine Learning.”</span> <em>Journal of Open Source Software</em> 5 (55): 2704. <a href="https://doi.org/10.21105/joss.02704">https://doi.org/10.21105/joss.02704</a>.
 </div>
 <div id="ref-hoff2021bayesoptimal" class="csl-entry" role="doc-biblioentry">
 Hoff, Peter. 2021. <span>“Bayes-Optimal Prediction with Frequentist Coverage Control.”</span> <a href="https://arxiv.org/abs/2105.14045">https://arxiv.org/abs/2105.14045</a>.
@@ -828,7 +831,7 @@ CP can be used to generate prediction intervals for regression models and predic
 
 ## 📦 Conformal Prediction in Julia {#sec-julia}
 
-In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look at an approach that is compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/). We will go through some basic usage examples employing a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
+In this section of this first short post on CP we will look at how conformal prediction can be implemented in Julia. In particular, we will look at an approach that is compatible with any of the many supervised machine learning models available in [MLJ](https://alan-turing-institute.github.io/MLJ.jl/dev/): a beautiful, comprehensive machine learning framework funded by the [Alan Turing Institute](https://www.turing.ac.uk/) and the [New Zealand Strategic Science Investment Fund](https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/strategic-science-investment-fund/ssif-funded-programmes/university-of-auckland/) @blaom2020mlj. We will go through some basic usage examples employing a new Julia package that I have been working on: [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl).  
 
 :::{.callout-note}
 ## [`ConformalPrediction.jl`](https://github.com/pat-alt/ConformalPrediction.jl)
