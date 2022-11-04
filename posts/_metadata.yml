@@ -20,6 +20,7 @@ comments:
 
 bibliography: https://raw.githubusercontent.com/pat-alt/bib/main/bib.bib
 citation: true
+license: "CC BY-NC"
 
 crossref:
   fig-prefix: Figure
