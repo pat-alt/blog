@@ -6,6 +6,8 @@ project:
 website:
   title: "blog"
   favicon: favicon.ico
+  site-url: https://www.paltmeyer.com/blog/
+  description: "My blog."
   navbar:
     logo: icon.png
     right:
@@ -17,6 +19,8 @@ website:
         href: https://twitter.com/paltmey
       - icon: medium
         href: https://medium.com/@patrick.altmeyer
+      - icon: rss
+        href: index.xml
   search: 
     location: navbar
     type: overlay
